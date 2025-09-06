@@ -1,0 +1,75 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Perancang Peradaban - The Soulforge Saga">
+  <div class="w-full max-w-7xl glass-card p-6 sm:p-8 rounded-2xl shadow-lg border border-border-color flex flex-col h-[95vh]">
+    <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider mb-6 text-center drop-shadow-lg" data-i18n-key="civilization_designer_title">
+      Perancang Peradaban
+    </h1>
+
+    <div class="flex-grow flex flex-col lg:flex-row gap-6 overflow-hidden">
+      <!-- Toolbar Kiri untuk Alat Desain -->
+      <div class="flex-shrink-0 bg-slate-800/60 rounded-xl p-3 flex flex-row lg:flex-col items-center lg:items-stretch gap-3 overflow-x-auto lg:overflow-y-auto scrollbar-thin">
+        <button class="tool-button glass-button primary-button" data-tool-id="brush" title="Brush Tool"><i data-lucide="brush"></i> <span class="hidden lg:inline" data-i18n-key="tool_brush">Kuas</span></button>
+        <button class="tool-button glass-button secondary-button" data-tool-id="fill" title="Fill Tool"><i data-lucide="paint-bucket"></i> <span class="hidden lg:inline" data-i18n-key="tool_fill">Isi</span></button>
+        <button class="tool-button glass-button secondary-button" data-tool-id="erase" title="Erase Tool"><i data-lucide="eraser"></i> <span class="hidden lg:inline" data-i18n-key="tool_erase">Hapus</span></button>
+        <button class="tool-button glass-button secondary-button" data-tool-id="select" title="Select Tool"><i data-lucide="square-dashed-bottom-code"></i> <span class="hidden lg:inline" data-i18n-key="tool_select">Pilih</span></button>
+        <button class="tool-button glass-button secondary-button" data-tool-id="eyedropper" title="Eyedropper Tool"><i data-lucide="dropper"></i> <span class="hidden lg:inline" data-i18n-key="tool_eyedropper">Pipet</span></button>
+        <button class="tool-button glass-button secondary-button" data-tool-id="place_asset" title="Place Asset"><i data-lucide="building-2"></i> <span class="hidden lg:inline" data-i18n-key="tool_place_asset">Tempatkan Aset</span></button>
+      </div>
+
+      <!-- Area Kanvas Desain -->
+      <div id="designer-canvas-container" class="flex-grow bg-slate-800/60 rounded-xl overflow-hidden flex items-center justify-center">
+        <canvas id="designer-canvas" class="border-2 border-slate-700 shadow-lg"></canvas>
+      </div>
+
+      <!-- Panel Properti & Kontrol Kanan -->
+      <div class="flex-shrink-0 bg-slate-800/60 rounded-xl p-4 lg:w-80 flex flex-col space-y-4 overflow-y-auto scrollbar-thin">
+        <h3 class="text-xl font-bold text-white mb-2" data-i18n-key="designer_panel_title">Kontrol Desain</h3>
+        
+        <div id="designer-controls" class="space-y-3">
+          <div>
+            <label for="design-grid-size" class="block text-slate-400 text-sm mb-1" data-i18n-key="grid_size_label">Ukuran Grid: <span id="grid-size-display">32x32</span></label>
+            <input type="range" id="design-grid-size" min="16" max="64" value="32" step="16" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+          </div>
+          <div>
+            <label for="brush-size-slider" class="block text-slate-400 text-sm mb-1" data-i18n-key="brush_size_label">Ukuran Kuas: <span id="brush-size-display">1</span></label>
+            <input type="range" id="brush-size-slider" min="1" max="5" value="1" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+          </div>
+          <div>
+            <label for="current-color" class="block text-slate-400 text-sm mb-1" data-i18n-key="current_color_label">Warna Saat Ini:</label>
+            <div id="current-color-display" class="w-full h-8 border-2 border-slate-700" style="background-color: #22C55E;"></div>
+          </div>
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="palette_label">Palet:</label>
+            <div id="color-palette-grid" class="color-picker-grid">
+              <!-- Color swatches will be dynamically loaded here -->
+            </div>
+          </div>
+          <div>
+            <label for="asset-type-select" class="block text-slate-400 text-sm mb-1" data-i18n-key="asset_type_label">Tipe Aset:</label>
+            <select id="asset-type-select" class="glass-input w-full p-2">
+              <option value="building" data-i18n-key="asset_type_building">Bangunan</option>
+              <option value="vegetation" data-i18n-key="asset_type_vegetation">Vegetasi</option>
+              <option value="decoration" data-i18n-key="asset_type_decoration">Dekorasi</option>
+            </select>
+          </div>
+          <button id="apply-design-to-world-btn" class="glass-button primary-button w-full mt-4">
+            <i data-lucide="save"></i> <span data-i18n-key="apply_design_to_world">Terapkan Desain ke Dunia</span>
+          </button>
+          <button id="load-design-btn" class="glass-button secondary-button w-full mt-2">
+            <i data-lucide="download"></i> <span data-i18n-key="load_design">Muat Desain</span>
+          </button>
+          <button id="export-design-btn" class="glass-button secondary-button w-full mt-2">
+            <i data-lucide="upload"></i> <span data-i18n-key="export_design">Ekspor Desain</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button id="back-to-forger-btn" class="glass-button secondary-button mt-8">
+      <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> <span data-i18n-key="back_to_forger_dashboard">Kembali ke Dashboard Forger</span>
+    </button>
+  </div>
+</MainLayout>

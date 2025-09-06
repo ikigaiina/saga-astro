@@ -1,0 +1,35 @@
+---
+import type { AstroComponent } from 'astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  children: AstroComponent;
+}
+
+const { title = 'The Soulforge Saga', children } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/lucide.js"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 flex flex-col items-center justify-center p-4 min-h-screen">
+    <slot />
+    
+    <script>
+        window.onload = function() {
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
+            }
+        };
+    </script>
+    <script type="module" src="/src/utils/app.js"></script>
+</body>
+</html>

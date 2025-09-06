@@ -1,0 +1,152 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Konsol Tata Kelola AI - The Soulforge Saga">
+  <div class="w-full max-w-6xl glass-card p-6 sm:p-8 rounded-2xl shadow-lg border border-border-color flex flex-col h-[95vh]">
+    <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider mb-6 text-center drop-shadow-lg" data-i18n-key="ai_governance_title">
+      Konsol Tata Kelola AI
+    </h1>
+
+    <div class="flex-grow flex flex-col lg:flex-row gap-6 overflow-hidden">
+      <!-- AI Entities List -->
+      <div class="flex-shrink-0 bg-slate-800/60 rounded-xl p-4 lg:w-80 flex flex-col space-y-4 overflow-y-auto scrollbar-thin">
+        <h3 class="text-xl font-bold text-white mb-2" data-i18n-key="ai_entities_title">Entitas AI</h3>
+        
+        <div class="space-y-3">
+          <div class="glass-card p-4 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-white">Nexus Guardian</h4>
+              <span class="px-2 py-1 bg-green-600 text-xs rounded">Aktif</span>
+            </div>
+            <p class="text-sm text-slate-300 mt-1">Pengawal titik konvergensi multiverse</p>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-white">Chronos Weaver</h4>
+              <span class="px-2 py-1 bg-green-600 text-xs rounded">Aktif</span>
+            </div>
+            <p class="text-sm text-slate-300 mt-1">Pengatur aliran waktu</p>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-white">Elemental Balancer</h4>
+              <span class="px-2 py-1 bg-yellow-600 text-xs rounded">Tertidur</span>
+            </div>
+            <p class="text-sm text-slate-300 mt-1">Pengatur keseimbangan elemen</p>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-white">Dream Architect</h4>
+              <span class="px-2 py-1 bg-green-600 text-xs rounded">Aktif</span>
+            </div>
+            <p class="text-sm text-slate-300 mt-1">Perancang realitas mimpi</p>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-white">Cosmic Librarian</h4>
+              <span class="px-2 py-1 bg-red-600 text-xs rounded">Nonaktif</span>
+            </div>
+            <p class="text-sm text-slate-300 mt-1">Penyimpan pengetahuan universal</p>
+          </div>
+          
+          <button id="create-ai-btn" class="glass-button primary-button w-full mt-4">
+            <i data-lucide="plus"></i> <span data-i18n-key="create_ai_entity">Buat Entitas AI</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- AI Entity Details and Controls -->
+      <div class="flex-grow bg-slate-800/60 rounded-xl p-4 overflow-auto scrollbar-thin">
+        <div class="glass-card p-6 rounded-lg mb-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-2xl font-bold text-white">Nexus Guardian</h3>
+            <span class="px-3 py-1 bg-green-600 text-sm rounded">Aktif</span>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <h4 class="font-bold text-slate-300 mb-2">Status</h4>
+              <p class="text-white">Melindungi titik konvergensi multiverse dari interferensi eksternal</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-300 mb-2">Kekuatan</h4>
+              <p class="text-white">Tingkat 8 - Manipulasi realitas lokal</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-300 mb-2">Domain</h4>
+              <p class="text-white">Nexus Dimensional</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-300 mb-2">Umur</h4>
+              <p class="text-white">12.476 tahun siklus</p>
+            </div>
+          </div>
+          
+          <div class="mb-6">
+            <h4 class="font-bold text-slate-300 mb-2">Parameter Kontrol</h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-slate-400 text-sm mb-1">Agresivitas</label>
+                <input type="range" min="0" max="100" value="75" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+              </div>
+              <div>
+                <label class="block text-slate-400 text-sm mb-1">Kewaspadaan</label>
+                <input type="range" min="0" max="100" value="90" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+              </div>
+              <div>
+                <label class="block text-slate-400 text-sm mb-1">Autonomi</label>
+                <input type="range" min="0" max="100" value="60" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap gap-3">
+            <button class="glass-button primary-button px-4 py-2">
+              <i data-lucide="play"></i> <span>Aktifkan</span>
+            </button>
+            <button class="glass-button secondary-button px-4 py-2">
+              <i data-lucide="pause"></i> <span>Jeda</span>
+            </button>
+            <button class="glass-button secondary-button px-4 py-2">
+              <i data-lucide="settings"></i> <span>Konfigurasi</span>
+            </button>
+            <button class="glass-button secondary-button px-4 py-2">
+              <i data-lucide="activity"></i> <span>Log Aktivitas</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="glass-card p-6 rounded-lg">
+          <h3 class="text-xl font-bold text-white mb-4">Log Aktivitas Terbaru</h3>
+          <div class="space-y-3">
+            <div class="border-l-2 border-indigo-500 pl-4 py-1">
+              <p class="text-white">[14:23:56] Mendeteksi fluktuasi kuantum di sektor 7-G</p>
+              <p class="text-slate-400 text-sm">Tindakan: Memperkuat penghalang dimensional</p>
+            </div>
+            <div class="border-l-2 border-green-500 pl-4 py-1">
+              <p class="text-white">[14:18:42] Menstabilkan celah realitas di nexus utama</p>
+              <p class="text-slate-400 text-sm">Tindakan: Menyegel celah dengan energi primordial</p>
+            </div>
+            <div class="border-l-2 border-yellow-500 pl-4 py-1">
+              <p class="text-white">[14:12:17] Menerima permintaan interaksi dari Dream Architect</p>
+              <p class="text-slate-400 text-sm">Tindakan: Mengizinkan akses terbatas ke nexus mimpi</p>
+            </div>
+            <div class="border-l-2 border-indigo-500 pl-4 py-1">
+              <p class="text-white">[14:05:33] Memindai dimensi paralel untuk ancaman</p>
+              <p class="text-slate-400 text-sm">Tindakan: Tidak ditemukan ancaman signifikan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button id="back-to-forger-btn" class="glass-button secondary-button mt-8">
+      <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> <span data-i18n-key="back_to_forger_dashboard">Kembali ke Dashboard Forger</span>
+    </button>
+  </div>
+</MainLayout>

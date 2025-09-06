@@ -1,0 +1,91 @@
+---
+// src/components/PlayerStats.astro
+// Player stats component for The Soulforge Saga
+
+import { gameStateManager } from '../game/stateManager.js';
+import { inventorySystem } from '../game/inventorySystem.js';
+
+// Get initial state
+const state = gameStateManager.getState();
+const player = state.player;
+---
+
+<div id="player-stats" class="flex items-center space-x-4">
+  <!-- Player avatar/name -->
+  <div class="flex items-center space-x-2">
+    <div class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center">
+      <span class="font-bold">{player.name.charAt(0)}</span>
+    </div>
+    <div>
+      <div class="font-bold">{player.name}</div>
+      <div class="text-xs text-slate-400">Level {player.level}</div>
+    </div>
+  </div>
+  
+  <!-- Health bar -->
+  <div class="flex items-center space-x-2">
+    <i data-lucide="heart" class="w-4 h-4 text-red-500"></i>
+    <div class="w-24 h-2 bg-slate-700 rounded-full overflow-hidden">
+      <div 
+        class="h-full bg-red-500 rounded-full" 
+        style={`width: ${(player.health / player.maxHealth) * 100}%`}
+      ></div>
+    </div>
+    <span class="text-xs">{player.health}/{player.maxHealth}</span>
+  </div>
+  
+  <!-- Essence -->
+  <div class="flex items-center space-x-1">
+    <i data-lucide="sparkles" class="w-4 h-4 text-yellow-500"></i>
+    <span class="font-bold">{player.essence}</span>
+  </div>
+  
+  <!-- Inventory count -->
+  <div class="flex items-center space-x-1">
+    <i data-lucide="backpack" class="w-4 h-4 text-blue-500"></i>
+    <span class="font-bold">{player.inventory.length}</span>
+  </div>
+  
+  <!-- Role indicator -->
+  <div class="px-2 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300">
+    {player.role === 'wanderer' ? 'Wanderer' : 'Forger'}
+  </div>
+</div>
+
+<!-- Script to update stats in real-time -->
+<script>
+  // Listen for state changes and update UI
+  gameStateManager.subscribe((state) => {
+    const player = state.player;
+    
+    // Update health bar
+    const healthBar = document.querySelector('#player-stats .h-2 div');
+    if (healthBar) {
+      healthBar.style.width = `${(player.health / player.maxHealth) * 100}%`;
+    }
+    
+    // Update health text
+    const healthText = document.querySelector('#player-stats .text-xs');
+    if (healthText) {
+      healthText.textContent = `${player.health}/${player.maxHealth}`;
+    }
+    
+    // Update essence
+    const essenceElement = document.querySelector('#player-stats .font-bold:nth-child(2)');
+    if (essenceElement) {
+      essenceElement.textContent = player.essence;
+    }
+    
+    // Update inventory count
+    const inventoryCount = document.querySelector('#player-stats .font-bold:nth-child(3)');
+    if (inventoryCount) {
+      inventoryCount.textContent = player.inventory.length;
+    }
+    
+    // Update level
+    const levelElement = document.querySelector('#player-stats .text-xs.text-slate-400');
+    if (levelElement) {
+      levelElement.textContent = `Level ${player.level}`;
+    }
+  });
+</script>

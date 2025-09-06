@@ -1,0 +1,109 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Dashboard Wanderer - The Soulforge Saga">
+  <div class="w-full max-w-6xl glass-card p-6 sm:p-8 rounded-2xl shadow-lg border border-border-color flex flex-col h-[95vh]">
+    <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider mb-6 text-center drop-shadow-lg" data-i18n-key="wanderer_dashboard_title">
+      Dashboard Wanderer
+    </h1>
+
+    <div class="flex-grow overflow-auto scrollbar-thin">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Character Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="user" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="character_title">Karakter</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="character_description">Periksa atribut, keterampilan, dan perkembangan karakter Anda.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="view_character">Lihat Karakter</button>
+        </div>
+
+        <!-- Inventory Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="backpack" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="inventory_title">Inventaris</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="inventory_description">Kelola barang, senjata, dan artefak yang Anda miliki.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="view_inventory">Lihat Inventaris</button>
+        </div>
+
+        <!-- Quests Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="scroll" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="quests_title">Misi</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="quests_description">Lihat misi aktif, selesai, dan tersedia untuk diambil.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="view_quests">Lihat Misi</button>
+        </div>
+
+        <!-- Echoes of Divergence Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="git-branch" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="echoes_of_divergence_title">Gema Kepisahan</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="echoes_of_divergence_description">Jelajahi cabang-cabang narasi alternatif dan kemungkinan.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_echoes_of_divergence">Akses Gema</button>
+        </div>
+
+        <!-- Dream Weaver Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="cloud" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="dream_weaver_title">Penenun Mimpi</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="dream_weaver_description">Masuki dan bentuk realitas mimpi untuk eksplorasi dan pertumbuhan.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_dream_weaver">Akses Penenun</button>
+        </div>
+
+        <!-- Meditation Chamber Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="heart" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="meditation_chamber_title">Ruang Meditasi</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="meditation_chamber_description">Meditasi untuk memulihkan energi dan memperoleh wawasan.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_meditation_chamber">Akses Ruang Meditasi</button>
+        </div>
+
+        <!-- Ancient Spirit Nexus Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="zap" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="ancient_spirit_nexus_title">Nexus Roh Kuno</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="ancient_spirit_nexus_description">Hubungkan dengan kekuatan spiritual kuno untuk kekuatan baru.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_ancient_spirit_nexus">Akses Nexus</button>
+        </div>
+
+        <!-- Hall of Legends Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="trophy" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="hall_of_legends_title">Aula Legenda</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="hall_of_legends_description">Lihat pencapaian dan prestasi legendaris Anda.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_hall_of_legends">Akses Aula</button>
+        </div>
+
+        <!-- Dimensional Rift Explorer Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="aperture" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="dimensional_rift_explorer_title">Penjelajah Retakan Dimensi</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="dimensional_rift_explorer_description">Jelajahi dimensi paralel dan realitas alternatif.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_dimensional_rift_explorer">Akses Penjelajah</button>
+        </div>
+      </div>
+    </div>
+
+    <button id="back-to-main-btn" class="glass-button secondary-button mt-8">
+      <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> <span data-i18n-key="back_to_main_menu">Kembali ke Menu Utama</span>
+    </button>
+  </div>
+</MainLayout>

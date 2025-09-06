@@ -1,0 +1,380 @@
+---
+// src/components/WorldMap.astro
+// World map component for The Soulforge Saga
+
+import { gameStateManager } from '../game/stateManager.js';
+import { explorationSystem } from '../game/explorationSystem.js';
+import { REGIONS_DATA } from '../data/world.js';
+
+// Get initial state
+const state = gameStateManager.getState();
+const playerLocation = state.player.location;
+const discoveredLocations = Array.from(explorationSystem.discoveredLocations);
+---
+
+<div id="world-map-container" class="h-full flex flex-col">
+  <h2 class="text-2xl font-bold mb-4">Peta Dunia</h2>
+  
+  <div class="flex gap-4 flex-1 overflow-hidden">
+    <!-- Map sidebar -->
+    <div class="w-64 flex flex-col gap-4">
+      <div class="glass-card p-4 flex-1">
+        <h3 class="text-xl font-bold mb-3">Wilayah</h3>
+        
+        <div class="space-y-2">
+          {Object.entries(REGIONS_DATA).map(([regionId, region]) => (
+            <div 
+              class={`glass-button secondary-button w-full py-2 text-left cursor-pointer ${
+                playerLocation === regionId ? 'bg-indigo-500/30 border border-indigo-500/50' : ''
+              } ${
+                !discoveredLocations.includes(regionId) ? 'opacity-50' : ''
+              }`}
+              data-region-id={regionId}
+              data-js-action="select-region"
+              data-region-key={regionId}
+            >
+              <div class="flex justify-between items-center">
+                <span>{region.name}</span>
+                <span class={`w-3 h-3 rounded-full ${
+                  region.threatLevel === 1 ? 'bg-green-500' :
+                  region.threatLevel === 2 ? 'bg-yellow-500' :
+                  region.threatLevel === 3 ? 'bg-orange-500' :
+                  region.threatLevel === 4 ? 'bg-red-500' :
+                  'bg-purple-500'
+                }`}></span>
+              </div>
+              <div class="text-xs text-slate-400 mt-1">
+                {discoveredLocations.includes(regionId) ? 'Dikunjungi' : 'Belum Dikunjungi'}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      <!-- Travel controls -->
+      <div class="glass-card p-4">
+        <h3 class="text-xl font-bold mb-3">Perjalanan</h3>
+        <div class="space-y-3">
+          <button 
+            id="travel-btn" 
+            class="glass-button primary-button w-full py-2 disabled:opacity-50"
+            data-js-disabled="true"
+          >
+            <i data-lucide="navigation" class="w-4 h-4 mr-2"></i>
+            Perjalanan ke Wilayah
+          </button>
+          
+          <div class="text-sm text-slate-400">
+            <div class="flex justify-between">
+              <span>Lokasi Saat Ini:</span>
+              <span class="font-bold">{REGIONS_DATA[playerLocation]?.name || 'Tidak Diketahui'}</span>
+            </div>
+            <div class="flex justify-between mt-1">
+              <span>Wilayah Dikunjungi:</span>
+              <span>{discoveredLocations.length}/{Object.keys(REGIONS_DATA).length}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Map view -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <div class="glass-card p-4 flex-1 overflow-hidden flex flex-col">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Peta Interaktif</h3>
+          <div class="flex gap-2">
+            <button class="glass-button secondary-button px-3 py-1 text-sm">
+              <i data-lucide="zoom-in" class="w-4 h-4 mr-1"></i>
+              Perbesar
+            </button>
+            <button class="glass-button secondary-button px-3 py-1 text-sm">
+              <i data-lucide="zoom-out" class="w-4 h-4 mr-1"></i>
+              Perkecil
+            </button>
+            <button class="glass-button secondary-button px-3 py-1 text-sm">
+              <i data-lucide="rotate-cw" class="w-4 h-4 mr-1"></i>
+              Putar
+            </button>
+          </div>
+        </div>
+        
+        <div class="flex-1 relative bg-slate-800 rounded-lg overflow-hidden">
+          {/* Simplified map visualization */}
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="relative w-96 h-96">
+              {/* Draw connections between regions */}
+              <svg class="absolute inset-0 w-full h-full">
+                {/* Central Nexus to others */}
+                <line x1="50%" y1="50%" x2="20%" y2="20%" stroke="#4F46E5" stroke-width="2" stroke-dasharray="5,5"></line>
+                <line x1="50%" y1="50%" x2="80%" y2="20%" stroke="#4F46E5" stroke-width="2" stroke-dasharray="5,5"></line>
+                <line x1="50%" y1="50%" x2="20%" y2="80%" stroke="#4F46E5" stroke-width="2" stroke-dasharray="5,5"></line>
+                <line x1="50%" y1="50%" x2="80%" y2="80%" stroke="#4F46E5" stroke-width="2" stroke-dasharray="5,5"></line>
+              </svg>
+              
+              {/* Central Nexus */}
+              <div 
+                class={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full flex items-center justify-center cursor-pointer ${
+                  playerLocation === 'TheCentralNexus' ? 
+                  'bg-indigo-500 ring-4 ring-indigo-300' : 
+                  discoveredLocations.includes('TheCentralNexus') ?
+                  'bg-indigo-500' :
+                  'bg-slate-700'
+                }`}
+                data-region-id="TheCentralNexus"
+                data-js-action="select-region"
+                data-region-key="TheCentralNexus"
+                title="Nexus Pusat yang Berdenyut"
+              >
+                <i data-lucide="heart-pulse" class="w-8 h-8 text-white"></i>
+              </div>
+              
+              {/* Whispering Reaches */}
+              <div 
+                class={`absolute top-1/5 left-1/5 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer ${
+                  playerLocation === 'TheWhisperingReaches' ? 
+                  'bg-purple-500 ring-4 ring-purple-300' : 
+                  discoveredLocations.includes('TheWhisperingReaches') ?
+                  'bg-purple-500' :
+                  'bg-slate-700'
+                }`}
+                data-region-id="TheWhisperingReaches"
+                data-js-action="select-region"
+                data-region-key="TheWhisperingReaches"
+                title="Jangkauan Berbisik"
+              >
+                <i data-lucide="eye" class="w-6 h-6 text-white"></i>
+              </div>
+              
+              {/* Luminous Plains */}
+              <div 
+                class={`absolute top-1/5 right-1/5 transform translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer ${
+                  playerLocation === 'TheLuminousPlains' ? 
+                  'bg-green-500 ring-4 ring-green-300' : 
+                  discoveredLocations.includes('TheLuminousPlains') ?
+                  'bg-green-500' :
+                  'bg-slate-700'
+                }`}
+                data-region-id="TheLuminousPlains"
+                data-js-action="select-region"
+                data-region-key="TheLuminousPlains"
+                title="Dataran Bercahaya"
+              >
+                <i data-lucide="sun" class="w-6 h-6 text-white"></i>
+              </div>
+              
+              {/* Shattered Peaks */}
+              <div 
+                class={`absolute bottom-1/5 left-1/5 transform -translate-x-1/2 translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer ${
+                  playerLocation === 'TheShatteredPeaks' ? 
+                  'bg-gray-500 ring-4 ring-gray-300' : 
+                  discoveredLocations.includes('TheShatteredPeaks') ?
+                  'bg-gray-500' :
+                  'bg-slate-700'
+                }`}
+                data-region-id="TheShatteredPeaks"
+                data-js-action="select-region"
+                data-region-key="TheShatteredPeaks"
+                title="Puncak yang Hancur"
+              >
+                <i data-lucide="mountain" class="w-6 h-6 text-white"></i>
+              </div>
+              
+              {/* Crimson Desert */}
+              <div 
+                class={`absolute bottom-1/5 right-1/5 transform translate-x-1/2 translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer ${
+                  playerLocation === 'TheCrimsonDesert' ? 
+                  'bg-red-500 ring-4 ring-red-300' : 
+                  discoveredLocations.includes('TheCrimsonDesert') ?
+                  'bg-red-500' :
+                  'bg-slate-700'
+                }`}
+                data-region-id="TheCrimsonDesert"
+                data-js-action="select-region"
+                data-region-key="TheCrimsonDesert"
+                title="Gurun Merah Darah"
+              >
+                <i data-lucide="cloud-drizzle" class="w-6 h-6 text-white"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Region details container (will be populated by JavaScript) -->
+        <div id="region-details-container" class="mt-4"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // State for selected region
+  let selectedRegion = null;
+  
+  // Function to select a region
+  function selectRegion(regionId) {
+    selectedRegion = regionId;
+    
+    // Update UI to show region details
+    updateRegionDetails(regionId);
+    
+    // Enable travel button
+    const travelBtn = document.getElementById('travel-btn');
+    if (travelBtn) {
+      travelBtn.disabled = regionId === null || regionId === gameStateManager.getState().player.location;
+    }
+    
+    console.log('Selected region:', regionId);
+  }
+  
+  // Function to update region details display
+  function updateRegionDetails(regionId) {
+    const container = document.getElementById('region-details-container');
+    if (!container) return;
+    
+    if (!regionId) {
+      container.innerHTML = '';
+      return;
+    }
+    
+    const region = REGIONS_DATA[regionId];
+    if (!region) {
+      container.innerHTML = '<p class="text-red-500">Region not found</p>';
+      return;
+    }
+    
+    const threatLevels = {
+      1: 'Rendah',
+      2: 'Sedang',
+      3: 'Tinggi',
+      4: 'Ekstrem',
+      5: 'Mematikan'
+    };
+    
+    const resourceNames = {
+      'essence_crystal': 'Kristal Essence',
+      'rare_minerals': 'Mineral Langka',
+      'mana_crystal': 'Kristal Mana',
+      'mutable_flora': 'Flora Dapat Berubah',
+      'shadow_essence': 'Esensi Bayangan',
+      'venomous_gland': 'Kelenjar Berbisa',
+      'healing_herbs': 'Herbal Penyembuh',
+      'pure_water': 'Air Murni',
+      'radiant_dust': 'Debu Radiant',
+      'desert_minerals': 'Mineral Gurun',
+      'sunstone': 'Batu Matahari',
+      'scorched_hide': 'Kulit Terbakar'
+    };
+    
+    const resourcesHtml = region.resources.map(resource => 
+      `<span class="text-xs px-2 py-1 rounded-full bg-slate-700">${resourceNames[resource] || resource}</span>`
+    ).join('');
+    
+    container.innerHTML = `
+      <div class="glass-card p-4">
+        <div class="flex justify-between items-start">
+          <div>
+            <h4 class="text-xl font-bold">${region.name}</h4>
+            <p class="text-slate-300 mt-1">${region.description}</p>
+            
+            <div class="flex flex-wrap gap-2 mt-3">
+              <span class="text-xs px-2 py-1 rounded-full bg-indigo-500/20 text-indigo-300">
+                Ancaman: ${threatLevels[region.threatLevel] || 'Tidak Diketahui'}
+              </span>
+              <span class="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-300">
+                Iklim: ${region.climate}
+              </span>
+              <span class="text-xs px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300">
+                Medan: ${region.terrainType}
+              </span>
+            </div>
+            
+            <div class="mt-3">
+              <h5 class="font-bold mb-1">Sumber Daya:</h5>
+              <div class="flex flex-wrap gap-1">
+                ${resourcesHtml}
+              </div>
+            </div>
+          </div>
+          
+          <button 
+            class="glass-button secondary-button px-3 py-1 text-sm"
+            data-js-action="explore-region"
+            data-region-key="${regionId}"
+          >
+            Jelajahi
+          </button>
+        </div>
+      </div>
+    `;
+  }
+  
+  // Function to travel to a region
+  function travelToRegion(regionId) {
+    if (!regionId || regionId === gameStateManager.getState().player.location) {
+      return;
+    }
+    
+    const result = explorationSystem.travelToRegion(regionId);
+    if (result.success) {
+      console.log(result.message);
+      
+      // Update UI
+      const travelBtn = document.getElementById('travel-btn');
+      if (travelBtn) {
+        travelBtn.disabled = true;
+      }
+    } else {
+      console.error(result.message);
+    }
+  }
+  
+  // Function to explore a region
+  function exploreRegion(regionId) {
+    const result = explorationSystem.exploreRegion(regionId);
+    if (result.success) {
+      console.log(result.message);
+    } else {
+      console.error(result.message);
+    }
+  }
+  
+  // Set up event listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    // Handle region selection
+    document.querySelectorAll('[data-js-action="select-region"]').forEach(element => {
+      element.addEventListener('click', () => {
+        const regionId = element.getAttribute('data-region-key');
+        if (regionId) {
+          selectRegion(regionId);
+        }
+      });
+    });
+    
+    // Handle travel button
+    const travelBtn = document.getElementById('travel-btn');
+    if (travelBtn) {
+      travelBtn.addEventListener('click', () => {
+        if (selectedRegion) {
+          travelToRegion(selectedRegion);
+        }
+      });
+    }
+    
+    // Handle explore button (using event delegation)
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('[data-js-action="explore-region"]')) {
+        const regionId = event.target.closest('[data-js-action="explore-region"]').getAttribute('data-region-key');
+        if (regionId) {
+          exploreRegion(regionId);
+        }
+      }
+    });
+  });
+  
+  // Listen for state changes
+  gameStateManager.subscribe((state) => {
+    // Update map when player location changes
+    console.log('Player location updated to:', state.player.location);
+  });
+</script>

@@ -1,0 +1,187 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Penenun Mimpi - The Soulforge Saga">
+  <div class="w-full max-w-6xl glass-card p-6 sm:p-8 rounded-2xl shadow-lg border border-border-color flex flex-col h-[95vh]">
+    <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider mb-6 text-center drop-shadow-lg" data-i18n-key="dream_weaver_title">
+      Penenun Mimpi
+    </h1>
+
+    <div class="flex-grow flex flex-col lg:flex-row gap-6 overflow-hidden">
+      <!-- Dream Library -->
+      <div class="flex-shrink-0 bg-slate-800/60 rounded-xl p-4 lg:w-80 flex flex-col space-y-4 overflow-y-auto scrollbar-thin">
+        <h3 class="text-xl font-bold text-white mb-2" data-i18n-key="dream_library_title">Pustaka Mimpi</h3>
+        
+        <div class="space-y-3">
+          <div class="relative">
+            <input type="text" placeholder="Cari mimpi..." class="glass-input w-full p-2 pl-8">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-2 top-3"></i>
+          </div>
+          
+          <div class="max-h-96 overflow-y-auto scrollbar-thin space-y-2">
+            <div class="glass-card p-3 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors">
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded bg-indigo-500 flex items-center justify-center mr-3">
+                  <i data-lucide="castle" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white">Istana Mengambang</h4>
+                  <p class="text-xs text-slate-400">Mimpi petualangan fantastis</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="glass-card p-3 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors">
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded bg-green-500 flex items-center justify-center mr-3">
+                  <i data-lucide="tree-pine" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white">Hutan Kristal</h4>
+                  <p class="text-xs text-slate-400">Mimpi penemuan magis</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="glass-card p-3 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors">
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded bg-red-500 flex items-center justify-center mr-3">
+                  <i data-lucide="sword" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white">Arena Ksatria</h4>
+                  <p class="text-xs text-slate-400">Mimpi tantangan heroik</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="glass-card p-3 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors">
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded bg-blue-500 flex items-center justify-center mr-3">
+                  <i data-lucide="book-open" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white">Perpustakaan Abadi</h4>
+                  <p class="text-xs text-slate-400">Mimpi pengetahuan tersembunyi</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="glass-card p-3 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors">
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded bg-purple-500 flex items-center justify-center mr-3">
+                  <i data-lucide="star" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white">Nebula Kesadaran</h4>
+                  <p class="text-xs text-slate-400">Mimpi transendental</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="glass-card p-3 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors">
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded bg-yellow-500 flex items-center justify-center mr-3">
+                  <i data-lucide="sun" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white">Taman Kebahagiaan</h4>
+                  <p class="text-xs text-slate-400">Mimpi kedamaian batin</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dream Canvas and Controls -->
+      <div class="flex-grow bg-slate-800/60 rounded-xl p-4 overflow-hidden">
+        <div class="glass-card p-6 rounded-lg h-full flex flex-col">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-white">Istana Mengambang</h3>
+            <div class="flex gap-2">
+              <button class="glass-button secondary-button px-3 py-1">
+                <i data-lucide="play"></i>
+              </button>
+              <button class="glass-button secondary-button px-3 py-1">
+                <i data-lucide="pause"></i>
+              </button>
+              <button class="glass-button secondary-button px-3 py-1">
+                <i data-lucide="rotate-ccw"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="flex-grow relative mb-6">
+            <div id="dream-canvas" class="absolute inset-0 bg-gradient-to-br from-indigo-900 to-purple-900 rounded-lg flex items-center justify-center">
+              <!-- Dream visualization will be rendered here -->
+              <div class="relative w-64 h-64">
+                <!-- Floating castle -->
+                <div class="absolute top-1/4 left-1/2 transform -translate-x-1/2 w-32 h-24 bg-gray-300 rounded-t-lg">
+                  <div class="w-full h-8 bg-gray-400 rounded-t-lg"></div>
+                  <div class="flex justify-around mt-2">
+                    <div class="w-4 h-4 bg-blue-400 rounded-full"></div>
+                    <div class="w-4 h-4 bg-blue-400 rounded-full"></div>
+                    <div class="w-4 h-4 bg-blue-400 rounded-full"></div>
+                  </div>
+                  <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-gray-500 rounded-b-lg"></div>
+                </div>
+                
+                <!-- Clouds -->
+                <div class="absolute top-1/3 left-1/4 w-16 h-8 bg-white rounded-full opacity-80"></div>
+                <div class="absolute top-1/2 right-1/3 w-20 h-10 bg-white rounded-full opacity-80"></div>
+                <div class="absolute bottom-1/4 left-1/3 w-12 h-6 bg-white rounded-full opacity-80"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div>
+              <label class="block text-slate-400 text-sm mb-1">Intensitas Mimpi</label>
+              <input type="range" min="0" max="100" value="75" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+            </div>
+            <div>
+              <label class="block text-slate-400 text-sm mb-1">Emosi Dominan</label>
+              <select class="glass-input w-full p-2">
+                <option value="joy">Kebahagiaan</option>
+                <option value="fear">Ketakutan</option>
+                <option value="wonder">Kekaguman</option>
+                <option value="sadness">Kesedihan</option>
+                <option value="excitement">Kegembiraan</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-400 text-sm mb-1">Durasi</label>
+              <input type="range" min="5" max="120" value="30" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+              <div class="flex justify-between text-xs text-slate-400 mt-1">
+                <span>5m</span>
+                <span>30m</span>
+                <span>120m</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap gap-3">
+            <button class="glass-button primary-button px-4 py-2">
+              <i data-lucide="save"></i> <span>Simpan Mimpi</span>
+            </button>
+            <button class="glass-button secondary-button px-4 py-2">
+              <i data-lucide="download"></i> <span>Ekspor Mimpi</span>
+            </button>
+            <button class="glass-button secondary-button px-4 py-2">
+              <i data-lucide="share"></i> <span>Bagikan Mimpi</span>
+            </button>
+            <button class="glass-button secondary-button px-4 py-2">
+              <i data-lucide="moon"></i> <span>Masuki Mimpi</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button id="back-to-wanderer-btn" class="glass-button secondary-button mt-8">
+      <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> <span data-i18n-key="back_to_wanderer_dashboard">Kembali ke Dashboard Wanderer</span>
+    </button>
+  </div>
+</MainLayout>

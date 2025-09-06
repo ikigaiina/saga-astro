@@ -1,0 +1,225 @@
+---
+// src/pages/documentation2.astro
+// Documentation page continuation for The Soulforge Saga
+
+import GameStateProvider from '../components/GameStateProvider.astro';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - The Soulforge Saga (Continued)</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/lucide.js"></script>
+    
+    <!-- Custom styles -->
+    <style>
+        /* Pixel art styling */
+        body {
+            font-family: 'VT323', monospace;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;
+            -moz-crisp-edges: pixelated;
+            -webkit-font-smoothing: none;
+            background-color: #0F172A;
+            color: #E2E8F0;
+        }
+        
+        h1, h2, h3, h4, h5, h6, button, input, select, textarea {
+            font-family: 'Press Start 2P', cursive;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
+        }
+        
+        p, span, li, label, div, a {
+            font-family: 'VT323', monospace;
+        }
+        
+        /* Glass card effect */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.9);
+            border: 2px solid #64748B;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.5);
+            border-radius: 0px !important;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        /* Glass button effect */
+        .glass-button {
+            background: #4F46E5;
+            border: 2px solid #3730A3;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.5);
+            border-radius: 0px !important;
+            color: #FFFFFF;
+            cursor: pointer;
+            transition: background-color 0.1s linear, box-shadow 0.1s linear, transform 0.1s linear;
+        }
+        
+        .glass-button:hover {
+            background: #6366F1;
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.5);
+            transform: translate(2px, 2px);
+        }
+        
+        .glass-button:active {
+            transform: translate(4px, 4px);
+            box-shadow: none;
+        }
+        
+        .primary-button {
+            background: #6366F1;
+            border-color: #4F46E5;
+        }
+        
+        .secondary-button {
+            background: #475569;
+            border-color: #334155;
+        }
+        
+        .secondary-button:hover {
+            background: #64748B;
+        }
+        
+        /* Input fields */
+        .glass-input {
+            background: rgba(30, 41, 59, 0.7);
+            border: 2px solid #64748B;
+            color: #E2E8F0;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border-radius: 0px !important;
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.3);
+            transition: border-color 0.1s linear, box-shadow 0.1s linear;
+        }
+        
+        .glass-input:focus {
+            outline: none;
+            border-color: #6366F1;
+            box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 0px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: #475569;
+            border: 1px solid #334155;
+            border-radius: 0px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #64748B;
+        }
+        
+        /* Code blocks */
+        pre, code {
+            font-family: 'VT323', monospace;
+            background: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 0px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        
+        /* Tutorial steps */
+        .tutorial-step {
+            counter-increment: step-counter;
+        }
+        
+        .tutorial-step:before {
+            content: counter(step-counter);
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            background: #4F46E5;
+            color: white;
+            text-align: center;
+            line-height: 2rem;
+            margin-right: 1rem;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100">
+    <GameStateProvider />
+    
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="glass-card p-6 mb-8 text-center">
+            <h1 class="text-4xl font-bold mb-2">The Soulforge Saga</h1>
+            <p class="text-xl text-slate-300">Dokumentasi dan Tutorial (Lanjutan)</p>
+        </header>
+        
+        <div class="flex gap-8">
+            <!-- Sidebar navigation -->
+            <nav class="glass-card w-64 p-4 h-fit">
+                <h2 class="text-2xl font-bold mb-4">Navigasi</h2>
+                
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#advanced-tips" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="zap" class="w-4 h-4 mr-2 inline"></i>
+                            Tips Lanjutan
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#world-events" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="calendar" class="w-4 h-4 mr-2 inline"></i>
+                            Event Dunia
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#philosophy-system" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="book-open" class="w-4 h-4 mr-2 inline"></i>
+                            Sistem Filosofi
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#nexus-mechanics" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="heart-pulse" class="w-4 h-4 mr-2 inline"></i>
+                            Mekanik Nexus
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#developer-tools" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="code" class="w-4 h-4 mr-2 inline"></i>
+                            Alat Pengembang
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#troubleshooting" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="help-circle" class="w-4 h-4 mr-2 inline"></i>
+                            Pemecahan Masalah
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Main content -->
+            <main class="flex-1">
+                <!-- Advanced Tips (continued) -->
+                <section id="advanced-tips" class="glass-card p-6 mb-8">
+                    <h2 class="text-3xl font-bold mb-4">Tips Lanjutan (Lanjutan)</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Pol

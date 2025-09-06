@@ -1,0 +1,206 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Aula Legenda - The Soulforge Saga">
+  <div class="w-full max-w-6xl glass-card p-6 sm:p-8 rounded-2xl shadow-lg border border-border-color flex flex-col h-[95vh]">
+    <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider mb-6 text-center drop-shadow-lg" data-i18n-key="hall_of_legends_title">
+      Aula Legenda
+    </h1>
+
+    <div class="flex-grow overflow-auto scrollbar-thin">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Achievement Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center mr-4">
+              <i data-lucide="trophy" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white" data-i18n-key="first_steps_title">Langkah Pertama</h3>
+              <p class="text-slate-400 text-sm" data-i18n-key="first_steps_date">Mencapai level 1</p>
+            </div>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="first_steps_description">Penghargaan untuk memulai perjalanan epik Anda.</p>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-400" data-i18n-key="unlocked">Terbuka</span>
+            <span class="text-yellow-400 font-bold" data-i18n-key="rareness_common">Umum</span>
+          </div>
+        </div>
+
+        <!-- Achievement Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center mr-4">
+              <i data-lucide="sword" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white" data-i18n-key="first_victory_title">Kemenangan Pertama</h3>
+              <p class="text-slate-400 text-sm" data-i18n-key="first_victory_date">Mengalahkan 1 musuh</p>
+            </div>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="first_victory_description">Penghargaan untuk kemenangan pertama Anda dalam pertempuran.</p>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-400" data-i18n-key="unlocked">Terbuka</span>
+            <span class="text-yellow-400 font-bold" data-i18n-key="rareness_common">Umum</span>
+          </div>
+        </div>
+
+        <!-- Achievement Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center mr-4">
+              <i data-lucide="book-open" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white" data-i18n-key="knowledge_seeker_title">Pencari Pengetahuan</h3>
+              <p class="text-slate-400 text-sm" data-i18n-key="knowledge_seeker_date">Membaca 10 buku</p>
+            </div>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="knowledge_seeker_description">Penghargaan untuk hasrat Anda terhadap pengetahuan.</p>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-400" data-i18n-key="unlocked">Terbuka</span>
+            <span class="text-yellow-400 font-bold" data-i18n-key="rareness_uncommon">Tidak Umum</span>
+          </div>
+        </div>
+
+        <!-- Achievement Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center mr-4">
+              <i data-lucide="heart" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white" data-i18n-key="healer_title">Penyembuh</h3>
+              <p class="text-slate-400 text-sm" data-i18n-key="healer_date">Menyembuhkan 50 HP</p>
+            </div>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="healer_description">Penghargaan untuk tindakan penyembuhan pertama Anda.</p>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-400" data-i18n-key="unlocked">Terbuka</span>
+            <span class="text-yellow-400 font-bold" data-i18n-key="rareness_common">Umum</span>
+          </div>
+        </div>
+
+        <!-- Achievement Card -->
+        <div class="glass-card p-6 rounded-xl opacity-50">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-slate-600 flex items-center justify-center mr-4">
+              <i data-lucide="shield" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white" data-i18n-key="defender_title">Pelindung</h3>
+              <p class="text-slate-400 text-sm" data-i18n-key="defender_date">Menahan 100 kerusakan</p>
+            </div>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="defender_description">Penghargaan untuk bertahan melawan serangan musuh.</p>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-400" data-i18n-key="locked">Terkunci</span>
+            <span class="text-yellow-400 font-bold" data-i18n-key="rareness_uncommon">Tidak Umum</span>
+          </div>
+        </div>
+
+        <!-- Achievement Card -->
+        <div class="glass-card p-6 rounded-xl opacity-50">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-slate-600 flex items-center justify-center mr-4">
+              <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white" data-i18n-key="lightning_reflexes_title">Refleks Kilat</h3>
+              <p class="text-slate-400 text-sm" data-i18n-key="lightning_reflexes_date">Menghindari 25 serangan</p>
+            </div>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="lightning_reflexes_description">Penghargaan untuk refleks luar biasa dalam pertempuran.</p>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-400" data-i18n-key="locked">Terkunci</span>
+            <span class="text-yellow-400 font-bold" data-i18n-key="rareness_rare">Langka</span>
+          </div>
+        </div>
+
+        <!-- Achievement Card -->
+        <div class="glass-card p-6 rounded-xl opacity-50">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-slate-600 flex items-center justify-center mr-4">
+              <i data-lucide="star" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white" data-i18n-key="legendary_hero_title">Pahlawan Legendaris</h3>
+              <p class="text-slate-400 text-sm" data-i18n-key="legendary_hero_date">Mencapai level 50</p>
+            </div>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="legendary_hero_description">Penghargaan tertinggi untuk pencapaian luar biasa.</p>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-400" data-i18n-key="locked">Terkunci</span>
+            <span class="text-yellow-400 font-bold" data-i18n-key="rareness_legendary">Legendaris</span>
+          </div>
+        </div>
+
+        <!-- Achievement Card -->
+        <div class="glass-card p-6 rounded-xl opacity-50">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-slate-600 flex items-center justify-center mr-4">
+              <i data-lucide="globe" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white" data-i18n-key="world_savior_title">Penyelamat Dunia</h3>
+              <p class="text-slate-400 text-sm" data-i18n-key="world_savior_date">Menyelesaikan 10 misi utama</p>
+            </div>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="world_savior_description">Penghargaan untuk menyelamatkan dunia dari kehancuran.</p>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-400" data-i18n-key="locked">Terkunci</span>
+            <span class="text-yellow-400 font-bold" data-i18n-key="rareness_legendary">Legendaris</span>
+          </div>
+        </div>
+
+        <!-- Achievement Card -->
+        <div class="glass-card p-6 rounded-xl opacity-50">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-slate-600 flex items-center justify-center mr-4">
+              <i data-lucide="users" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white" data-i18n-key="master_diplomat_title">Diplomat Master</h3>
+              <p class="text-slate-400 text-sm" data-i18n-key="master_diplomat_date">Menyelesaikan 20 misi sosial</p>
+            </div>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="master_diplomat_description">Penghargaan untuk keahlian dalam diplomasi dan hubungan sosial.</p>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-400" data-i18n-key="locked">Terkunci</span>
+            <span class="text-yellow-400 font-bold" data-i18n-key="rareness_epic">Epik</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card p-6 rounded-xl mt-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-white" data-i18n-key="statistics_title">Statistik</h3>
+        <span class="text-slate-400" data-i18n-key="achievements_unlocked">4 dari 9 terbuka</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="text-center">
+          <div class="text-3xl font-bold text-white">127</div>
+          <div class="text-slate-400 text-sm" data-i18n-key="enemies_defeated">Musuh Dikalahkan</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-white">42</div>
+          <div class="text-slate-400 text-sm" data-i18n-key="quests_completed">Misi Selesai</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-white">18</div>
+          <div class="text-slate-400 text-sm" data-i18n-key="books_read">Buku Dibaca</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-white">356</div>
+          <div class="text-slate-400 text-sm" data-i18n-key="hours_played">Jam Bermain</div>
+        </div>
+      </div>
+    </div>
+
+    <button id="back-to-wanderer-btn" class="glass-button secondary-button mt-8">
+      <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> <span data-i18n-key="back_to_wanderer_dashboard">Kembali ke Dashboard Wanderer</span>
+    </button>
+  </div>
+</MainLayout>

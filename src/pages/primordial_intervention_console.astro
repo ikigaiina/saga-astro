@@ -1,0 +1,219 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Konsol Intervensi Primordial - The Soulforge Saga">
+  <div class="w-full max-w-6xl glass-card p-6 sm:p-8 rounded-2xl shadow-lg border border-border-color flex flex-col h-[95vh]">
+    <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider mb-6 text-center drop-shadow-lg" data-i18n-key="primordial_intervention_title">
+      Konsol Intervensi Primordial
+    </h1>
+
+    <div class="flex-grow flex flex-col lg:flex-row gap-6 overflow-hidden">
+      <!-- Primordial Forces Panel -->
+      <div class="flex-shrink-0 bg-slate-800/60 rounded-xl p-4 lg:w-80 flex flex-col space-y-4 overflow-y-auto scrollbar-thin">
+        <h3 class="text-xl font-bold text-white mb-2" data-i18n-key="primordial_forces_title">Kekuatan Primordial</h3>
+        
+        <div class="space-y-4">
+          <div class="glass-card p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-white">Energi Kehidupan</h4>
+              <span class="text-green-400">●</span>
+            </div>
+            <p class="text-sm text-slate-300 mb-3">Kekuatan yang memberi kehidupan pada semua bentuk eksistensi</p>
+            <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full" style="width: 85%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-400 mt-1">
+              <span>Stabil</span>
+              <span>85%</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-white">Energi Kematian</h4>
+              <span class="text-purple-400">●</span>
+            </div>
+            <p class="text-sm text-slate-300 mb-3">Kekuatan yang mengatur transisi dan transformasi</p>
+            <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="bg-purple-500 h-2 rounded-full" style="width: 72%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-400 mt-1">
+              <span>Stabil</span>
+              <span>72%</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-white">Energi Waktu</h4>
+              <span class="text-blue-400">●</span>
+            </div>
+            <p class="text-sm text-slate-300 mb-3">Kekuatan yang mengatur aliran dan struktur waktu</p>
+            <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="bg-blue-500 h-2 rounded-full" style="width: 91%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-400 mt-1">
+              <span>Stabil</span>
+              <span>91%</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-white">Energi Ruang</h4>
+              <span class="text-yellow-400">●</span>
+            </div>
+            <p class="text-sm text-slate-300 mb-3">Kekuatan yang membentuk struktur dan dimensi realitas</p>
+            <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="bg-yellow-500 h-2 rounded-full" style="width: 68%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-400 mt-1">
+              <span>Fluktuatif</span>
+              <span>68%</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-white">Energi Kesadaran</h4>
+              <span class="text-pink-400">●</span>
+            </div>
+            <p class="text-sm text-slate-300 mb-3">Kekuatan yang memberi bentuk pada pikiran dan persepsi</p>
+            <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="bg-pink-500 h-2 rounded-full" style="width: 79%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-400 mt-1">
+              <span>Stabil</span>
+              <span>79%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Intervention Controls -->
+      <div class="flex-grow bg-slate-800/60 rounded-xl p-4 overflow-auto scrollbar-thin">
+        <div class="glass-card p-6 rounded-lg mb-6">
+          <h3 class="text-2xl font-bold text-white mb-4">Panel Intervensi</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <h4 class="font-bold text-slate-300 mb-3">Manipulasi Energi</h4>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-slate-400 text-sm mb-1">Energi Kehidupan</label>
+                  <input type="range" min="-50" max="50" value="0" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+                  <div class="flex justify-between text-xs text-slate-400 mt-1">
+                    <span>-50%</span>
+                    <span>0%</span>
+                    <span>+50%</span>
+                  </div>
+                </div>
+                
+                <div>
+                  <label class="block text-slate-400 text-sm mb-1">Energi Kematian</label>
+                  <input type="range" min="-50" max="50" value="0" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+                  <div class="flex justify-between text-xs text-slate-400 mt-1">
+                    <span>-50%</span>
+                    <span>0%</span>
+                    <span>+50%</span>
+                  </div>
+                </div>
+                
+                <div>
+                  <label class="block text-slate-400 text-sm mb-1">Energi Waktu</label>
+                  <input type="range" min="-50" max="50" value="0" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+                  <div class="flex justify-between text-xs text-slate-400 mt-1">
+                    <span>-50%</span>
+                    <span>0%</span>
+                    <span>+50%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 class="font-bold text-slate-300 mb-3">Parameter Realitas</h4>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-slate-400 text-sm mb-1">Konstanta Gravitasi</label>
+                  <input type="range" min="-20" max="20" value="0" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+                  <div class="flex justify-between text-xs text-slate-400 mt-1">
+                    <span>-20%</span>
+                    <span>0%</span>
+                    <span>+20%</span>
+                  </div>
+                </div>
+                
+                <div>
+                  <label class="block text-slate-400 text-sm mb-1">Kecepatan Cahaya</label>
+                  <input type="range" min="-10" max="10" value="0" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+                  <div class="flex justify-between text-xs text-slate-400 mt-1">
+                    <span>-10%</span>
+                    <span>0%</span>
+                    <span>+10%</span>
+                  </div>
+                </div>
+                
+                <div>
+                  <label class="block text-slate-400 text-sm mb-1">Konstanta Planck</label>
+                  <input type="range" min="-5" max="5" value="0" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+                  <div class="flex justify-between text-xs text-slate-400 mt-1">
+                    <span>-5%</span>
+                    <span>0%</span>
+                    <span>+5%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap gap-3">
+            <button class="glass-button primary-button px-6 py-3">
+              <i data-lucide="zap"></i> <span>Terapkan Intervensi</span>
+            </button>
+            <button class="glass-button secondary-button px-6 py-3">
+              <i data-lucide="rotate-ccw"></i> <span>Reset Parameter</span>
+            </button>
+            <button class="glass-button secondary-button px-6 py-3">
+              <i data-lucide="eye"></i> <span>Pratinjau Efek</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="glass-card p-6 rounded-lg">
+          <h3 class="text-xl font-bold text-white mb-4">Riwayat Intervensi</h3>
+          <div class="space-y-4">
+            <div class="border-l-2 border-indigo-500 pl-4 py-2">
+              <div class="flex justify-between">
+                <p class="text-white">Intervensi Energi Kehidupan</p>
+                <span class="text-slate-400 text-sm">2 hari yang lalu</span>
+              </div>
+              <p class="text-slate-400 text-sm">Meningkatkan vitalitas ekosistem di sektor Delta-7 sebesar 15%</p>
+            </div>
+            
+            <div class="border-l-2 border-purple-500 pl-4 py-2">
+              <div class="flex justify-between">
+                <p class="text-white">Stabilisasi Energi Waktu</p>
+                <span class="text-slate-400 text-sm">5 hari yang lalu</span>
+              </div>
+              <p class="text-slate-400 text-sm">Memperbaiki distorsi temporal di zona konvergensi</p>
+            </div>
+            
+            <div class="border-l-2 border-yellow-500 pl-4 py-2">
+              <div class="flex justify-between">
+                <p class="text-white">Manipulasi Konstanta Gravitasi</p>
+                <span class="text-slate-400 text-sm">1 minggu yang lalu</span>
+              </div>
+              <p class="text-slate-400 text-sm">Mengurangi gravitasi lokal untuk memfasilitasi pembentukan struktur besar</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button id="back-to-forger-btn" class="glass-button secondary-button mt-8">
+      <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> <span data-i18n-key="back_to_forger_dashboard">Kembali ke Dashboard Forger</span>
+    </button>
+  </div>
+</MainLayout>

@@ -1,0 +1,184 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Gema Kepisahan - The Soulforge Saga">
+  <div class="w-full max-w-6xl glass-card p-6 sm:p-8 rounded-2xl shadow-lg border border-border-color flex flex-col h-[95vh]">
+    <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider mb-6 text-center drop-shadow-lg" data-i18n-key="echoes_of_divergence_title">
+      Gema Kepisahan
+    </h1>
+
+    <div class="flex-grow flex flex-col lg:flex-row gap-6 overflow-hidden">
+      <!-- Timeline of Divergences -->
+      <div class="flex-shrink-0 bg-slate-800/60 rounded-xl p-4 lg:w-80 flex flex-col space-y-4 overflow-y-auto scrollbar-thin">
+        <h3 class="text-xl font-bold text-white mb-2" data-i18n-key="divergence_timeline_title">Garis Waktu Kepisahan</h3>
+        
+        <div class="space-y-3">
+          <div class="glass-card p-4 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors border-l-4 border-indigo-500">
+            <h4 class="font-bold text-white">Pemilihan Jalur Mistis</h4>
+            <p class="text-sm text-slate-300 mt-1">Alternatif: Mengikuti jalur teknologi</p>
+            <div class="flex justify-between text-xs text-slate-400 mt-2">
+              <span>12 hari yang lalu</span>
+              <span class="px-2 py-1 bg-green-600 text-xs rounded">Stabil</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors border-l-4 border-purple-500">
+            <h4 class="font-bold text-white">Konflik dengan Penjaga Hutan</h4>
+            <p class="text-sm text-slate-300 mt-1">Alternatif: Menjalin aliansi</p>
+            <div class="flex justify-between text-xs text-slate-400 mt-2">
+              <span>18 hari yang lalu</span>
+              <span class="px-2 py-1 bg-yellow-600 text-xs rounded">Fluktuatif</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors border-l-4 border-red-500">
+            <h4 class="font-bold text-white">Kehilangan Artefak Kuno</h4>
+            <p class="text-sm text-slate-300 mt-1">Alternatif: Menemukan artefak yang lebih kuat</p>
+            <div class="flex justify-between text-xs text-slate-400 mt-2">
+              <span>24 hari yang lalu</span>
+              <span class="px-2 py-1 bg-red-600 text-xs rounded">Tidak Stabil</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors border-l-4 border-green-500">
+            <h4 class="font-bold text-white">Pertemuan dengan Peramal</h4>
+            <p class="text-sm text-slate-300 mt-1">Alternatif: Mengabaikan peringatan</p>
+            <div class="flex justify-between text-xs text-slate-400 mt-2">
+              <span>32 hari yang lalu</span>
+              <span class="px-2 py-1 bg-green-600 text-xs rounded">Stabil</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-colors border-l-4 border-blue-500">
+            <h4 class="font-bold text-white">Eksplorasi Dimensi Mimpi</h4>
+            <p class="text-sm text-slate-300 mt-1">Alternatif: Tetap di dunia nyata</p>
+            <div class="flex justify-between text-xs text-slate-400 mt-2">
+              <span>45 hari yang lalu</span>
+              <span class="px-2 py-1 bg-green-600 text-xs rounded">Stabil</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divergence Details and Exploration -->
+      <div class="flex-grow bg-slate-800/60 rounded-xl p-4 overflow-auto scrollbar-thin">
+        <div class="glass-card p-6 rounded-lg mb-6">
+          <div class="flex items-start mb-6">
+            <div class="mr-4">
+              <i data-lucide="git-branch" class="w-12 h-12 text-indigo-500"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-white">Pemilihan Jalur Mistis</h3>
+              <p class="text-slate-300">Titik divergensi saat Anda memilih untuk mengikuti jalur mistis daripada teknologi</p>
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span class="px-2 py-1 bg-indigo-600 text-xs rounded">Mistik</span>
+                <span class="px-2 py-1 bg-green-600 text-xs rounded">Stabil</span>
+                <span class="px-2 py-1 bg-yellow-600 text-xs rounded">7 hari yang lalu</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="glass-card p-4 rounded-lg">
+              <h4 class="font-bold text-white mb-3">Realitas Saat Ini</h4>
+              <ul class="text-slate-300 space-y-2 text-sm">
+                <li class="flex items-start">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2 mt-0.5"></i>
+                  <span>Kekuatan mistis meningkat 40%</span>
+                </li>
+                <li class="flex items-start">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2 mt-0.5"></i>
+                  <span>Akses ke sihir elemental</span>
+                </li>
+                <li class="flex items-start">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2 mt-0.5"></i>
+                  <span>Aliansi dengan para penyihir</span>
+                </li>
+                <li class="flex items-start">
+                  <i data-lucide="x-circle" class="w-4 h-4 text-red-500 mr-2 mt-0.5"></i>
+                  <span>Teknologi terbatas</span>
+                </li>
+                <li class="flex items-start">
+                  <i data-lucide="x-circle" class="w-4 h-4 text-red-500 mr-2 mt-0.5"></i>
+                  <span>Konflik dengan teknokrat</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="glass-card p-4 rounded-lg">
+              <h4 class="font-bold text-white mb-3">Realitas Alternatif</h4>
+              <ul class="text-slate-300 space-y-2 text-sm">
+                <li class="flex items-start">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2 mt-0.5"></i>
+                  <span>Teknologi canggih tersedia</span>
+                </li>
+                <li class="flex items-start">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2 mt-0.5"></i>
+                  <span>Aliansi dengan teknokrat</span>
+                </li>
+                <li class="flex items-start">
+                  <i data-lucide="x-circle" class="w-4 h-4 text-red-500 mr-2 mt-0.5"></i>
+                  <span>Kekuatan mistis terbatas</span>
+                </li>
+                <li class="flex items-start">
+                  <i data-lucide="x-circle" class="w-4 h-4 text-red-500 mr-2 mt-0.5"></i>
+                  <span>Konflik dengan para penyihir</span>
+                </li>
+                <li class="flex items-start">
+                  <i data-lucide="x-circle" class="w-4 h-4 text-red-500 mr-2 mt-0.5"></i>
+                  <span>Akses terbatas ke dimensi mimpi</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap gap-3">
+            <button class="glass-button primary-button px-4 py-2">
+              <i data-lucide="eye"></i> <span>Jelajahi Alternatif</span>
+            </button>
+            <button class="glass-button secondary-button px-4 py-2">
+              <i data-lucide="merge"></i> <span>Gabungkan Realitas</span>
+            </button>
+            <button class="glass-button secondary-button px-4 py-2">
+              <i data-lucide="shield"></i> <span>Stabilkan Realitas</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="glass-card p-6 rounded-lg">
+          <h3 class="text-xl font-bold text-white mb-4">Efek pada Karakter</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="text-center">
+              <div class="w-24 h-24 rounded-full bg-indigo-500 flex items-center justify-center mx-auto mb-3">
+                <span class="text-2xl font-bold text-white">42</span>
+              </div>
+              <h4 class="font-bold text-white">Kekuatan Mistis</h4>
+              <p class="text-slate-400 text-sm">+40% dari pemilihan jalur</p>
+            </div>
+            
+            <div class="text-center">
+              <div class="w-24 h-24 rounded-full bg-green-500 flex items-center justify-center mx-auto mb-3">
+                <span class="text-2xl font-bold text-white">28</span>
+              </div>
+              <h4 class="font-bold text-white">Keterampilan Sosial</h4>
+              <p class="text-slate-400 text-sm">+25% dari aliansi</p>
+            </div>
+            
+            <div class="text-center">
+              <div class="w-24 h-24 rounded-full bg-yellow-500 flex items-center justify-center mx-auto mb-3">
+                <span class="text-2xl font-bold text-white">15</span>
+              </div>
+              <h4 class="font-bold text-white">Pengetahuan Teknologi</h4>
+              <p class="text-slate-400 text-sm">-30% dari pilihan jalur</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button id="back-to-wanderer-btn" class="glass-button secondary-button mt-8">
+      <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> <span data-i18n-key="back_to_wanderer_dashboard">Kembali ke Dashboard Wanderer</span>
+    </button>
+  </div>
+</MainLayout>

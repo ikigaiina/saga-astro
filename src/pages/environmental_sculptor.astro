@@ -1,0 +1,161 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Perancang Lingkungan - The Soulforge Saga">
+  <div class="w-full max-w-6xl glass-card p-6 sm:p-8 rounded-2xl shadow-lg border border-border-color flex flex-col h-[95vh]">
+    <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider mb-6 text-center drop-shadow-lg" data-i18n-key="environmental_sculptor_title">
+      Perancang Lingkungan
+    </h1>
+
+    <div class="flex-grow flex flex-col lg:flex-row gap-6 overflow-hidden">
+      <!-- Environment Controls -->
+      <div class="flex-shrink-0 bg-slate-800/60 rounded-xl p-4 lg:w-80 flex flex-col space-y-4 overflow-y-auto scrollbar-thin">
+        <h3 class="text-xl font-bold text-white mb-2" data-i18n-key="environment_controls_title">Kontrol Lingkungan</h3>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="climate_zone_label">Zona Iklim</label>
+            <select class="glass-input w-full p-2">
+              <option value="tropical">Tropis</option>
+              <option value="arid">Arid</option>
+              <option value="temperate">Sedang</option>
+              <option value="continental">Kontinental</option>
+              <option value="polar">Polar</option>
+              <option value="alpine">Alpine</option>
+            </select>
+          </div>
+          
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="temperature_label">Suhu (°C)</label>
+            <input type="range" min="-50" max="50" value="25" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+            <div class="flex justify-between text-xs text-slate-400 mt-1">
+              <span>-50°C</span>
+              <span>25°C</span>
+              <span>50°C</span>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="humidity_label">Kelembaban (%)</label>
+            <input type="range" min="0" max="100" value="60" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+            <div class="flex justify-between text-xs text-slate-400 mt-1">
+              <span>0%</span>
+              <span>60%</span>
+              <span>100%</span>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="precipitation_label">Curah Hujan (mm/tahun)</label>
+            <input type="range" min="0" max="5000" value="1200" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+            <div class="flex justify-between text-xs text-slate-400 mt-1">
+              <span>0mm</span>
+              <span>1200mm</span>
+              <span>5000mm</span>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="wind_speed_label">Kecepatan Angin (km/jam)</label>
+            <input type="range" min="0" max="200" value="15" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+            <div class="flex justify-between text-xs text-slate-400 mt-1">
+              <span>0 km/jam</span>
+              <span>15 km/jam</span>
+              <span>200 km/jam</span>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="seasonal_cycle_label">Siklus Musim</label>
+            <select class="glass-input w-full p-2">
+              <option value="standard">Standar (4 musim)</option>
+              <option value="binary">Biner (2 musim)</option>
+              <option value="continuous">Kontinu (Tanpa musim)</option>
+              <option value="chaotic">Kacau (Musim acak)</option>
+            </select>
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg">
+            <h4 class="font-bold text-white mb-2">Parameter Ekosistem</h4>
+            <div class="space-y-2">
+              <div class="flex justify-between text-sm">
+                <span class="text-slate-300">Biodiversitas</span>
+                <span class="text-white">Tinggi</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-slate-300">Stabilitas</span>
+                <span class="text-white">Sedang</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-slate-300">Resiliensi</span>
+                <span class="text-white">Tinggi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Environment Visualization -->
+      <div class="flex-grow bg-slate-800/60 rounded-xl p-4 overflow-hidden">
+        <div id="environment-container" class="relative w-full h-full">
+          <!-- Environment visualization will be rendered here -->
+          <div class="absolute inset-0 grid grid-cols-3 grid-rows-3 gap-4 p-4">
+            <!-- Terrain tiles -->
+            <div class="bg-green-600 rounded-lg flex items-center justify-center">
+              <i data-lucide="tree-deciduous" class="w-8 h-8 text-white"></i>
+            </div>
+            <div class="bg-blue-500 rounded-lg flex items-center justify-center">
+              <i data-lucide="waves" class="w-8 h-8 text-white"></i>
+            </div>
+            <div class="bg-green-700 rounded-lg flex items-center justify-center">
+              <i data-lucide="mountain" class="w-8 h-8 text-white"></i>
+            </div>
+            <div class="bg-yellow-600 rounded-lg flex items-center justify-center">
+              <i data-lucide="sun" class="w-8 h-8 text-white"></i>
+            </div>
+            <div class="bg-green-500 rounded-lg flex items-center justify-center">
+              <i data-lucide="sprout" class="w-8 h-8 text-white"></i>
+            </div>
+            <div class="bg-blue-400 rounded-lg flex items-center justify-center">
+              <i data-lucide="cloud-rain" class="w-8 h-8 text-white"></i>
+            </div>
+            <div class="bg-gray-400 rounded-lg flex items-center justify-center">
+              <i data-lucide="cloud-snow" class="w-8 h-8 text-white"></i>
+            </div>
+            <div class="bg-amber-700 rounded-lg flex items-center justify-center">
+              <i data-lucide="cactus" class="w-8 h-8 text-white"></i>
+            </div>
+            <div class="bg-emerald-800 rounded-lg flex items-center justify-center">
+              <i data-lucide="tree-pine" class="w-8 h-8 text-white"></i>
+            </div>
+          </div>
+          
+          <!-- Weather overlay -->
+          <div class="absolute top-4 right-4 glass-card p-3 rounded-lg">
+            <div class="flex items-center">
+              <i data-lucide="sun" class="w-6 h-6 text-yellow-400 mr-2"></i>
+              <div>
+                <p class="text-white font-bold">25°C</p>
+                <p class="text-slate-300 text-xs">Cerah</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-4 mt-6">
+      <button class="glass-button primary-button flex-1 py-3">
+        <i data-lucide="save"></i> <span data-i18n-key="apply_environment">Terapkan Lingkungan</span>
+      </button>
+      <button class="glass-button secondary-button flex-1 py-3">
+        <i data-lucide="rotate-ccw"></i> <span data-i18n-key="reset_environment">Reset Lingkungan</span>
+      </button>
+    </div>
+
+    <button id="back-to-forger-btn" class="glass-button secondary-button mt-4">
+      <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> <span data-i18n-key="back_to_forger_dashboard">Kembali ke Dashboard Forger</span>
+    </button>
+  </div>
+</MainLayout>

@@ -1,0 +1,321 @@
+---
+// src/components/ExplorationUI.astro
+// Exploration UI component for The Soulforge Saga
+
+import { gameStateManager } from '../game/stateManager.js';
+import { explorationSystem } from '../game/explorationSystem.js';
+import { REGIONS_DATA, WORLD_LANDMARKS } from '../data/world.js';
+
+// Get initial state
+const state = gameStateManager.getState();
+const currentRegion = state.player.location;
+const regionData = REGIONS_DATA[currentRegion];
+const landmarks = explorationSystem.getLandmarksInRegion(currentRegion);
+const nearbyRegions = explorationSystem.getNearbyRegions(currentRegion);
+---
+
+<div id="exploration-container" class="h-full flex flex-col">
+  <h2 class="text-2xl font-bold mb-4">Eksplorasi</h2>
+  
+  <div class="flex gap-4 flex-1 overflow-hidden">
+    {/* Region information */}
+    <div class="w-1/3 flex flex-col gap-4">
+      <div class="glass-card p-4 flex-1">
+        <h3 class="text-xl font-bold mb-3">{regionData.name}</h3>
+        
+        <p class="text-slate-300 mb-4">{regionData.description}</p>
+        
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-slate-400">Ancaman:</span>
+            <span class={
+              regionData.threatLevel === 1 ? 'text-green-400' :
+              regionData.threatLevel === 2 ? 'text-yellow-400' :
+              regionData.threatLevel === 3 ? 'text-orange-400' :
+              regionData.threatLevel === 4 ? 'text-red-400' :
+              'text-purple-400'
+            }>
+              {regionData.threatLevel === 1 ? 'Rendah' :
+               regionData.threatLevel === 2 ? 'Sedang' :
+               regionData.threatLevel === 3 ? 'Tinggi' :
+               regionData.threatLevel === 4 ? 'Ekstrem' :
+               'Katastrofik'}
+            </span>
+          </div>
+          
+          <div class="flex justify-between">
+            <span class="text-slate-400">Iklim:</span>
+            <span class="capitalize">{regionData.climate}</span>
+          </div>
+          
+          <div class="flex justify-between">
+            <span class="text-slate-400">Medan:</span>
+            <span class="capitalize">{regionData.terrainType}</span>
+          </div>
+          
+          <div class="flex justify-between">
+            <span class="text-slate-400">Populasi:</span>
+            <span>{regionData.initialPopulation}</span>
+          </div>
+          
+          <div class="flex justify-between">
+            <span class="text-slate-400">Faksi Dominan:</span>
+            <span>{regionData.dominantFaction || 'Tidak Ada'}</span>
+          </div>
+        </div>
+        
+        <div class="mt-4 pt-4 border-t border-slate-700">
+          <h4 class="font-bold mb-2">Sumber Daya</h4>
+          <div class="flex flex-wrap gap-1">
+            {regionData.resources.map((resource) => (
+              <span class="text-xs px-2 py-1 rounded-full bg-slate-700">
+                {getResourceName(resource)}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      {/* Quick actions */}
+      <div class="glass-card p-4">
+        <h3 class="text-xl font-bold mb-3">Aksi Cepat</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <button 
+            class="glass-button primary-button py-2 text-sm flex items-center justify-center"
+            onClick={() => gatherResources()}
+          >
+            <i data-lucide="pickaxe" class="w-4 h-4 mr-1"></i>
+            Kumpulkan
+          </button>
+          <button 
+            class="glass-button secondary-button py-2 text-sm flex items-center justify-center"
+            onClick={() => rest()}
+          >
+            <i data-lucide="moon" class="w-4 h-4 mr-1"></i>
+            Istirahat
+          </button>
+          <button 
+            class="glass-button secondary-button py-2 text-sm flex items-center justify-center"
+            onClick={() => scanArea()}
+          >
+            <i data-lucide="search" class="w-4 h-4 mr-1"></i>
+            Pindai
+          </button>
+          <button 
+            class="glass-button secondary-button py-2 text-sm flex items-center justify-center"
+            onClick={() => meditate()}
+          >
+            <i data-lucide="feather" class="w-4 h-4 mr-1"></i>
+            Meditasi
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    {/* Exploration map and landmarks */}
+    <div class="flex-1 flex flex-col">
+      <div class="glass-card p-4 flex-1 overflow-hidden flex flex-col">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Peta Eksplorasi</h3>
+          <div class="flex gap-2">
+            <button class="glass-button secondary-button px-3 py-1 text-sm">
+              <i data-lucide="map" class="w-4 h-4 mr-1"></i>
+              Detail Peta
+            </button>
+            <button class="glass-button secondary-button px-3 py-1 text-sm">
+              <i data-lucide="compass" class="w-4 h-4 mr-1"></i>
+              Kompas
+            </button>
+          </div>
+        </div>
+        
+        {/* Region map visualization */}
+        <div class="flex-1 relative bg-slate-800 rounded-lg overflow-hidden mb-4">
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="relative w-80 h-80">
+              {/* Simplified region layout */}
+              <div class="absolute inset-0 rounded-full border-2 border-indigo-500 flex items-center justify-center">
+                <div class="w-32 h-32 rounded-full bg-indigo-500/20 flex items-center justify-center">
+                  <span class="text-center text-sm font-bold">Wilayah<br/>Utama</span>
+                </div>
+              </div>
+              
+              {/* Landmarks */}
+              <div class="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2">
+                <div class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center cursor-pointer" title="Menara Nexus Kuno">
+                  <i data-lucide="tower-control" class="w-4 h-4 text-white"></i>
+                </div>
+              </div>
+              
+              <div class="absolute top-3/4 right-1/4 transform translate-x-1/2 -translate-y-1/2">
+                <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center cursor-pointer" title="Hutan Berbisik">
+                  <i data-lucide="tree-pine" class="w-4 h-4 text-white"></i>
+                </div>
+              </div>
+              
+              <div class="absolute bottom-1/4 left-3/4 transform -translate-x-1/2 translate-y-1/2">
+                <div class="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center cursor-pointer" title="Gua Kristal">
+                  <i data-lucide="diamond" class="w-4 h-4 text-white"></i>
+                </div>
+              </div>
+              
+              {/* Player position */}
+              <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center ring-2 ring-yellow-300">
+                <i data-lucide="user" class="w-3 h-3 text-white"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Nearby regions */}
+        <div class="mb-4">
+          <h4 class="font-bold mb-2">Wilayah Terdekat</h4>
+          <div class="grid grid-cols-3 gap-2">
+            {nearbyRegions.map((region) => (
+              <div 
+                class="glass-card p-2 text-center cursor-pointer hover:bg-slate-700/50 transition-colors"
+                onClick={() => travelToRegion(region.id)}
+              >
+                <div class="text-xs text-slate-400 mb-1">{region.name}</div>
+                <div class={`w-3 h-3 rounded-full mx-auto ${
+                  region.threatLevel === 1 ? 'bg-green-500' :
+                  region.threatLevel === 2 ? 'bg-yellow-500' :
+                  region.threatLevel === 3 ? 'bg-orange-500' :
+                  region.threatLevel === 4 ? 'bg-red-500' :
+                  'bg-purple-500'
+                }`}></div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Landmarks */}
+        <div>
+          <h4 class="font-bold mb-2">Landmark</h4>
+          <div class="grid grid-cols-2 gap-2">
+            {landmarks.map((landmark) => (
+              <div 
+                class={`glass-card p-2 flex items-center cursor-pointer ${
+                  landmark.discovered ? 'hover:bg-slate-700/50' : 'opacity-50'
+                } transition-colors`}
+                onClick={() => exploreLandmark(landmark.id)}
+              >
+                <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center mr-2">
+                  <i data-lucide={getLandmarkIcon(landmark.type)} class="w-4 h-4 text-white"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm font-bold truncate">{landmark.name}</div>
+                  <div class="text-xs text-slate-400 truncate">
+                    {landmark.discovered ? 'Ditemukan' : 'Belum Diketahui'}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Function to gather resources
+  function gatherResources() {
+    const result = explorationSystem.gatherResources();
+    if (result.success) {
+      console.log(result.message);
+      showNotification(result.message, 'success');
+    } else {
+      console.error(result.message);
+      showNotification(result.message, 'error');
+    }
+  }
+  
+  // Function to rest
+  function rest() {
+    console.log('Resting...');
+    showNotification('Istirahat sejenak dan memulihkan energi.', 'info');
+  }
+  
+  // Function to scan area
+  function scanArea() {
+    console.log('Scanning area...');
+    showNotification('Memindai area sekitar...', 'info');
+  }
+  
+  // Function to meditate
+  function meditate() {
+    console.log('Meditating...');
+    showNotification('Memasuki meditasi yang dalam...', 'info');
+  }
+  
+  // Function to travel to region
+  function travelToRegion(regionId) {
+    const result = explorationSystem.travelToRegion(regionId);
+    if (result.success) {
+      console.log(result.message);
+      showNotification(result.message, 'success');
+    } else {
+      console.error(result.message);
+      showNotification(result.message, 'error');
+    }
+  }
+  
+  // Function to explore landmark
+  function exploreLandmark(landmarkId) {
+    const result = explorationSystem.exploreLandmark(landmarkId);
+    if (result.success) {
+      console.log(result.message);
+      showNotification(result.message, 'success');
+    } else {
+      console.error(result.message);
+      showNotification(result.message, 'error');
+    }
+  }
+  
+  // Helper function to get resource name
+  function getResourceName(resourceId) {
+    const names = {
+      'essence_crystal': 'Kristal Essence',
+      'rare_minerals': 'Mineral Langka',
+      'mana_crystal': 'Kristal Mana',
+      'mutable_flora': 'Flora Dapat Berubah',
+      'shadow_essence': 'Esensi Bayangan',
+      'venomous_gland': 'Kelenjar Berbisa',
+      'healing_herbs': 'Herbal Penyembuh',
+      'pure_water': 'Air Murni',
+      'radiant_dust': 'Debu Radiant',
+      'desert_minerals': 'Mineral Gurun',
+      'sunstone': 'Batu Matahari',
+      'scorched_hide': 'Kulit Terbakar'
+    };
+    
+    return names[resourceId] || resourceId;
+  }
+  
+  // Helper function to get landmark icon
+  function getLandmarkIcon(type) {
+    const icons = {
+      'mystical_site': 'star',
+      'natural_formation': 'mountain',
+      'ancient_ruin': 'castle',
+      'settlement': 'home',
+      'resource_node': 'package',
+      'landmark': 'map-pin'
+    };
+    
+    return icons[type] || 'map-pin';
+  }
+  
+  // Function to show notification
+  function showNotification(message, type) {
+    // In a real implementation, this would show a toast notification
+    console.log(`[${type.toUpperCase()}] ${message}`);
+  }
+  
+  // Listen for state changes
+  gameStateManager.subscribe((state) => {
+    // Update exploration UI when state changes
+    console.log('Exploration state updated');
+  });
+</script>

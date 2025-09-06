@@ -1,0 +1,118 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Simulasi Multiverse - The Soulforge Saga">
+  <div class="w-full max-w-6xl glass-card p-6 sm:p-8 rounded-2xl shadow-lg border border-border-color flex flex-col h-[95vh]">
+    <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider mb-6 text-center drop-shadow-lg" data-i18n-key="multiverse_simulation_title">
+      Simulasi Multiverse
+    </h1>
+
+    <div class="flex-grow flex flex-col lg:flex-row gap-6 overflow-hidden">
+      <!-- Simulation Controls -->
+      <div class="flex-shrink-0 bg-slate-800/60 rounded-xl p-4 lg:w-80 flex flex-col space-y-4 overflow-y-auto scrollbar-thin">
+        <h3 class="text-xl font-bold text-white mb-2" data-i18n-key="simulation_controls_title">Kontrol Simulasi</h3>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="simulation_speed_label">Kecepatan Simulasi</label>
+            <input type="range" min="0.1" max="5" step="0.1" value="1" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+            <div class="flex justify-between text-xs text-slate-400 mt-1">
+              <span>0.1x</span>
+              <span>1x</span>
+              <span>5x</span>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="quantum_fluctuation_label">Fluktuasi Kuantum</label>
+            <input type="range" min="0" max="100" value="50" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+          </div>
+          
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="reality_stability_label">Stabilitas Realitas</label>
+            <input type="range" min="0" max="100" value="80" class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer">
+          </div>
+          
+          <div class="glass-card p-4 rounded-lg">
+            <h4 class="font-bold text-white mb-2">Parameter Simulasi</h4>
+            <ul class="text-sm text-slate-300 space-y-1">
+              <li>• Dimensi Aktif: 12</li>
+              <li>• Realitas Paralel: 144</li>
+              <li>• Titik Konvergensi: 7</li>
+              <li>• Entropi: 0.73</li>
+            </ul>
+          </div>
+          
+          <button id="start-simulation-btn" class="glass-button primary-button w-full">
+            <i data-lucide="play"></i> <span data-i18n-key="start_simulation">Mulai Simulasi</span>
+          </button>
+          
+          <button id="pause-simulation-btn" class="glass-button secondary-button w-full">
+            <i data-lucide="pause"></i> <span data-i18n-key="pause_simulation">Jeda Simulasi</span>
+          </button>
+          
+          <button id="reset-simulation-btn" class="glass-button secondary-button w-full">
+            <i data-lucide="rotate-ccw"></i> <span data-i18n-key="reset_simulation">Reset Simulasi</span>
+          </button>
+          
+          <button id="create-branch-btn" class="glass-button primary-button w-full mt-4">
+            <i data-lucide="git-branch"></i> <span data-i18n-key="create_branch">Buat Cabang Realitas</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Multiverse Visualization -->
+      <div class="flex-grow bg-slate-800/60 rounded-xl p-4 overflow-hidden">
+        <div id="multiverse-container" class="relative w-full h-full">
+          <!-- Multiverse visualization will be rendered here -->
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="relative w-64 h-64">
+              <!-- Central universe -->
+              <div class="absolute inset-0 rounded-full border-2 border-indigo-500 flex items-center justify-center">
+                <div class="w-16 h-16 rounded-full bg-indigo-500 flex items-center justify-center">
+                  <span class="text-white text-xs font-bold">Prime</span>
+                </div>
+              </div>
+              
+              <!-- Orbiting universes -->
+              <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center">
+                  <span class="text-white text-xs">A</span>
+                </div>
+              </div>
+              
+              <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
+                <div class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center">
+                  <span class="text-white text-xs">B</span>
+                </div>
+              </div>
+              
+              <div class="absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2">
+                <div class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center">
+                  <span class="text-white text-xs">C</span>
+                </div>
+              </div>
+              
+              <div class="absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2">
+                <div class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center">
+                  <span class="text-white text-xs">D</span>
+                </div>
+              </div>
+              
+              <!-- Connecting lines -->
+              <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-px bg-indigo-400 origin-left rotate-45"></div>
+              <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-px bg-indigo-400 origin-left -rotate-45"></div>
+              <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-px bg-indigo-400 origin-left rotate-90"></div>
+              <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-px bg-indigo-400 origin-left"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button id="back-to-forger-btn" class="glass-button secondary-button mt-8">
+      <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> <span data-i18n-key="back_to_forger_dashboard">Kembali ke Dashboard Forger</span>
+    </button>
+  </div>
+</MainLayout>

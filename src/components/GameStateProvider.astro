@@ -1,0 +1,39 @@
+---
+// src/components/GameStateProvider.astro
+// Game state provider component for The Soulforge Saga
+
+import { gameStateManager } from '../game/stateManager.js';
+import { worldSystem } from '../game/worldSystem.js';
+import { combatSystem } from '../game/combatSystem.js';
+import { explorationSystem } from '../game/explorationSystem.js';
+import { questSystem } from '../game/questSystem.js';
+import { inventorySystem } from '../game/inventorySystem.js';
+import { craftingSystem } from '../game/craftingSystem.js';
+import { forgerSystem } from '../game/forgerSystem.js';
+
+// Initialize all game systems
+worldSystem.initializeWorld();
+---
+
+<!-- This component provides game state to child components -->
+<!-- It doesn't render anything visible, just initializes systems -->
+
+<script>
+  // Initialize game systems
+  console.log('Initializing game systems...');
+  
+  // Initialize game state
+  gameStateManager.initialize();
+  
+  // Initialize world system
+  worldSystem.initializeWorld();
+  
+  // Log initialization
+  console.log('Game systems initialized');
+  
+  // Set up periodic save (every 5 minutes)
+  setInterval(() => {
+    gameStateManager.saveGame();
+    console.log('Game saved automatically');
+  }, 5 * 60 * 1000); // 5 minutes in milliseconds
+</script>

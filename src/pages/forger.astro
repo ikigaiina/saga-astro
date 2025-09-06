@@ -1,0 +1,109 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Dashboard Forger - The Soulforge Saga">
+  <div class="w-full max-w-6xl glass-card p-6 sm:p-8 rounded-2xl shadow-lg border border-border-color flex flex-col h-[95vh]">
+    <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider mb-6 text-center drop-shadow-lg" data-i18n-key="forger_dashboard_title">
+      Dashboard Forger
+    </h1>
+
+    <div class="flex-grow overflow-auto scrollbar-thin">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- World Forge Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="globe" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="world_forge_title">Forge Dunia</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="world_forge_description">Bentuk daratan, lautan, dan ekosistem dunia dengan kekuatan pikiran Anda.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_world_forge">Akses Forge Dunia</button>
+        </div>
+
+        <!-- Civilization Designer Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="square-stack" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="civilization_designer_title">Perancang Peradaban</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="civilization_designer_description">Rancang peradaban, bangunan, dan struktur sosial unik untuk dunia Anda.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_civilization_designer">Akses Perancang</button>
+        </div>
+
+        <!-- Narrative Timeline Forge Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="git-branch" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="narrative_timeline_title">Garis Waktu Naratif</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="narrative_timeline_description">Bentuk narasi dan peristiwa penting dalam sejarah dunia Anda.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_narrative_timeline">Akses Garis Waktu</button>
+        </div>
+
+        <!-- Cosmic Genealogy Atlas Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="users" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="cosmic_genealogy_title">Atlas Silsilah Kosmik</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="cosmic_genealogy_description">Lacak hubungan antar makhluk, entitas, dan kekuatan kosmik.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_cosmic_genealogy">Akses Atlas</button>
+        </div>
+
+        <!-- Multiverse Simulation Suite Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="globe" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="multiverse_simulation_title">Simulasi Multiverse</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="multiverse_simulation_description">Jelajahi kemungkinan alternatif dan realitas paralel.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_multiverse_simulation">Akses Simulasi</button>
+        </div>
+
+        <!-- AI Governance Console Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="brain" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="ai_governance_title">Konsol Tata Kelola AI</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="ai_governance_description">Kelola kecerdasan buatan dan entitas digital dalam dunia Anda.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_ai_governance">Akses Konsol</button>
+        </div>
+
+        <!-- Primordial Intervention Console Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="scale" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="primordial_intervention_title">Konsol Intervensi Primordial</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="primordial_intervention_description">Intervensi langsung pada hukum fisika dan realitas dasar.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_primordial_intervention">Akses Konsol</button>
+        </div>
+
+        <!-- Environmental Sculptor Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="palette" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="environmental_sculptor_title">Perancang Lingkungan</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="environmental_sculptor_description">Ubah iklim, musim, dan kondisi lingkungan secara keseluruhan.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_environmental_sculptor">Akses Perancang</button>
+        </div>
+
+        <!-- Entity Inspector Card -->
+        <div class="glass-card p-6 rounded-xl">
+          <div class="flex items-center mb-4">
+            <i data-lucide="eye" class="w-8 h-8 text-indigo-400 mr-3"></i>
+            <h3 class="text-xl font-bold text-white" data-i18n-key="entity_inspector_title">Inspektur Entitas</h3>
+          </div>
+          <p class="text-slate-300 mb-4" data-i18n-key="entity_inspector_description">Periksa dan modifikasi atribut individu dan entitas spesifik.</p>
+          <button class="glass-button primary-button w-full" data-i18n-key="access_entity_inspector">Akses Inspektur</button>
+        </div>
+      </div>
+    </div>
+
+    <button id="back-to-main-btn" class="glass-button secondary-button mt-8">
+      <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> <span data-i18n-key="back_to_main_menu">Kembali ke Menu Utama</span>
+    </button>
+  </div>
+</MainLayout>

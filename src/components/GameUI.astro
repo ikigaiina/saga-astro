@@ -1,0 +1,226 @@
+---
+// src/components/GameUI.astro
+// Main game UI component for The Soulforge Saga
+
+import GameStateProvider from './GameStateProvider.astro';
+import PlayerStats from './PlayerStats.astro';
+import Inventory from './Inventory.astro';
+import QuestLog from './QuestLog.astro';
+import Journal from './Journal.astro';
+import WorldMap from './WorldMap.astro';
+import CombatUI from './CombatUI.astro';
+import ExplorationUI from './ExplorationUI.astro';
+import CraftingUI from './CraftingUI.astro';
+import ForgerTools from './ForgerTools.astro';
+import { gameStateManager } from '../game/stateManager.js';
+---
+
+<div id="game-ui" class="flex flex-col h-screen bg-slate-900 text-slate-100 font-mono">
+  <!-- Top bar with player stats -->
+  <header class="glass-card p-2 flex justify-between items-center">
+    <PlayerStats />
+    
+    <!-- Game controls -->
+    <div class="flex space-x-2">
+      <button 
+        id="save-game-btn" 
+        class="glass-button secondary-button px-3 py-1 text-sm"
+        onClick={() => gameStateManager.saveGame()}
+      >
+        Simpan
+      </button>
+      <button 
+        id="load-game-btn" 
+        class="glass-button secondary-button px-3 py-1 text-sm"
+        onClick={() => gameStateManager.loadGame()}
+      >
+        Muat
+      </button>
+      <button 
+        id="settings-btn" 
+        class="glass-button secondary-button px-3 py-1 text-sm"
+      >
+        Pengaturan
+      </button>
+    </div>
+  </header>
+
+  <!-- Main content area -->
+  <main class="flex flex-1 overflow-hidden">
+    <!-- Left sidebar - Navigation and quick actions -->
+    <nav class="glass-card w-64 p-4 flex flex-col space-y-4 overflow-y-auto">
+      <h2 class="text-xl font-bold mb-2">Navigasi</h2>
+      
+      <button 
+        id="world-map-btn" 
+        class="glass-button secondary-button w-full py-2 text-left"
+        data-panel="world-map"
+      >
+        Peta Dunia
+      </button>
+      
+      <button 
+        id="inventory-btn" 
+        class="glass-button secondary-button w-full py-2 text-left"
+        data-panel="inventory"
+      >
+        Inventaris
+      </button>
+      
+      <button 
+        id="quests-btn" 
+        class="glass-button secondary-button w-full py-2 text-left"
+        data-panel="quests"
+      >
+        Misi
+      </button>
+      
+      <button 
+        id="journal-btn" 
+        class="glass-button secondary-button w-full py-2 text-left"
+        data-panel="journal"
+      >
+        Jurnal
+      </button>
+      
+      <button 
+        id="skills-btn" 
+        class="glass-button secondary-button w-full py-2 text-left"
+        data-panel="skills"
+      >
+        Kemampuan
+      </button>
+      
+      <button 
+        id="crafting-btn" 
+        class="glass-button secondary-button w-full py-2 text-left"
+        data-panel="crafting"
+      >
+        Kerajinan
+      </button>
+      
+      <!-- Forger specific buttons -->
+      <div id="forger-buttons" class="mt-4 pt-4 border-t border-slate-700">
+        <h3 class="text-lg font-bold mb-2">Alat Forger</h3>
+        <button 
+          id="forger-tools-btn" 
+          class="glass-button secondary-button w-full py-2 text-left"
+          data-panel="forger-tools"
+        >
+          Alat Manipulasi
+        </button>
+      </div>
+    </nav>
+
+    <!-- Central game view -->
+    <section class="flex-1 flex flex-col overflow-hidden">
+      <!-- Game view area -->
+      <div id="game-view" class="flex-1 bg-slate-800/50 p-4 overflow-auto">
+        <!-- This is where the main game content will be displayed -->
+        <!-- Panels will be swapped in and out here based on navigation -->
+        <div id="world-map-panel" class="game-panel">
+          <WorldMap />
+        </div>
+        
+        <div id="inventory-panel" class="game-panel hidden">
+          <Inventory />
+        </div>
+        
+        <div id="quests-panel" class="game-panel hidden">
+          <QuestLog />
+        </div>
+        
+        <div id="journal-panel" class="game-panel hidden">
+          <Journal />
+        </div>
+        
+        <div id="skills-panel" class="game-panel hidden">
+          <h2 class="text-2xl font-bold mb-4">Kemampuan</h2>
+          <p>Panel kemampuan akan ditampilkan di sini.</p>
+        </div>
+        
+        <div id="crafting-panel" class="game-panel hidden">
+          <CraftingUI />
+        </div>
+        
+        <div id="forger-tools-panel" class="game-panel hidden">
+          <ForgerTools />
+        </div>
+      </div>
+      
+      <!-- Action bar - context sensitive actions -->
+      <div id="action-bar" class="glass-card p-2 flex justify-center space-x-2">
+        <!-- Actions will be populated based on current context -->
+        <button class="glass-button primary-button px-4 py-2">Tindakan 1</button>
+        <button class="glass-button secondary-button px-4 py-2">Tindakan 2</button>
+        <button class="glass-button secondary-button px-4 py-2">Tindakan 3</button>
+      </div>
+    </section>
+
+    <!-- Right sidebar - Context information -->
+    <aside class="glass-card w-80 p-4 flex flex-col space-y-4 overflow-y-auto">
+      <h2 class="text-xl font-bold mb-2">Informasi Konteks</h2>
+      <div id="context-info">
+        <!-- Context-specific information will be displayed here -->
+        <p>Informasi konteks akan ditampilkan di sini berdasarkan lokasi atau aktivitas saat ini.</p>
+      </div>
+      
+      <!-- Notifications -->
+      <div id="notifications" class="space-y-2">
+        <h3 class="text-lg font-bold">Notifikasi</h3>
+        <div id="notification-list">
+          <!-- Notifications will appear here -->
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Bottom bar - Game messages and status -->
+  <footer class="glass-card p-2 flex justify-between items-center">
+    <div id="game-messages" class="flex-1">
+      <p id="current-message">Selamat datang di The Soulforge Saga!</p>
+    </div>
+    <div id="game-status" class="text-right">
+      <span id="time-display">Hari 1, 12:00</span>
+    </div>
+  </footer>
+</div>
+
+<!-- JavaScript for UI interactions -->
+<script>
+  // Panel switching functionality
+  document.querySelectorAll('[data-panel]').forEach(button => {
+    button.addEventListener('click', () => {
+      const panelId = button.dataset.panel;
+      
+      // Hide all panels
+      document.querySelectorAll('.game-panel').forEach(panel => {
+        panel.classList.add('hidden');
+      });
+      
+      // Show selected panel
+      const selectedPanel = document.getElementById(`${panelId}-panel`);
+      if (selectedPanel) {
+        selectedPanel.classList.remove('hidden');
+      }
+    });
+  });
+  
+  // Initialize game state
+  gameStateManager.initialize();
+  
+  // Set up state change listener
+  gameStateManager.subscribe((state) => {
+    // Update time display
+    const timeDisplay = document.getElementById('time-display');
+    if (timeDisplay) {
+      timeDisplay.textContent = `Hari ${state.world.time.day}, ${state.world.time.hour}:${state.world.time.minute.toString().padStart(2, '0')}`;
+    }
+    
+    // Update current message
+    const currentMessage = document.getElementById('current-message');
+    if (currentMessage) {
+      currentMessage.textContent = `Berlokasi di ${state.world.regions[state.player.location]?.name || 'wilayah tidak diketahui'}`;
+    }
+  });
+</script>

@@ -1,0 +1,1000 @@
+---
+// src/pages/documentation.astro
+// Documentation page for The Soulforge Saga
+
+import GameStateProvider from '../components/GameStateProvider.astro';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - The Soulforge Saga</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/lucide.js"></script>
+    
+    <!-- Custom styles -->
+    <style>
+        /* Pixel art styling */
+        body {
+            font-family: 'VT323', monospace;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;
+            -moz-crisp-edges: pixelated;
+            -webkit-font-smoothing: none;
+            background-color: #0F172A;
+            color: #E2E8F0;
+        }
+        
+        h1, h2, h3, h4, h5, h6, button, input, select, textarea {
+            font-family: 'Press Start 2P', cursive;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
+        }
+        
+        p, span, li, label, div, a {
+            font-family: 'VT323', monospace;
+        }
+        
+        /* Glass card effect */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.9);
+            border: 2px solid #64748B;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.5);
+            border-radius: 0px !important;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        /* Glass button effect */
+        .glass-button {
+            background: #4F46E5;
+            border: 2px solid #3730A3;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.5);
+            border-radius: 0px !important;
+            color: #FFFFFF;
+            cursor: pointer;
+            transition: background-color 0.1s linear, box-shadow 0.1s linear, transform 0.1s linear;
+        }
+        
+        .glass-button:hover {
+            background: #6366F1;
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.5);
+            transform: translate(2px, 2px);
+        }
+        
+        .glass-button:active {
+            transform: translate(4px, 4px);
+            box-shadow: none;
+        }
+        
+        .primary-button {
+            background: #6366F1;
+            border-color: #4F46E5;
+        }
+        
+        .secondary-button {
+            background: #475569;
+            border-color: #334155;
+        }
+        
+        .secondary-button:hover {
+            background: #64748B;
+        }
+        
+        /* Input fields */
+        .glass-input {
+            background: rgba(30, 41, 59, 0.7);
+            border: 2px solid #64748B;
+            color: #E2E8F0;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border-radius: 0px !important;
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.3);
+            transition: border-color 0.1s linear, box-shadow 0.1s linear;
+        }
+        
+        .glass-input:focus {
+            outline: none;
+            border-color: #6366F1;
+            box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 0px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: #475569;
+            border: 1px solid #334155;
+            border-radius: 0px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #64748B;
+        }
+        
+        /* Code blocks */
+        pre, code {
+            font-family: 'VT323', monospace;
+            background: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 0px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        
+        /* Tutorial steps */
+        .tutorial-step {
+            counter-increment: step-counter;
+        }
+        
+        .tutorial-step:before {
+            content: counter(step-counter);
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            background: #4F46E5;
+            color: white;
+            text-align: center;
+            line-height: 2rem;
+            margin-right: 1rem;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100">
+    <GameStateProvider />
+    
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="glass-card p-6 mb-8 text-center">
+            <h1 class="text-4xl font-bold mb-2">The Soulforge Saga</h1>
+            <p class="text-xl text-slate-300">Dokumentasi dan Tutorial</p>
+        </header>
+        
+        <div class="flex gap-8">
+            <!-- Sidebar navigation -->
+            <nav class="glass-card w-64 p-4 h-fit">
+                <h2 class="text-2xl font-bold mb-4">Navigasi</h2>
+                
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#getting-started" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="play" class="w-4 h-4 mr-2 inline"></i>
+                            Memulai Permainan
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#character-creation" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="user" class="w-4 h-4 mr-2 inline"></i>
+                            Pembuatan Karakter
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#roles" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="users" class="w-4 h-4 mr-2 inline"></i>
+                            Peran Pemain
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#exploration" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="map" class="w-4 h-4 mr-2 inline"></i>
+                            Eksplorasi
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#combat" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="sword" class="w-4 h-4 mr-2 inline"></i>
+                            Pertempuran
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#quests" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="clipboard-list" class="w-4 h-4 mr-2 inline"></i>
+                            Misi
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#crafting" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="hammer" class="w-4 h-4 mr-2 inline"></i>
+                            Kerajinan
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#forger-tools" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="wrench" class="w-4 h-4 mr-2 inline"></i>
+                            Alat Forger
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#multiplayer" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="globe" class="w-4 h-4 mr-2 inline"></i>
+                            Multiplayer
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#advanced-tips" class="glass-button secondary-button w-full py-2 px-4 text-left block">
+                            <i data-lucide="zap" class="w-4 h-4 mr-2 inline"></i>
+                            Tips Lanjutan
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Main content -->
+            <main class="flex-1">
+                <!-- Getting Started -->
+                <section id="getting-started" class="glass-card p-6 mb-8">
+                    <h2 class="text-3xl font-bold mb-4">Memulai Permainan</h2>
+                    
+                    <p class="text-lg mb-6">
+                        Selamat datang di The Soulforge Saga! Panduan ini akan membantu Anda memulai petualangan Anda 
+                        di dunia yang penuh dengan misteri dan kemungkinan tak terbatas.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Membuka Aplikasi</h3>
+                            <p class="mb-4">
+                                Jalankan aplikasi The Soulforge Saga dari desktop Anda. Aplikasi ini akan secara otomatis 
+                                memuat game terakhir yang Anda mainkan, atau menampilkan layar pembuatan karakter baru 
+                                jika ini adalah pertama kalinya Anda bermain.
+                            </p>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Memilih Peran</h3>
+                            <p class="mb-4">
+                                Anda akan diminta untuk memilih antara dua peran utama: <strong>Wanderer</strong> atau <strong>Forger</strong>.
+                            </p>
+                            
+                            <div class="grid grid-cols-2 gap-4 mt-4">
+                                <div class="glass-card p-4">
+                                    <h4 class="text-xl font-bold mb-2">Wanderer</h4>
+                                    <p>
+                                        Penjelajah yang mencari petualangan, misteri, dan pemahaman tentang dunia. 
+                                        Fokus pada eksplorasi, pertempuran, dan pengembangan karakter.
+                                    </p>
+                                </div>
+                                
+                                <div class="glass-card p-4">
+                                    <h4 class="text-xl font-bold mb-2">Forger</h4>
+                                    <p>
+                                        Pembentuk realitas yang memiliki kekuatan untuk memanipulasi dunia itu sendiri. 
+                                        Fokus pada penciptaan, manipulasi dunia, dan intervensi kosmik.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Antarmuka Pengguna</h3>
+                            <p class="mb-4">
+                                Antarmuka game terdiri dari beberapa bagian utama:
+                            </p>
+                            
+                            <ul class="list-disc pl-6 space-y-2 mb-4">
+                                <li><strong>Panel Informasi Atas</strong>: Menampilkan statistik karakter, kesehatan, dan Essence</li>
+                                <li><strong>Navigasi Kiri</strong>: Menu utama untuk mengakses berbagai sistem game</li>
+                                <li><strong>Area Konten Tengah</strong>: Tampilan utama untuk aktivitas saat ini</li>
+                                <li><strong>Panel Informasi Kanan</strong>: Informasi kontekstual dan notifikasi</li>
+                                <li><strong>Bilah Aksi Bawah</strong>: Tombol aksi cepat berdasarkan konteks</li>
+                            </ul>
+                            
+                            <img src="/images/ui-layout.png" alt="Layout Antarmuka" class="w-full rounded-lg border-2 border-slate-700">
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Character Creation -->
+                <section id="character-creation" class="glass-card p-6 mb-8">
+                    <h2 class="text-3xl font-bold mb-4">Pembuatan Karakter</h2>
+                    
+                    <p class="text-lg mb-6">
+                        Proses pembuatan karakter memungkinkan Anda untuk menyesuaikan pengalaman bermain Anda. 
+                        Anda akan menjawab serangkaian pertanyaan filosofis yang akan memengaruhi karakteristik 
+                        dan kemampuan awal karakter Anda.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Pertanyaan Filosofis</h3>
+                            <p class="mb-4">
+                                Anda akan diajukan pertanyaan seperti:
+                            </p>
+                            
+                            <div class="glass-card p-4 mb-4">
+                                <p class="italic">"Apa yang paling Anda hargai dalam hidup?"</p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1">
+                                    <li>Kebebasan</li>
+                                    <li>Keluarga</li>
+                                    <li>Pengetahuan</li>
+                                </ul>
+                            </div>
+                            
+                            <p>
+                                Jawaban Anda akan memengaruhi atribut awal karakter dan kemungkinan misi yang tersedia.
+                            </p>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Atribut Karakter</h3>
+                            <p class="mb-4">
+                                Karakter Anda memiliki enam atribut utama:
+                            </p>
+                            
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Kekuatan</h4>
+                                    <p>Mempengaruhi kemampuan fisik dan serangan melee</p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Kecerdasan</h4>
+                                    <p>Mempengaruhi kemampuan sihir dan kerajinan</p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Karakteristik</h4>
+                                    <p>Mempengaruhi interaksi sosial dan diplomasi</p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Ketangkasan</h4>
+                                    <p>Mempengaruhi kecepatan dan kemampuan menghindar</p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Konsitusi</h4>
+                                    <p>Mempengaruhi kesehatan dan ketahanan terhadap efek negatif</p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Kebijaksanaan</h4>
+                                    <p>Mempengaruhi persepsi dan kemampuan melihat pola tersembunyi</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Kemampuan Awal</h3>
+                            <p class="mb-4">
+                                Berdasarkan jawaban Anda, karakter akan memulai dengan kemampuan awal tertentu:
+                            </p>
+                            
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong>Resonansi Jiwa</strong>: Untuk karakter yang mencari pemahaman kosmik</li>
+                                <li><strong>Bertahan Hidup di Rimba</strong>: Untuk karakter yang fokus pada eksplorasi dan bertahan hidup</li>
+                                <li><strong>Diplomasi Faksi</strong>: Untuk karakter yang tertarik pada interaksi sosial dan politik</li>
+                                <li><strong>Kerajinan Primordial</strong>: Untuk karakter yang memiliki bakat kreatif</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Roles -->
+                <section id="roles" class="glass-card p-6 mb-8">
+                    <h2 class="text-3xl font-bold mb-4">Peran Pemain</h2>
+                    
+                    <p class="text-lg mb-6">
+                        Game ini menawarkan dua peran utama yang sangat berbeda dengan pengalaman bermain yang unik.
+                    </p>
+                    
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4">Wanderer</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Deskripsi</h4>
+                                    <p class="mb-4">
+                                        Wanderer adalah penjelajah yang mencari petualangan dan misteri di dunia. 
+                                        Mereka berinteraksi dengan dunia melalui eksplorasi, pertempuran, dan pemecahan teka-teki.
+                                    </p>
+                                    
+                                    <h4 class="text-xl font-bold mb-2">Kekuatan Utama</h4>
+                                    <ul class="list-disc pl-6 space-y-2 mb-4">
+                                        <li>Eksplorasi dunia yang luas</li>
+                                        <li>Pertempuran dinamis melawan makhluk dan faksi</li>
+                                        <li>Sistem misi yang kaya dengan banyak cabang cerita</li>
+                                        <li>Pengembangan karakter yang mendalam</li>
+                                        <li>Interaksi sosial dengan NPC yang kompleks</li>
+                                    </ul>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Fitur Utama</h4>
+                                    <ul class="list-disc pl-6 space-y-2 mb-4">
+                                        <li><strong>Peta Dunia Interaktif</strong>: Eksplorasi berbagai wilayah dengan tantangan unik</li>
+                                        <li><strong>Sistem Pertempuran Real-time</strong>: Pertempuran strategis dengan berbagai senjata dan sihir</li>
+                                        <li><strong>Jurnal dan Koleksi Lore</strong>: Kumpulkan fragmen cerita untuk memahami sejarah dunia</li>
+                                        <li><strong>Sistem Kemajuan Karakter</strong>: Naikkan level dan kembangkan kemampuan unik</li>
+                                        <li><strong>Misi Berganda</strong>: Cerita utama dan sampingan yang saling terkait</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4">Forger</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Deskripsi</h4>
+                                    <p class="mb-4">
+                                        Forger adalah pembentuk realitas yang memiliki kekuatan untuk memanipulasi dunia itu sendiri. 
+                                        Mereka bertindak sebagai dewa bagi dunia, menciptakan dan mengubah realitas sesuai keinginan mereka.
+                                    </p>
+                                    
+                                    <h4 class="text-xl font-bold mb-2">Kekuatan Utama</h4>
+                                    <ul class="list-disc pl-6 space-y-2 mb-4">
+                                        <li>Manipulasi dunia dan lingkungan</li>
+                                        <li>Penciptaan landmark dan struktur baru</li>
+                                        <li>Intervensi kosmik yang memengaruhi seluruh dunia</li>
+                                        <li>Pengelolaan faksi dan peradaban</li>
+                                        <li>Penciptaan item dan artefak unik</li>
+                                    </ul>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Fitur Utama</h4>
+                                    <ul class="list-disc pl-6 space-y-2 mb-4">
+                                        <li><strong>Alat Manipulasi Dunia</strong>: Kumpulan alat untuk mengubah realitas</li>
+                                        <li><strong>Penciptaan Wilayah</strong>: Ciptakan landmark dan wilayah baru</li>
+                                        <li><strong>Stabilitas Nexus</strong>: Pengelolaan kesehatan dan stabilitas dunia</li>
+                                        <li><strong>Purifikasi Korupsi</strong>: Bersihkan area yang tercemar energi negatif</li>
+                                        <li><strong>Manipulasi Temporal</strong>: Ubah aliran waktu dalam skala tertentu</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Exploration -->
+                <section id="exploration" class="glass-card p-6 mb-8">
+                    <h2 class="text-3xl font-bold mb-4">Eksplorasi</h2>
+                    
+                    <p class="text-lg mb-6">
+                        Dunia The Soulforge Saga sangat luas dan penuh dengan misteri. Eksplorasi adalah inti dari pengalaman bermain.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Wilayah Dunia</h3>
+                            <p class="mb-4">
+                                Dunia terdiri dari berbagai wilayah dengan karakteristik unik:
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Nexus Pusat yang Berdenyut</h4>
+                                    <p class="text-sm">Jantung dunia dengan energi Gema dan Intensi yang saling berkejaran.</p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Jangkauan Berbisik</h4>
+                                    <p class="text-sm">Hutan purba yang diselimuti misteri dan bisikan dari kehampaan.</p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Dataran Bercahaya</h4>
+                                    <p class="text-sm">Hamparan padang rumput yang diterangi oleh cahaya Intensi.</p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Puncak yang Hancur</h4>
+                                    <p class="text-sm">Gunung menjulang dengan kristal raksasa dan mineral langka.</p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Gurun Merah Darah</h4>
+                                    <p class="text-sm">Hamparan pasir merah yang ekstrem dengan makhluk yang beradaptasi.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Landmark dan Tempat Menarik</h3>
+                            <p class="mb-4">
+                                Setiap wilayah memiliki landmark dan tempat menarik yang patut dieksplorasi:
+                            </p>
+                            
+                            <ul class="list-disc pl-6 space-y-2 mb-4">
+                                <li><strong>Menara Nexus Kuno</strong>: Situs kekuatan kosmik yang dapat memengaruhi stabilitas dunia</li>
+                                <li><strong>Hutan Berbisik</strong>: Tempat misteri di mana gema masa lalu berbisik</li>
+                                <li><strong>Gu Kristal</strong>: Sistem gua bawah tanah yang dipenuhi kristal bercahaya</li>
+                                <li><strong>Jembatan Langit yang Hancur</strong>: Monumen kehancuran dari peradaban kuno</li>
+                                <li><strong>Bekas Luka Besar</strong>: Retakan raksasa di permukaan akibat intervensi primordial</li>
+                            </ul>
+                            
+                            <p>
+                                Eksplorasi landmark ini seringkali memicu misi unik, memberikan item langka, atau mengungkapkan 
+                                fragmen lore yang menarik tentang sejarah dunia.
+                            </p>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Sumber Daya dan Pengumpulan</h3>
+                            <p class="mb-4">
+                                Setiap wilayah memiliki sumber daya unik yang dapat dikumpulkan:
+                            </p>
+                            
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="glass-card p-3 text-center">
+                                    <div class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <i data-lucide="gem" class="w-6 h-6"></i>
+                                    </div>
+                                    <p class="text-sm">Kristal Aether</p>
+                                </div>
+                                <div class="glass-card p-3 text-center">
+                                    <div class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <i data-lucide="package" class="w-6 h-6"></i>
+                                    </div>
+                                    <p class="text-sm">Mineral Langka</p>
+                                </div>
+                                <div class="glass-card p-3 text-center">
+                                    <div class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <i data-lucide="leaf" class="w-6 h-6"></i>
+                                    </div>
+                                    <p class="text-sm">Herbal Penyembuh</p>
+                                </div>
+                                <div class="glass-card p-3 text-center">
+                                    <div class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <i data-lucide="droplets" class="w-6 h-6"></i>
+                                    </div>
+                                    <p class="text-sm">Air Murni</p>
+                                </div>
+                            </div>
+                            
+                            <p class="mt-4">
+                                Sumber daya ini digunakan dalam kerajinan, alkimia, dan sebagai bahan untuk intervensi Forger.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Combat -->
+                <section id="combat" class="glass-card p-6 mb-8">
+                    <h2 class="text-3xl font-bold mb-4">Sistem Pertempuran</h2>
+                    
+                    <p class="text-lg mb-6">
+                        Pertempuran di The Soulforge Saga menggabungkan strategi, timing, dan penguasaan berbagai kemampuan.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Mekanik Dasar</h3>
+                            <p class="mb-4">
+                                Pertempuran berlangsung dalam mode real-time dengan sistem aksi berbasis giliran:
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Serang</h4>
+                                    <p>
+                                        Serangan dasar menggunakan senjata yang sedang digunakan. Kerusakan bervariasi 
+                                        berdasarkan senjata dan atribut karakter.
+                                    </p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Bertahan</h4>
+                                    <p>
+                                        Mengurangi kerusakan dari serangan berikutnya dan mempersiapkan serangan balasan.
+                                    </p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Serangan Spesial</h4>
+                                    <p>
+                                        Menggunakan Essence untuk melakukan serangan atau kemampuan spesial yang lebih kuat.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Jenis Senjata</h3>
+                            <p class="mb-4">
+                                Berbagai jenis senjata menawarkan gaya bertarung yang berbeda:
+                            </p>
+                            
+                            <ul class="list-disc pl-6 space-y-2 mb-4">
+                                <li><strong>Pedang</strong>: Serangan seimbang dengan kemampuan bertahan yang baik</li>
+                                <li><strong>Tombak</strong>: Jangkauan lebih jauh dengan serangan area</li>
+                                <li><strong>Busur</strong>: Serangan jarak jauh yang mematikan tetapi rentan pada jarak dekat</li>
+                                <li><strong>Tongkat Sihir</strong>: Menggunakan energi aether untuk serangan sihir</li>
+                                <li><strong>Cakar</strong>: Serangan cepat dan brutal dengan kemampuan menghancurkan pertahanan</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Sistem Kemampuan</h3>
+                            <p class="mb-4">
+                                Karakter dapat mempelajari dan mengembangkan berbagai kemampuan:
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Kemampuan Fisik</h4>
+                                    <ul class="list-disc pl-6 space-y-1">
+                                        <li>Serangan Kombo</li>
+                                        <li>Pemecah Pertahanan</li>
+                                        <li>Lompatan Serangan</li>
+                                        <li>Parit</li>
+                                    </ul>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Kemampuan Sihir</h4>
+                                    <ul class="list-disc pl-6 space-y-1">
+                                        <li>Bola Api</li>
+                                        <li>Penyembuhan</li>
+                                        <li>Perisai Energi</li>
+                                        <li>Meteor</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Musuh dan Bos</h3>
+                            <p class="mb-4">
+                                Dunia dipenuhi berbagai jenis musuh dengan pola serangan unik:
+                            </p>
+                            
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong>Serigala Buas</strong>: Cepat dan ganas, menyerang dalam kelompok</li>
+                                <li><strong>Hantu Gema</strong>: Makhluk mistis yang menyerap Essence</li>
+                                <li><strong>Golem Batu</strong>: Kuat dan tahan terhadap serangan fisik</li>
+                                <li><strong>Penyihir Bayangan</strong>: Menggunakan sihir gelap dan ilusi</li>
+                                <li><strong>Bos Dunia</strong>: Musuh raksasa dengan kemampuan unik dan banyak fase</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quests -->
+                <section id="quests" class="glass-card p-6 mb-8">
+                    <h2 class="text-3xl font-bold mb-4">Sistem Misi</h2>
+                    
+                    <p class="text-lg mb-6">
+                        Misi adalah inti dari narasi The Soulforge Saga, menawarkan berbagai cerita dan tantangan yang saling terkait.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Jenis Misi</h3>
+                            <p class="mb-4">
+                                Terdapat berbagai jenis misi dengan tujuan dan mekanik yang berbeda:
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Misi Utama</h4>
+                                    <p>
+                                        Cerita inti yang mengungkap misteri dunia dan mengembangkan karakter Anda.
+                                    </p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Misi Sampingan</h4>
+                                    <p>
+                                        Cerita pendukung yang memberikan wawasan tambahan dan hadiah berharga.
+                                    </p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Misi Faksi</h4>
+                                    <p>
+                                        Misi yang tersedia berdasarkan reputasi Anda dengan faksi tertentu.
+                                    </p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Misi Dunia</h4>
+                                    <p>
+                                        Misi spontan yang muncul berdasarkan keadaan dunia dan lokasi Anda.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Struktur Misi</h3>
+                            <p class="mb-4">
+                                Setiap misi memiliki struktur yang unik:
+                            </p>
+                            
+                            <ul class="list-disc pl-6 space-y-2 mb-4">
+                                <li><strong>Deskripsi</strong>: Latar belakang dan tujuan misi</li>
+                                <li><strong>Objektif</strong>: Tugas spesifik yang perlu diselesaikan</li>
+                                <li><strong>Hadiah</strong>: EXP, Essence, item, dan kemajuan cerita</li>
+                                <li><strong>Prasyarat</strong>: Syarat untuk menerima misi</li>
+                                <li><strong>Konsekuensi</strong>: Dampak dari penyelesaian atau kegagalan misi</li>
+                            </ul>
+                            
+                            <p>
+                                Banyak misi menawarkan pilihan moral yang memengaruhi hasil dan hubungan dengan NPC/faksi.
+                            </p>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Sistem Cabang Cerita</h3>
+                            <p class="mb-4">
+                                Keputusan Anda selama misi memengaruhi arah cerita:
+                            </p>
+                            
+                            <div class="glass-card p-4">
+                                <h4 class="font-bold mb-2">Contoh: Misi "Pilihan Moral"</h4>
+                                <p>
+                                    Saat menghadapi desa yang diserang oleh bandit, Anda bisa:
+                                </p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1">
+                                    <li><strong>Membela desa</strong>: Meningkatkan reputasi dengan penduduk, tetapi membuat musuh baru</li>
+                                    <li><strong>Menawar dengan bandit</strong>: Bisa menghasilkan aliansi atau pengkhianatan</li>
+                                    <li><strong>Membiarkan kejadian berlangsung</strong>: Memperoleh reputasi dengan faksi bayangan</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Crafting -->
+                <section id="crafting" class="glass-card p-6 mb-8">
+                    <h2 class="text-3xl font-bold mb-4">Sistem Kerajinan</h2>
+                    
+                    <p class="text-lg mb-6">
+                        Sistem kerajinan memungkinkan Anda membuat senjata, armor, alat, dan item sihir dari bahan mentah.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Stasiun Kerajinan</h3>
+                            <p class="mb-4">
+                                Berbagai stasiun kerajinan tersedia di seluruh dunia:
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Meja Tempa</h4>
+                                    <p>
+                                        Untuk membuat senjata dan armor logam.
+                                    </p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Meja Alkimia</h4>
+                                    <p>
+                                        Untuk membuat ramuan penyembuhan dan buff.
+                                    </p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Meja Kayu</h4>
+                                    <p>
+                                        Untuk membuat alat, panah, dan item kayu.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Resep dan Pembelajaran</h3>
+                            <p class="mb-4">
+                                Resep bisa dipelajari melalui:
+                            </p>
+                            
+                            <ul class="list-disc pl-6 space-y-2 mb-4">
+                                <li><strong>Panduan</strong>: Buku resep yang bisa dibeli atau ditemukan</li>
+                                <li><strong>Eksperimen</strong>: Mencoba kombinasi bahan acak</li>
+                                <li><strong>Guru</strong>: Belajar dari NPC ahli kerajinan</li>
+                                <li><strong>Intuisi</strong>: Pengalaman dan kemampuan tertentu</li>
+                            </ul>
+                            
+                            <p>
+                                Semakin tinggi level kerajinan Anda, semakin kompleks resep yang bisa Anda buat.
+                            </p>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Bahan dan Kualitas</h3>
+                            <p class="mb-4">
+                                Kualitas item bergantung pada:
+                            </p>
+                            
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong>Kualitas bahan mentah</strong>: Bijih berkualitas tinggi menghasilkan item yang lebih baik</li>
+                                <li><strong>Keterampilan kerajinan</strong>: Level yang lebih tinggi meningkatkan kualitas</li>
+                                <li><strong>Alat kerajinan</strong>: Peralatan yang lebih baik meningkatkan hasil</li>
+                                <li><strong>Keberuntungan</strong>: Faktor acak yang bisa meningkatkan kualitas secara signifikan</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Forger Tools -->
+                <section id="forger-tools" class="glass-card p-6 mb-8">
+                    <h2 class="text-3xl font-bold mb-4">Alat Forger</h2>
+                    
+                    <p class="text-lg mb-6">
+                        Sebagai Forger, Anda memiliki akses ke alat-alat kosmik yang memungkinkan Anda membentuk realitas itu sendiri.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Jenis Alat</h3>
+                            <p class="mb-4">
+                                Alat Forger dibagi berdasarkan fungsi:
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Alat Analisis</h4>
+                                    <ul class="list-disc pl-6 space-y-1">
+                                        <li>Analyzer Nexus</li>
+                                        <li>Pemindai Korupsi</li>
+                                        <li>Detektor Fluktuasi</li>
+                                    </ul>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Alat Intervensi</h4>
+                                    <ul class="list-disc pl-6 space-y-1">
+                                        <li>Injektor Stabilitas</li>
+                                        <li>Pemurni Korupsi</li>
+                                        <li>Penstabil Dimensi</li>
+                                    </ul>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Alat Penciptaan</h4>
+                                    <ul class="list-disc pl-6 space-y-1">
+                                        <li>Pembentuk Dimensi</li>
+                                        <li>Pencipta Landmark</li>
+                                        <li>Penenun Temporal</li>
+                                    </ul>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Alat Manipulasi</h4>
+                                    <ul class="list-disc pl-6 space-y-1">
+                                        <li>Manipulator Jiwa</li>
+                                        <li>Pengubah Hukum Fisika</li>
+                                        <li>Pengatur Gravitasi</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Essence Forger</h3>
+                            <p class="mb-4">
+                                Menggunakan alat Forger memerlukan Essence Forger:
+                            </p>
+                            
+                            <div class="glass-card p-4">
+                                <h4 class="font-bold mb-2">Cara Mendapatkan Essence</h4>
+                                <ul class="list-disc pl-6 space-y-2">
+                                    <li><strong>Meditasi Kosmik</strong>: Meningkatkan kesadaran dan menghasilkan Essence</li>
+                                    <li><strong>Intervensi Berhasil</strong>: Setiap intervensi yang berhasil memberikan Essence</li>
+                                    <li><strong>Penciptaan Landmark</strong>: Menciptakan landmark baru menghasilkan Essence</li>
+                                    <li><strong>Stabilitas Dunia</strong>: Dunia yang stabil secara otomatis menghasilkan Essence</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Intervensi Dunia</h3>
+                            <p class="mb-4">
+                                Sebagai Forger, Anda bisa melakukan intervensi pada tingkat dunia:
+                            </p>
+                            
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong>Perubahan Iklim</strong>: Mengubah musim dan kondisi cuaca</li>
+                                <li><strong>Pembentukan Wilayah</strong>: Menciptakan atau mengubah bentang alam</li>
+                                <li><strong>Manipulasi Faksi</strong>: Mempengaruhi hubungan dan kekuatan faksi</li>
+                                <li><strong>Penyelarasan Kosmis</strong>: Menyelaraskan dunia dengan energi kosmik</li>
+                                <li><strong>Purifikasi Korupsi</strong>: Membersihkan area yang tercemar energi negatif</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Multiplayer -->
+                <section id="multiplayer" class="glass-card p-6 mb-8">
+                    <h2 class="text-3xl font-bold mb-4">Multiplayer</h2>
+                    
+                    <p class="text-lg mb-6">
+                        The Soulforge Saga menawarkan pengalaman multiplayer yang memungkinkan Anda berkolaborasi dengan pemain lain.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Mode Multiplayer</h3>
+                            <p class="mb-4">
+                                Terdapat dua mode multiplayer:
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Dunia Bersama</h4>
+                                    <p>
+                                        Bergabung dalam dunia yang sama dengan pemain lain untuk eksplorasi dan misi bersama.
+                                    </p>
+                                </div>
+                                <div class="glass-card p-4">
+                                    <h4 class="font-bold mb-2">Server Pribadi</h3>
+                                    <p>
+                                        Membuat dunia pribadi yang bisa diundang teman untuk pengalaman bermain bersama.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Fitur Kolaborasi</h3>
+                            <p class="mb-4">
+                                Fitur yang mendukung bermain bersama:
+                            </p>
+                            
+                            <ul class="list-disc pl-6 space-y-2 mb-4">
+                                <li><strong>Misi Kooperatif</strong>: Misi yang dirancang untuk dimainkan bersama</li>
+                                <li><strong>Pertempuran Grup</strong>: Menghadapi bos dunia dan musuh kuat bersama teman</li>
+                                <li><strong>Kerajinan Bersama</strong>: Membuat item epik dengan kontribusi dari banyak pemain</li>
+                                <li><strong>Pembentukan Peradaban</strong>: Membangun kota dan peradaban bersama faksi</li>
+                                <li><strong>Event Dunia Bersama</strong>: Menghadapi ancaman kosmik yang memerlukan kerjasama</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Komunikasi</h3>
+                            <p class="mb-4">
+                                Sistem komunikasi yang mendukung interaksi sosial:
+                            </p>
+                            
+                            <div class="glass-card p-4">
+                                <h4 class="font-bold mb-2">Saluran Komunikasi</h4>
+                                <ul class="list-disc pl-6 space-y-2">
+                                    <li><strong>Obrolan Global</strong>: Berkomunikasi dengan semua pemain di server</li>
+                                    <li><strong>Obrolan Dunia</strong>: Berkomunikasi dengan pemain di dunia yang sama</li>
+                                    <li><strong>Obrolan Grup</strong>: Komunikasi pribadi dengan anggota grup</li>
+                                    <li><strong>Sistem Emosi</strong>: Mengekspresikan perasaan melalui animasi karakter</li>
+                                    <li><strong>Sistem Dagang</strong>: Bertukar item dan Essence dengan pemain lain</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Advanced Tips -->
+                <section id="advanced-tips" class="glass-card p-6 mb-8">
+                    <h2 class="text-3xl font-bold mb-4">Tips Lanjutan</h2>
+                    
+                    <p class="text-lg mb-6">
+                        Teknik dan strategi untuk pemain berpengalaman yang ingin menguasai seluruh aspek game.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Optimasi Karakter</h3>
+                            <p class="mb-4">
+                                Strategi untuk memaksimalkan potensi karakter:
+                            </p>
+                            
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong>Spesialisasi vs Generalisasi</strong>: Fokus pada satu jalur atau kembangkan berbagai kemampuan</li>
+                                <li><strong>Sinergi Kemampuan</strong>: Gabungkan kemampuan yang saling melengkapi</li>
+                                <li><strong>Timing Pertempuran</strong>: Gunakan timing yang tepat untuk efek maksimal</li>
+                                <li><strong>Manajemen Essence</strong>: Hemat dan gunakan Essence secara strategis</li>
+                                <li><strong>Peralatan Set</strong>: Gunakan set armor/senjata untuk bonus tambahan</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="tutorial-step">
+                            <h3 class="text-2xl font-bold mb-2">Eksplorasi Efisien</h3>
+                            <p class="mb-4">
+                                Teknik untuk menjelajahi dunia secara efisien:
+                            </p>
+                            
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong>Peta dan Waypoint</strong>: Gunakan waypoint untuk navigasi cepat</li>
+                                <li><strong>Pol

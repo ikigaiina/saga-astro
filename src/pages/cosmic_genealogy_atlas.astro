@@ -1,0 +1,111 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Atlas Silsilah Kosmik - The Soulforge Saga">
+  <div class="w-full max-w-6xl glass-card p-6 sm:p-8 rounded-2xl shadow-lg border border-border-color flex flex-col h-[95vh]">
+    <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider mb-6 text-center drop-shadow-lg" data-i18n-key="cosmic_genealogy_title">
+      Atlas Silsilah Kosmik
+    </h1>
+
+    <div class="flex-grow flex flex-col lg:flex-row gap-6 overflow-hidden">
+      <!-- Genealogy Tree Visualization -->
+      <div class="flex-grow bg-slate-800/60 rounded-xl p-4 overflow-auto scrollbar-thin">
+        <div id="genealogy-container" class="relative h-full min-h-[500px]">
+          <!-- Genealogy tree visualization will be rendered here -->
+          <div class="flex flex-col items-center">
+            <!-- Root Entity -->
+            <div class="glass-card p-4 rounded-lg mb-8">
+              <h3 class="font-bold text-white text-center">Primordial Essence</h3>
+              <p class="text-sm text-slate-300 text-center">The origin of all existence</p>
+            </div>
+            
+            <!-- First Generation -->
+            <div class="flex gap-8 mb-8">
+              <div class="glass-card p-4 rounded-lg">
+                <h3 class="font-bold text-white text-center">Elemental Forces</h3>
+                <p class="text-sm text-slate-300 text-center">Fire, Water, Earth, Air</p>
+              </div>
+              <div class="glass-card p-4 rounded-lg">
+                <h3 class="font-bold text-white text-center">Cosmic Entities</h3>
+                <p class="text-sm text-slate-300 text-center">Stars, Planets, Nebulae</p>
+              </div>
+            </div>
+            
+            <!-- Second Generation -->
+            <div class="flex gap-4 mb-8">
+              <div class="glass-card p-4 rounded-lg">
+                <h3 class="font-bold text-white text-center">Fire Spirits</h3>
+                <p class="text-sm text-slate-300 text-center">Children of Elemental Forces</p>
+              </div>
+              <div class="glass-card p-4 rounded-lg">
+                <h3 class="font-bold text-white text-center">Water Nymphs</h3>
+                <p class="text-sm text-slate-300 text-center">Children of Elemental Forces</p>
+              </div>
+              <div class="glass-card p-4 rounded-lg">
+                <h3 class="font-bold text-white text-center">Earth Golems</h3>
+                <p class="text-sm text-slate-300 text-center">Children of Elemental Forces</p>
+              </div>
+              <div class="glass-card p-4 rounded-lg">
+                <h3 class="font-bold text-white text-center">Air Djinn</h3>
+                <p class="text-sm text-slate-300 text-center">Children of Elemental Forces</p>
+              </div>
+            </div>
+            
+            <!-- Connections -->
+            <div class="absolute top-20 left-1/4 w-1/2 h-px bg-indigo-500"></div>
+            <div class="absolute top-40 left-1/6 w-2/3 h-px bg-indigo-500"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Entity Details Panel -->
+      <div class="flex-shrink-0 bg-slate-800/60 rounded-xl p-4 lg:w-80 flex flex-col space-y-4 overflow-y-auto scrollbar-thin">
+        <h3 class="text-xl font-bold text-white mb-2" data-i18n-key="entity_details_title">Detail Entitas</h3>
+        
+        <div id="entity-details" class="space-y-3">
+          <div class="glass-card p-4 rounded-lg">
+            <h4 class="font-bold text-white">Primordial Essence</h4>
+            <p class="text-sm text-slate-300 mt-2">The fundamental essence from which all existence originates. It is the source of all cosmic energy and the foundation upon which reality is built.</p>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <span class="px-2 py-1 bg-purple-600 text-xs rounded">Origin</span>
+              <span class="px-2 py-1 bg-indigo-600 text-xs rounded">Primordial</span>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="entity_name_label">Nama Entitas</label>
+            <input type="text" class="glass-input w-full p-2" placeholder="Masukkan nama entitas">
+          </div>
+          
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="entity_description_label">Deskripsi</label>
+            <textarea class="glass-input w-full p-2 h-24" placeholder="Masukkan deskripsi entitas"></textarea>
+          </div>
+          
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="entity_parents_label">Orang Tua</label>
+            <input type="text" class="glass-input w-full p-2" placeholder="Nama orang tua (dipisahkan koma)">
+          </div>
+          
+          <div>
+            <label class="block text-slate-400 text-sm mb-1" data-i18n-key="entity_children_label">Keturunan</label>
+            <input type="text" class="glass-input w-full p-2" placeholder="Nama keturunan (dipisahkan koma)">
+          </div>
+          
+          <button id="add-entity-btn" class="glass-button primary-button w-full mt-2">
+            <i data-lucide="plus"></i> <span data-i18n-key="add_entity">Tambah Entitas</span>
+          </button>
+          
+          <button id="save-genealogy-btn" class="glass-button secondary-button w-full mt-2">
+            <i data-lucide="save"></i> <span data-i18n-key="save_genealogy">Simpan Silsilah</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button id="back-to-forger-btn" class="glass-button secondary-button mt-8">
+      <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> <span data-i18n-key="back_to_forger_dashboard">Kembali ke Dashboard Forger</span>
+    </button>
+  </div>
+</MainLayout>

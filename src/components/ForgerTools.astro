@@ -1,0 +1,343 @@
+---
+// src/components/ForgerTools.astro
+// Forger tools component for The Soulforge Saga
+
+import { gameStateManager } from '../game/stateManager.js';
+import { forgerSystem } from '../game/forgerSystem.js';
+
+// Get initial state
+const state = gameStateManager.getState();
+const availableTools = forgerSystem.getAvailableTools();
+const forgerEssence = state.forger.essence || 0;
+---
+
+<div id="forger-tools-container" class="h-full flex flex-col">
+  <h2 class="text-2xl font-bold mb-4">Alat Manipulasi Forger</h2>
+  
+  <div class="flex gap-4 flex-1 overflow-hidden">
+    {/* Forger essence and stats */}
+    <div class="w-64 flex flex-col gap-4">
+      <div class="glass-card p-4">
+        <h3 class="text-xl font-bold mb-3">Essence Forger</h3>
+        
+        <div class="flex flex-col items-center mb-4">
+          <div class="w-20 h-20 rounded-full bg-purple-500 flex items-center justify-center mb-3">
+            <i data-lucide="zap" class="w-10 h-10 text-white"></i>
+          </div>
+          <div class="text-3xl font-bold text-center">{forgerEssence}</div>
+          <div class="text-sm text-slate-400">Essence Tersedia</div>
+        </div>
+        
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-slate-400">Tingkat Keahlian:</span>
+            <span>Master</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">XP Forger:</span>
+            <span>12,450</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Intervensi Hari Ini:</span>
+            <span>3/10</span>
+          </div>
+        </div>
+      </div>
+      
+      {/* Tool upgrades */}
+      <div class="glass-card p-4">
+        <h3 class="text-xl font-bold mb-3">Peningkatan Alat</h3>
+        <div class="space-y-3">
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-400">Analyzer Nexus</span>
+              <span>Level 3</span>
+            </div>
+            <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="bg-blue-500 h-2 rounded-full" style="width: 60%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-400">Injektor Stabilitas</span>
+              <span>Level 2</span>
+            </div>
+            <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full" style="width: 40%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-400">Pemurni Korupsi</span>
+              <span>Level 1</span>
+            </div>
+            <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="bg-red-500 h-2 rounded-full" style="width: 20%"></div>
+            </div>
+          </div>
+        </div>
+        <button class="glass-button secondary-button w-full mt-3 py-2 text-sm">
+          <i data-lucide="wrench" class="w-4 h-4 mr-1"></i>
+          Tingkatkan Alat
+        </button>
+      </div>
+      
+      {/* Forger achievements */}
+      <div class="glass-card p-4">
+        <h3 class="text-xl font-bold mb-3">Pencapaian Forger</h3>
+        <div class="space-y-2">
+          <div class="flex items-center">
+            <i data-lucide="award" class="w-5 h-5 text-yellow-500 mr-2"></i>
+            <span class="text-sm">Pencipta Nexus</span>
+          </div>
+          <div class="flex items-center">
+            <i data-lucide="award" class="w-5 h-5 text-blue-500 mr-2"></i>
+            <span class="text-sm">Penstabil Dunia</span>
+          </div>
+          <div class="flex items-center">
+            <i data-lucide="award" class="w-5 h-5 text-green-500 mr-2"></i>
+            <span class="text-sm">Pemurni Jiwa</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {/* Available tools */}
+    <div class="flex-1 flex flex-col">
+      <div class="glass-card p-4 flex-1 overflow-hidden flex flex-col">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Alat Manipulasi Tersedia</h3>
+          <div class="flex gap-2">
+            <button class="glass-button secondary-button px-3 py-1 text-sm">
+              <i data-lucide="filter" class="w-4 h-4 mr-1"></i>
+              Filter
+            </button>
+            <button class="glass-button secondary-button px-3 py-1 text-sm">
+              <i data-lucide="settings" class="w-4 h-4 mr-1"></i>
+              Pengaturan
+            </button>
+          </div>
+        </div>
+        
+        {availableTools.length > 0 ? (
+          <div class="grid grid-cols-2 gap-4 overflow-y-auto pr-2 flex-1">
+            {availableTools.map((tool) => (
+              <div class="forger-tool glass-card p-4 hover:bg-slate-700/50 transition-colors cursor-pointer"
+                   onClick={() => useTool(tool.id)}
+                   data-tool-id={tool.id}>
+                <div class="flex justify-between items-start mb-3">
+                  <div>
+                    <div class="w-12 h-12 rounded-full bg-indigo-500 flex items-center justify-center mb-2">
+                      <i data-lucide={getToolIcon(tool.type)} class="w-6 h-6 text-white"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">{tool.name}</h4>
+                  </div>
+                  <span class={`text-xs px-2 py-1 rounded-full ${
+                    tool.powerLevel === 1 ? 'bg-green-500/20 text-green-300' :
+                    tool.powerLevel === 2 ? 'bg-blue-500/20 text-blue-300' :
+                    tool.powerLevel === 3 ? 'bg-purple-500/20 text-purple-300' :
+                    tool.powerLevel === 4 ? 'bg-yellow-500/20 text-yellow-300' :
+                    'bg-red-500/20 text-red-300'
+                  }`}>
+                    Level {tool.powerLevel}
+                  </span>
+                </div>
+                
+                <p class="text-slate-300 text-sm mb-4">{tool.description}</p>
+                
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center">
+                    <i data-lucide="zap" class="w-4 h-4 text-yellow-500 mr-1"></i>
+                    <span class="text-sm">{tool.essenceCost} Essence</span>
+                  </div>
+                  <button class="glass-button secondary-button px-3 py-1 text-xs">
+                    Gunakan
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="flex items-center justify-center h-full text-slate-500">
+            <div class="text-center">
+              <i data-lucide="hammer" class="w-12 h-12 mx-auto mb-2"></i>
+              <p>Tidak ada alat manipulasi tersedia</p>
+              <p class="text-sm mt-1">Anda mungkin perlu meningkatkan tingkat Forger Anda</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+    
+    {/* Tool usage log */}
+    <div class="w-80 flex flex-col gap-4">
+      <div class="glass-card p-4 flex-1 overflow-hidden">
+        <h3 class="text-xl font-bold mb-3">Log Intervensi</h3>
+        
+        <div class="space-y-3 overflow-y-auto pr-2 flex-1">
+          <div class="glass-card p-3">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-bold">Injektor Stabilitas</h4>
+              <span class="text-xs text-slate-400">2 jam yang lalu</span>
+            </div>
+            <p class="text-sm text-slate-300">Menstabilkan fluktuasi Nexus di Wilayah Pusat</p>
+            <div class="flex items-center mt-2 text-xs">
+              <i data-lucide="zap" class="w-3 h-3 text-yellow-500 mr-1"></i>
+              <span class="text-yellow-400">-15 Essence</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-3">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-bold">Analyzer Nexus</h4>
+              <span class="text-xs text-slate-400">5 jam yang lalu</span>
+            </div>
+            <p class="text-sm text-slate-300">Menganalisis kondisi Nexus di Wilayah Hutan Berbisik</p>
+            <div class="flex items-center mt-2 text-xs">
+              <i data-lucide="zap" class="w-3 h-3 text-yellow-500 mr-1"></i>
+              <span class="text-yellow-400">-5 Essence</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-3">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-bold">Pemurni Korupsi</h4>
+              <span class="text-xs text-slate-400">1 hari yang lalu</span>
+            </div>
+            <p class="text-sm text-slate-300">Memurnikan area korupsi di Wilayah Gurun Merah</p>
+            <div class="flex items-center mt-2 text-xs">
+              <i data-lucide="zap" class="w-3 h-3 text-yellow-500 mr-1"></i>
+              <span class="text-yellow-400">-25 Essence</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-3">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-bold">Pembentuk Dimensi</h4>
+              <span class="text-xs text-slate-400">3 hari yang lalu</span>
+            </div>
+            <p class="text-sm text-slate-300">Menciptakan landmark baru di Wilayah Puncak yang Hancur</p>
+            <div class="flex items-center mt-2 text-xs">
+              <i data-lucide="zap" class="w-3 h-3 text-yellow-500 mr-1"></i>
+              <span class="text-yellow-400">-50 Essence</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Quick actions */}
+      <div class="glass-card p-4">
+        <h3 class="text-xl font-bold mb-3">Aksi Cepat</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <button 
+            class="glass-button primary-button py-2 text-sm flex items-center justify-center"
+            onClick={() => generateEssence()}
+          >
+            <i data-lucide="battery-charging" class="w-4 h-4 mr-1"></i>
+            Bangkitkan Essence
+          </button>
+          <button 
+            class="glass-button secondary-button py-2 text-sm flex items-center justify-center"
+            onClick={() => viewInterventions()}
+          >
+            <i data-lucide="book-open" class="w-4 h-4 mr-1"></i>
+            Riwayat
+          </button>
+          <button 
+            class="glass-button secondary-button py-2 text-sm flex items-center justify-center"
+            onClick={() => upgradeTools()}
+          >
+            <i data-lucide="wrench" class="w-4 h-4 mr-1"></i>
+            Tingkatkan
+          </button>
+          <button 
+            class="glass-button secondary-button py-2 text-sm flex items-center justify-center"
+            onClick={() => createLandmark()}
+          >
+            <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
+            Ciptakan
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Function to use a tool
+  function useTool(toolId) {
+    const result = forgerSystem.useTool(toolId, 'nexus');
+    if (result.success) {
+      console.log(result.message);
+      showNotification(result.message, 'success');
+      
+      // Update UI
+      updateForgerUI();
+    } else {
+      console.error(result.message);
+      showNotification(result.message, 'error');
+    }
+  }
+  
+  // Function to generate essence
+  function generateEssence() {
+    const result = forgerSystem.generateEssence(25);
+    if (result.success) {
+      console.log(result.message);
+      showNotification(result.message, 'success');
+    } else {
+      console.error(result.message);
+      showNotification(result.message, 'error');
+    }
+  }
+  
+  // Function to view interventions
+  function viewInterventions() {
+    const interventions = forgerSystem.getInterventionsHistory();
+    console.log('Interventions history:', interventions);
+    showNotification('Menampilkan riwayat intervensi', 'info');
+  }
+  
+  // Function to upgrade tools
+  function upgradeTools() {
+    console.log('Upgrading tools...');
+    showNotification('Membuka antarmuka peningkatan alat', 'info');
+  }
+  
+  // Function to create landmark
+  function createLandmark() {
+    console.log('Creating landmark...');
+    showNotification('Membuka antarmuka penciptaan landmark', 'info');
+  }
+  
+  // Helper function to get tool icon
+  function getToolIcon(type) {
+    const iconMap = {
+      'analysis': 'eye',
+      'intervention': 'activity',
+      'purification': 'wind',
+      'creation': 'hammer',
+      'temporal': 'clock'
+    };
+    
+    return iconMap[type] || 'hammer';
+  }
+  
+  // Function to update Forger UI
+  function updateForgerUI() {
+    // In a real implementation, this would update the UI elements
+    console.log('Updating Forger UI');
+  }
+  
+  // Function to show notification
+  function showNotification(message, type) {
+    // In a real implementation, this would show a toast notification
+    console.log(`[${type.toUpperCase()}] ${message}`);
+  }
+  
+  // Listen for state changes
+  gameStateManager.subscribe((state) => {
+    // Update Forger UI when state changes
+    console.log('Forger state updated');
+  });
+</script>
