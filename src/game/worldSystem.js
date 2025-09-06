@@ -11,6 +11,7 @@ class WorldSystem {
     this.activeEvents = [];
     this.worldCycle = null;
     this.simulationInterval = null;
+    this.lastUpdateTime = 0;
   }
 
   // Initialize the world
@@ -31,37 +32,30 @@ class WorldSystem {
     
     gameStateManager.updateWorld(initialState);
     
-    // Start world simulation
-    this.startSimulation();
-    
     return { success: true, message: 'Dunia berhasil diinisialisasi' };
   }
 
-  // Start world simulation
-  startSimulation() {
-    if (this.simulationInterval) {
-      clearInterval(this.simulationInterval);
+  // Update method for game loop integration
+  update() {
+    const now = performance.now();
+    
+    // Update world state (this can happen every frame)
+    this.updateWorldState();
+    
+    // Update regions and NPCs less frequently (every 5 seconds)
+    if (now - this.lastUpdateTime > 5000) {
+      this.updateRegions();
+      this.updateNPCs();
+      this.lastUpdateTime = now;
     }
     
-    // Run simulation every 10 seconds (represents 1 minute in-game)
-    this.simulationInterval = setInterval(() => {
-      this.simulateWorldStep();
-    }, 10000);
-    
-    return { success: true, message: 'Simulasi dunia dimulai' };
-  }
-
-  // Stop world simulation
-  stopSimulation() {
-    if (this.simulationInterval) {
-      clearInterval(this.simulationInterval);
-      this.simulationInterval = null;
+    // Check for random events (very infrequently)
+    if (Math.random() < 0.001) { // 0.1% chance per update
+      this.checkForRandomEvents();
     }
-    
-    return { success: true, message: 'Simulasi dunia dihentikan' };
   }
 
-  // Simulate one step of world progression
+  // Simulate one step of world progression (for backward compatibility)
   simulateWorldStep() {
     // Advance time
     gameStateManager.advanceTime(1);

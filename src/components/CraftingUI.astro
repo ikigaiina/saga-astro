@@ -5,11 +5,6 @@
 import { gameStateManager } from '../game/stateManager.js';
 import { craftingSystem } from '../game/craftingSystem.js';
 import { TRADABLE_ITEMS_DATA } from '../data/items.js';
-
-// Get initial state
-const state = gameStateManager.getState();
-const availableRecipes = craftingSystem.getAvailableRecipes();
-const playerInventory = state.player.inventory;
 ---
 
 <div id="crafting-container" class="h-full flex flex-col">
@@ -21,8 +16,8 @@ const playerInventory = state.player.inventory;
       <div class="glass-card p-4 flex-1">
         <div class="flex justify-between items-center mb-3">
           <h3 class="text-xl font-bold">Resep Tersedia</h3>
-          <div class="text-sm text-slate-400">
-            {availableRecipes.length} resep
+          <div class="text-sm text-slate-400" id="recipe-count">
+            0 resep
           </div>
         </div>
         
@@ -31,41 +26,17 @@ const playerInventory = state.player.inventory;
             type="text" 
             placeholder="Cari resep..." 
             class="glass-input w-full p-2 pl-8"
-            data-js-action="filter-recipes"
+            id="recipe-search"
           />
           <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-2 top-2.5"></i>
         </div>
         
-        <div class="space-y-2 overflow-y-auto pr-2 flex-1">
-          {availableRecipes.map((recipe) => (
-            <div 
-              class="crafting-recipe glass-card p-3 cursor-pointer hover:bg-slate-700/50 transition-colors"
-              data-js-action="select-recipe"
-              data-recipe-id={recipe.id}
-            >
-              <div class="flex justify-between items-start">
-                <h4 class="font-bold">{recipe.name}</h4>
-                <span class={`text-xs px-2 py-1 rounded-full ${
-                  recipe.requiredLevel <= state.player.level ? 
-                  'bg-green-500/20 text-green-300' : 
-                  'bg-red-500/20 text-red-300'
-                }`}>
-                  Lv. {recipe.requiredLevel}
-                </span>
-              </div>
-              <p class="text-xs text-slate-400 mt-1 line-clamp-2">{recipe.description}</p>
-              <div class="flex justify-between items-center mt-2">
-                <span class="text-xs text-slate-400">
-                  {recipe.timeRequired} menit
-                </span>
-                <span class={`text-xs ${
-                  recipe.canCraft ? 'text-green-400' : 'text-red-400'
-                }`}>
-                  {recipe.canCraft ? 'Dapat Dibuat' : 'Bahan Tidak Cukup'}
-                </span>
-              </div>
-            </div>
-          ))}
+        <div class="space-y-2 overflow-y-auto pr-2 flex-1" id="recipe-list">
+          <!-- Recipes will be populated dynamically -->
+          <div class="text-center text-slate-500 py-8">
+            <i data-lucide="loader" class="w-8 h-8 mx-auto mb-2 animate-spin"></i>
+            <p>Memuat resep...</p>
+          </div>
         </div>
       </div>
       
@@ -92,7 +63,7 @@ const playerInventory = state.player.inventory;
     <!-- Recipe details and crafting -->
     <div class="flex-1 flex flex-col">
       <div class="glass-card p-4 flex-1 overflow-hidden flex flex-col">
-        <!-- Recipe details will be populated by JavaScript -->
+        <!-- Recipe details will be populated dynamically -->
         <div id="recipe-details-container" class="flex items-center justify-center h-full text-slate-500">
           <div class="text-center">
             <i data-lucide="hammer" class="w-12 h-12 mx-auto mb-2"></i>
@@ -105,16 +76,92 @@ const playerInventory = state.player.inventory;
 </div>
 
 <script>
-  // State for selected recipe
   let selectedRecipe = null;
+  let allRecipes = [];
+  
+  // Function to initialize the crafting UI
+  function initializeCraftingUI() {
+    // Get available recipes
+    allRecipes = craftingSystem.getAvailableRecipes();
+    
+    // Update recipe count
+    const recipeCountElement = document.getElementById('recipe-count');
+    if (recipeCountElement) {
+      recipeCountElement.textContent = `${allRecipes.length} resep`;
+    }
+    
+    // Render recipe list
+    renderRecipeList(allRecipes);
+    
+    // Set up search functionality
+    const searchInput = document.getElementById('recipe-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        filterRecipes(e.target.value);
+      });
+    }
+  }
+  
+  // Function to render recipe list
+  function renderRecipeList(recipes) {
+    const recipeListElement = document.getElementById('recipe-list');
+    if (!recipeListElement) return;
+    
+    if (recipes.length === 0) {
+      recipeListElement.innerHTML = `
+        <div class="text-center text-slate-500 py-8">
+          <i data-lucide="hammer" class="w-8 h-8 mx-auto mb-2"></i>
+          <p>Tidak ada resep tersedia</p>
+        </div>
+      `;
+      return;
+    }
+    
+    recipeListElement.innerHTML = recipes.map(recipe => {
+      const canCraft = craftingSystem.canCraftRecipe(recipe);
+      return `
+        <div 
+          class="crafting-recipe glass-card p-3 cursor-pointer hover:bg-slate-700/50 transition-colors ${selectedRecipe && selectedRecipe.id === recipe.id ? 'bg-indigo-500/20 border border-indigo-500/50' : ''}"
+          data-recipe-id="${recipe.id}"
+        >
+          <div class="flex justify-between items-start">
+            <h4 class="font-bold">${recipe.name}</h4>
+            <span class="text-xs px-2 py-1 rounded-full ${
+              recipe.requiredLevel <= getPlayerLevel() ? 
+              'bg-green-500/20 text-green-300' : 
+              'bg-red-500/20 text-red-300'
+            }">
+              Lv. ${recipe.requiredLevel}
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 mt-1 line-clamp-2">${recipe.description}</p>
+          <div class="flex justify-between items-center mt-2">
+            <span class="text-xs text-slate-400">
+              ${recipe.timeRequired} menit
+            </span>
+            <span class="text-xs ${canCraft ? 'text-green-400' : 'text-red-400'}">
+              ${canCraft ? 'Dapat Dibuat' : 'Bahan Tidak Cukup'}
+            </span>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    // Add event listeners to recipe items
+    document.querySelectorAll('[data-recipe-id]').forEach(element => {
+      element.addEventListener('click', () => {
+        const recipeId = element.getAttribute('data-recipe-id');
+        selectRecipe(recipeId);
+      });
+    });
+  }
   
   // Function to select a recipe
   function selectRecipe(recipeId) {
     selectedRecipe = craftingSystem.getRecipe(recipeId);
-    console.log('Selected recipe:', selectedRecipe);
-    
-    // Update UI to show recipe details
-    updateRecipeDetails(selectedRecipe);
+    if (selectedRecipe) {
+      updateRecipeDetails(selectedRecipe);
+    }
   }
   
   // Function to update recipe details display
@@ -189,8 +236,8 @@ const playerInventory = state.player.inventory;
     }).join('');
     
     // Format output HTML
+    const itemData = TRADABLE_ITEMS_DATA[recipe.output.itemId];
     const outputItems = [...Array(recipe.output.quantity)].map((_, i) => {
-      const itemData = TRADABLE_ITEMS_DATA[recipe.output.itemId];
       return `
         <div class="glass-card p-3 text-center">
           <div class="w-12 h-12 mx-auto rounded bg-slate-700 flex items-center justify-center mb-2">
@@ -235,7 +282,7 @@ const playerInventory = state.player.inventory;
         </div>
         <button 
           class="glass-button secondary-button px-3 py-1 text-sm"
-          data-js-action="bookmark-recipe"
+          id="bookmark-recipe-btn"
           data-recipe-id="${recipe.id}"
         >
           <i data-lucide="bookmark" class="w-4 h-4 mr-1"></i>
@@ -269,9 +316,9 @@ const playerInventory = state.player.inventory;
             'primary-button' : 
             'secondary-button opacity-50 cursor-not-allowed'
           }"
-          data-js-disabled="${!canCraftRecipe(recipe)}"
-          data-js-action="craft-item"
+          id="craft-item-btn"
           data-recipe-id="${recipe.id}"
+          ${canCraftRecipe(recipe) ? '' : 'disabled'}
         >
           <i data-lucide="hammer" class="w-5 h-5 mr-2"></i>
           Buat Item (${recipe.output.quantity}x)
@@ -283,98 +330,105 @@ const playerInventory = state.player.inventory;
         ` : ''}
       </div>
     `;
+    
+    // Add event listeners to buttons
+    const craftButton = document.getElementById('craft-item-btn');
+    if (craftButton) {
+      craftButton.addEventListener('click', () => {
+        craftItem(recipe.id);
+      });
+    }
+    
+    const bookmarkButton = document.getElementById('bookmark-recipe-btn');
+    if (bookmarkButton) {
+      bookmarkButton.addEventListener('click', () => {
+        bookmarkRecipe(recipe.id);
+      });
+    }
   }
   
   // Function to craft an item
   function craftItem(recipeId) {
-    const recipe = craftingSystem.getRecipe(recipeId);
-    if (!recipe || !canCraftRecipe(recipe)) {
-      console.error('Cannot craft recipe - insufficient materials');
-      return;
-    }
-    
     const result = craftingSystem.craftItem(recipeId);
+    
     if (result.success) {
-      console.log(result.message);
       showNotification(result.message, 'success');
       
-      // Update UI
-      updateCraftingUI();
+      // Refresh UI to show updated inventory
+      initializeCraftingUI();
+      if (selectedRecipe) {
+        updateRecipeDetails(selectedRecipe);
+      }
+      
+      // Update recipe list to show new craftability status
+      const recipes = craftingSystem.getAvailableRecipes();
+      renderRecipeList(recipes);
     } else {
-      console.error(result.message);
       showNotification(result.message, 'error');
     }
   }
   
-  // Function to check if player can craft recipe
-  function canCraftRecipe(recipe) {
-    return craftingSystem.canCraftRecipe(recipe);
-  }
-  
   // Function to bookmark a recipe
   function bookmarkRecipe(recipeId) {
-    console.log('Bookmarking recipe:', recipeId);
     showNotification('Resep disimpan ke koleksi', 'info');
   }
   
   // Function to filter recipes
   function filterRecipes(searchTerm) {
-    console.log('Filtering recipes with term:', searchTerm);
-    // In a real implementation, this would filter the recipe list
+    if (!searchTerm) {
+      renderRecipeList(allRecipes);
+      return;
+    }
+    
+    const filteredRecipes = allRecipes.filter(recipe => 
+      recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      recipe.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    
+    renderRecipeList(filteredRecipes);
   }
   
-  // Function to update crafting UI
-  function updateCraftingUI() {
-    // In a real implementation, this would update the UI elements
-    console.log('Updating crafting UI');
+  // Helper function to get player level
+  function getPlayerLevel() {
+    const state = gameStateManager.getState();
+    return state.player.level;
   }
   
   // Function to show notification
   function showNotification(message, type) {
-    // In a real implementation, this would show a toast notification
-    console.log(`[${type.toUpperCase()}] ${message}`);
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 ${
+      type === 'success' ? 'bg-green-500' :
+      type === 'error' ? 'bg-red-500' :
+      type === 'info' ? 'bg-blue-500' :
+      'bg-slate-700'
+    } text-white`;
+    notification.textContent = message;
+    
+    // Add to document
+    document.body.appendChild(notification);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 3000);
   }
   
   // Set up event listeners
   document.addEventListener('DOMContentLoaded', () => {
-    // Handle recipe selection
-    document.addEventListener('click', (event) => {
-      if (event.target.closest('[data-js-action="select-recipe"]')) {
-        const recipeId = event.target.closest('[data-js-action="select-recipe"]').getAttribute('data-recipe-id');
-        if (recipeId) {
-          selectRecipe(recipeId);
-        }
-      }
-      
-      // Handle bookmark button
-      if (event.target.closest('[data-js-action="bookmark-recipe"]')) {
-        const recipeId = event.target.closest('[data-js-action="bookmark-recipe"]').getAttribute('data-recipe-id');
-        if (recipeId) {
-          bookmarkRecipe(recipeId);
-        }
-      }
-      
-      // Handle craft button
-      if (event.target.closest('[data-js-action="craft-item"]')) {
-        const recipeId = event.target.closest('[data-js-action="craft-item"]').getAttribute('data-recipe-id');
-        if (recipeId) {
-          craftItem(recipeId);
-        }
-      }
-    });
-    
-    // Handle filtering
-    const filterInput = document.querySelector('[data-js-action="filter-recipes"]');
-    if (filterInput) {
-      filterInput.addEventListener('input', (e) => {
-        filterRecipes(e.target.value);
-      });
-    }
+    // Initialize crafting UI
+    initializeCraftingUI();
   });
   
   // Listen for state changes
   gameStateManager.subscribe((state) => {
-    // Update crafting UI when state changes
-    console.log('Crafting state updated');
+    // Refresh crafting UI when state changes
+    initializeCraftingUI();
+    if (selectedRecipe) {
+      updateRecipeDetails(selectedRecipe);
+    }
   });
 </script>

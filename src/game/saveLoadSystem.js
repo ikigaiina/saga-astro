@@ -3,6 +3,28 @@
 
 import { gameStateManager } from './stateManager.js';
 
+// Helper function to serialize complex objects
+function serializeState(state) {
+  // Create a deep copy of the state
+  const serializedState = JSON.parse(JSON.stringify(state));
+  
+  // Handle any special serialization needs here
+  // For example, convert dates to strings, remove circular references, etc.
+  
+  return serializedState;
+}
+
+// Helper function to deserialize state
+function deserializeState(serializedState) {
+  // Parse the serialized state
+  const state = JSON.parse(serializedState);
+  
+  // Handle any special deserialization needs here
+  // For example, convert strings back to dates, restore object references, etc.
+  
+  return state;
+}
+
 class SaveLoadSystem {
   constructor() {
     this.saveFileName = 'saga_save_data';
@@ -18,7 +40,35 @@ class SaveLoadSystem {
       this.startAutoSave();
     }
     
+    // Try to load the most recent auto save
+    this.loadLatestAutoSave();
+    
     console.log('Save/Load system initialized');
+  }
+
+  // Load the most recent auto save
+  loadLatestAutoSave() {
+    try {
+      const saves = this.getAvailableSaves();
+      const autoSaves = saves.filter(save => save.name === 'Auto Save');
+      
+      if (autoSaves.length > 0) {
+        // Sort by timestamp (newest first)
+        autoSaves.sort((a, b) => b.timestamp - a.timestamp);
+        
+        // Load the most recent auto save
+        const latestAutoSave = autoSaves[0];
+        const result = this.loadGame(latestAutoSave.key);
+        
+        if (result.success) {
+          console.log('Latest auto save loaded successfully');
+        } else {
+          console.log('Failed to load latest auto save:', result.message);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading latest auto save:', error);
+    }
   }
 
   // Start auto-save interval

@@ -13,6 +13,7 @@ import ExplorationUI from './ExplorationUI.astro';
 import CraftingUI from './CraftingUI.astro';
 import ForgerTools from './ForgerTools.astro';
 import { gameStateManager } from '../game/stateManager.js';
+import { gameLoop } from '../game/gameLoop.js';
 ---
 
 <div id="game-ui" class="flex flex-col h-screen bg-slate-900 text-slate-100 font-mono">
@@ -25,14 +26,21 @@ import { gameStateManager } from '../game/stateManager.js';
       <button 
         id="save-game-btn" 
         class="glass-button secondary-button px-3 py-1 text-sm"
-        onClick={() => gameStateManager.saveGame()}
+        onClick={() => window.saveGame ? window.saveGame() : gameStateManager.saveGame()}
       >
         Simpan
       </button>
       <button 
         id="load-game-btn" 
         class="glass-button secondary-button px-3 py-1 text-sm"
-        onClick={() => gameStateManager.loadGame()}
+        onClick={() => {
+          const saves = window.getAvailableSaves ? window.getAvailableSaves() : [];
+          if (saves.length > 0) {
+            window.loadGame(saves[0].key);
+          } else {
+            alert('Tidak ada save yang tersedia');
+          }
+        }}
       >
         Muat
       </button>
@@ -222,5 +230,16 @@ import { gameStateManager } from '../game/stateManager.js';
     if (currentMessage) {
       currentMessage.textContent = `Berlokasi di ${state.world.regions[state.player.location]?.name || 'wilayah tidak diketahui'}`;
     }
+  });
+  
+  // Initialize game systems
+  document.addEventListener('DOMContentLoaded', () => {
+    // Start world system
+    if (typeof window.worldSystem !== 'undefined') {
+      window.worldSystem.initializeWorld();
+    }
+    
+    // Log that game systems are initialized
+    console.log('Game UI systems initialized');
   });
 </script>

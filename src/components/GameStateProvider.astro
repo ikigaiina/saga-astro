@@ -3,37 +3,174 @@
 // Game state provider component for The Soulforge Saga
 
 import { gameStateManager } from '../game/stateManager.js';
-import { worldSystem } from '../game/worldSystem.js';
-import { combatSystem } from '../game/combatSystem.js';
-import { explorationSystem } from '../game/explorationSystem.js';
-import { questSystem } from '../game/questSystem.js';
-import { inventorySystem } from '../game/inventorySystem.js';
-import { craftingSystem } from '../game/craftingSystem.js';
-import { forgerSystem } from '../game/forgerSystem.js';
-
-// Initialize all game systems
-worldSystem.initializeWorld();
+import { saveLoadSystem } from '../game/saveLoadSystem.js';
 ---
 
-<!-- This component provides game state to child components -->
-<!-- It doesn't render anything visible, just initializes systems -->
+<!-- This component provides game state and save/load functionality -->
+<div id="game-state-provider" class="hidden"></div>
 
 <script>
   // Initialize game systems
-  console.log('Initializing game systems...');
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize game state
+    gameStateManager.initialize();
+    
+    // Initialize save/load system
+    saveLoadSystem.initialize();
+    
+    console.log('Game state provider initialized');
+  });
   
-  // Initialize game state
-  gameStateManager.initialize();
-  
-  // Initialize world system
-  worldSystem.initializeWorld();
-  
-  // Log initialization
-  console.log('Game systems initialized');
-  
-  // Set up periodic save (every 5 minutes)
+  // Set up periodic auto-save
   setInterval(() => {
-    gameStateManager.saveGame();
-    console.log('Game saved automatically');
-  }, 5 * 60 * 1000); // 5 minutes in milliseconds
+    try {
+      saveLoadSystem.autoSave();
+    } catch (error) {
+      console.error('Auto-save failed:', error);
+    }
+  }, 5 * 60 * 1000); // Every 5 minutes
+  
+  // Set up beforeunload event to save game state
+  window.addEventListener('beforeunload', (event) => {
+    try {
+      const result = saveLoadSystem.saveGame('Auto Save');
+      if (!result.success) {
+        console.error('Failed to save game on unload:', result.message);
+      }
+    } catch (error) {
+      console.error('Error saving game on unload:', error);
+    }
+  });
+  
+  // Function to manually save the game
+  window.saveGame = function(saveName = null) {
+    try {
+      const result = saveLoadSystem.saveGame(saveName);
+      if (result.success) {
+        showNotification('Game saved successfully!', 'success');
+      } else {
+        showNotification('Failed to save game: ' + result.message, 'error');
+      }
+      return result;
+    } catch (error) {
+      console.error('Error saving game:', error);
+      showNotification('Error saving game: ' + error.message, 'error');
+      return { success: false, message: error.message };
+    }
+  };
+  
+  // Function to load a saved game
+  window.loadGame = function(saveKey) {
+    try {
+      const result = saveLoadSystem.loadGame(saveKey);
+      if (result.success) {
+        showNotification('Game loaded successfully!', 'success');
+        // Refresh the UI
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      } else {
+        showNotification('Failed to load game: ' + result.message, 'error');
+      }
+      return result;
+    } catch (error) {
+      console.error('Error loading game:', error);
+      showNotification('Error loading game: ' + error.message, 'error');
+      return { success: false, message: error.message };
+    }
+  };
+  
+  // Function to get available saves
+  window.getAvailableSaves = function() {
+    try {
+      return saveLoadSystem.getAvailableSaves();
+    } catch (error) {
+      console.error('Error getting saves:', error);
+      return [];
+    }
+  };
+  
+  // Function to delete a save
+  window.deleteSave = function(saveKey) {
+    try {
+      const result = saveLoadSystem.deleteSave(saveKey);
+      if (result.success) {
+        showNotification('Save deleted successfully!', 'success');
+      } else {
+        showNotification('Failed to delete save: ' + result.message, 'error');
+      }
+      return result;
+    } catch (error) {
+      console.error('Error deleting save:', error);
+      showNotification('Error deleting save: ' + error.message, 'error');
+      return { success: false, message: error.message };
+    }
+  };
+  
+  // Function to quick save
+  window.quickSave = function() {
+    try {
+      const result = saveLoadSystem.quickSave();
+      if (result.success) {
+        showNotification('Quick save completed!', 'success');
+      } else {
+        showNotification('Quick save failed: ' + result.message, 'error');
+      }
+      return result;
+    } catch (error) {
+      console.error('Error quick saving:', error);
+      showNotification('Error quick saving: ' + error.message, 'error');
+      return { success: false, message: error.message };
+    }
+  };
+  
+  // Function to quick load
+  window.quickLoad = function() {
+    try {
+      const result = saveLoadSystem.quickLoad();
+      if (result.success) {
+        showNotification('Quick load completed!', 'success');
+        // Refresh the UI
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      } else {
+        showNotification('Quick load failed: ' + result.message, 'error');
+      }
+      return result;
+    } catch (error) {
+      console.error('Error quick loading:', error);
+      showNotification('Error quick loading: ' + error.message, 'error');
+      return { success: false, message: error.message };
+    }
+  };
+  
+  // Function to show notification
+  function showNotification(message, type) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 ${
+      type === 'success' ? 'bg-green-500' :
+      type === 'error' ? 'bg-red-500' :
+      type === 'info' ? 'bg-blue-500' :
+      'bg-slate-700'
+    } text-white`;
+    notification.textContent = message;
+    
+    // Add to document
+    document.body.appendChild(notification);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 3000);
+  }
+  
+  // Expose game systems to window for debugging
+  window.gameStateManager = gameStateManager;
+  window.saveLoadSystem = saveLoadSystem;
+  
+  console.log('GameStateProvider initialized');
 </script>

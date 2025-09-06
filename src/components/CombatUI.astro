@@ -12,14 +12,14 @@ const state = gameStateManager.getState();
 <div id="combat-container" class="h-full flex flex-col">
   <h2 class="text-2xl font-bold mb-4">Pertempuran</h2>
   
-  {/* Combat area */}
+  <!-- Combat area -->
   <div class="flex-1 flex gap-4 overflow-hidden">
-    {/* Player side */}
+    <!-- Player side -->
     <div class="w-1/2 flex flex-col">
       <div class="glass-card p-4 flex-1 flex flex-col">
         <h3 class="text-xl font-bold mb-3">Pemain</h3>
         
-        {/* Player character */}
+        <!-- Player character -->
         <div class="flex items-center mb-6">
           <div class="w-24 h-24 rounded-full bg-indigo-500 flex items-center justify-center mr-4">
             <i data-lucide="user" class="w-12 h-12 text-white"></i>
@@ -33,29 +33,31 @@ const state = gameStateManager.getState();
               </span>
             </div>
             
-            {/* Health bar */}
+            <!-- Health bar -->
             <div class="mt-3">
               <div class="flex justify-between text-sm mb-1">
                 <span>Kesehatan</span>
-                <span>{state.player.health}/{state.player.maxHealth}</span>
+                <span id="player-health">{state.player.health}/{state.player.maxHealth}</span>
               </div>
               <div class="w-full bg-slate-700 rounded-full h-3 overflow-hidden">
                 <div 
                   class="h-full bg-red-500 rounded-full transition-all duration-300"
+                  id="player-health-bar"
                   style={`width: ${(state.player.health / state.player.maxHealth) * 100}%`}
                 ></div>
               </div>
             </div>
             
-            {/* Essence bar */}
+            <!-- Essence bar -->
             <div class="mt-2">
               <div class="flex justify-between text-sm mb-1">
                 <span>Essence</span>
-                <span>{state.player.essence}</span>
+                <span id="player-essence">{state.player.essence}</span>
               </div>
               <div class="w-full bg-slate-700 rounded-full h-2 overflow-hidden">
                 <div 
                   class="h-full bg-yellow-500 rounded-full transition-all duration-300"
+                  id="player-essence-bar"
                   style={`width: ${Math.min(100, state.player.essence)}%`}
                 ></div>
               </div>
@@ -63,34 +65,34 @@ const state = gameStateManager.getState();
           </div>
         </div>
         
-        {/* Combat actions */}
+        <!-- Combat actions -->
         <div class="mt-auto">
           <h4 class="text-lg font-bold mb-3">Aksi</h4>
           <div class="grid grid-cols-2 gap-3">
             <button 
               class="glass-button primary-button py-3 flex items-center justify-center"
-              onClick={() => performAction('attack')}
+              data-action="attack"
             >
               <i data-lucide="sword" class="w-5 h-5 mr-2"></i>
               Serang
             </button>
             <button 
               class="glass-button secondary-button py-3 flex items-center justify-center"
-              onClick={() => performAction('defend')}
+              data-action="defend"
             >
               <i data-lucide="shield" class="w-5 h-5 mr-2"></i>
               Bertahan
             </button>
             <button 
               class="glass-button secondary-button py-3 flex items-center justify-center"
-              onClick={() => performAction('special')}
+              data-action="special"
             >
               <i data-lucide="zap" class="w-5 h-5 mr-2"></i>
               Serangan Spesial
             </button>
             <button 
               class="glass-button secondary-button py-3 flex items-center justify-center"
-              onClick={() => performAction('flee')}
+              data-action="flee"
             >
               <i data-lucide="arrow-up-left" class="w-5 h-5 mr-2"></i>
               Melarikan Diri
@@ -100,78 +102,69 @@ const state = gameStateManager.getState();
       </div>
     </div>
     
-    {/* Enemy side */}
+    <!-- Enemy side -->
     <div class="w-1/2 flex flex-col">
       <div class="glass-card p-4 flex-1 flex flex-col">
         <h3 class="text-xl font-bold mb-3">Musuh</h3>
         
-        {/* Enemy character */}
-        <div class="flex items-center mb-6">
-          <div class="w-24 h-24 rounded-full bg-red-500 flex items-center justify-center mr-4">
-            <i data-lucide="skull" class="w-12 h-12 text-white"></i>
-          </div>
-          <div class="flex-1">
-            <h4 class="text-2xl font-bold">Serigala Buas</h4>
-            <div class="flex items-center mt-1">
-              <span class="text-sm text-slate-400 mr-3">Level 3</span>
-              <span class="text-sm px-2 py-1 rounded-full bg-red-500/20 text-red-300">
-                Predator
-              </span>
+        <!-- Enemy character (will be updated dynamically) -->
+        <div id="enemy-container">
+          <div class="flex items-center mb-6">
+            <div class="w-24 h-24 rounded-full bg-red-500 flex items-center justify-center mr-4">
+              <i data-lucide="skull" class="w-12 h-12 text-white"></i>
             </div>
-            
-            {/* Health bar */}
-            <div class="mt-3">
-              <div class="flex justify-between text-sm mb-1">
-                <span>Kesehatan</span>
-                <span>45/60</span>
+            <div class="flex-1">
+              <h4 class="text-2xl font-bold" id="enemy-name">Serigala Buas</h4>
+              <div class="flex items-center mt-1">
+                <span class="text-sm text-slate-400 mr-3">Level <span id="enemy-level">3</span></span>
+                <span class="text-sm px-2 py-1 rounded-full bg-red-500/20 text-red-300" id="enemy-type">
+                  Predator
+                </span>
               </div>
-              <div class="w-full bg-slate-700 rounded-full h-3 overflow-hidden">
-                <div 
-                  class="h-full bg-red-500 rounded-full transition-all duration-300"
-                  style="width: 75%"
-                ></div>
+              
+              <!-- Health bar -->
+              <div class="mt-3">
+                <div class="flex justify-between text-sm mb-1">
+                  <span>Kesehatan</span>
+                  <span id="enemy-health">45/60</span>
+                </div>
+                <div class="w-full bg-slate-700 rounded-full h-3 overflow-hidden">
+                  <div 
+                    class="h-full bg-red-500 rounded-full transition-all duration-300"
+                    id="enemy-health-bar"
+                    style="width: 75%"
+                  ></div>
+                </div>
+              </div>
+              
+              <!-- Status effects -->
+              <div class="mt-2 flex flex-wrap gap-1" id="enemy-status-effects">
+                <span class="text-xs px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300">
+                  <i data-lucide="zap" class="w-3 h-3 mr-1 inline"></i>
+                  Kecepatan Tinggi
+                </span>
               </div>
             </div>
-            
-            {/* Status effects */}
-            <div class="mt-2 flex flex-wrap gap-1">
-              <span class="text-xs px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300">
-                <i data-lucide="zap" class="w-3 h-3 mr-1 inline"></i>
-                Kecepatan Tinggi
-              </span>
-            </div>
           </div>
-        </div>
-        
-        {/* Enemy behavior */}
-        <div class="mt-auto">
-          <h4 class="text-lg font-bold mb-3">Perilaku</h4>
-          <div class="glass-card p-3">
-            <p class="text-slate-300 italic">
-              "Serigala menggeram dan menunjukkan taringnya, siap menyerang!"
-            </p>
+          
+          <!-- Enemy behavior -->
+          <div class="mt-auto">
+            <h4 class="text-lg font-bold mb-3">Perilaku</h4>
+            <div class="glass-card p-3">
+              <p class="text-slate-300 italic" id="enemy-behavior">
+                "Serigala menggeram dan menunjukkan taringnya, siap menyerang!"
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
   
-  {/* Combat log */}
+  <!-- Combat log -->
   <div class="glass-card p-4 mt-4">
     <h3 class="text-xl font-bold mb-3">Log Pertempuran</h3>
-    <div class="h-32 overflow-y-auto pr-2 space-y-2">
-      <div class="text-sm">
-        <span class="text-green-400">[Pemain]</span> menyerang <span class="text-red-400">Serigala Buas</span> untuk 12 kerusakan!
-      </div>
-      <div class="text-sm">
-        <span class="text-red-400">[Serigala Buas]</span> menggeram dengan marah!
-      </div>
-      <div class="text-sm">
-        <span class="text-red-400">[Serigala Buas]</span> menyerang <span class="text-green-400">Pemain</span> untuk 8 kerusakan!
-      </div>
-      <div class="text-sm">
-        <span class="text-green-400">[Pemain]</span> mengambil posisi pertahanan.
-      </div>
+    <div class="h-32 overflow-y-auto pr-2 space-y-2" id="combat-log">
       <div class="text-sm text-slate-400">
         Pertempuran dimulai...
       </div>
@@ -180,36 +173,154 @@ const state = gameStateManager.getState();
 </div>
 
 <script>
+  let currentCombatId = null;
+  
   // Function to perform combat action
   function performAction(action) {
-    console.log('Performing action:', action);
+    if (!currentCombatId) {
+      addToCombatLog("Tidak ada pertempuran aktif", "error");
+      return;
+    }
     
-    // In a real implementation, this would communicate with the combat system
+    let result;
+    
     switch (action) {
       case 'attack':
-        // Attack enemy
-        console.log('Attacking enemy');
+        result = combatSystem.playerTurn(currentCombatId, 'attack');
         break;
       case 'defend':
-        // Defend against next attack
-        console.log('Taking defensive stance');
+        result = combatSystem.playerTurn(currentCombatId, 'defend');
         break;
       case 'special':
-        // Use special ability
-        console.log('Using special ability');
+        result = combatSystem.playerTurn(currentCombatId, 'special_attack');
         break;
       case 'flee':
-        // Attempt to flee
-        console.log('Attempting to flee');
+        result = combatSystem.fleeCombat(currentCombatId);
         break;
       default:
-        console.log('Unknown action');
+        addToCombatLog("Aksi tidak dikenal", "error");
+        return;
+    }
+    
+    if (result.success) {
+      addToCombatLog(result.message, "player");
+      
+      // If combat ended, show result
+      if (result.combatEnded) {
+        if (result.victory) {
+          addToCombatLog("Anda menang dalam pertempuran!", "success");
+          // In a real implementation, we would transition back to exploration
+        } else if (result.fled) {
+          addToCombatLog("Anda berhasil melarikan diri!", "info");
+          // In a real implementation, we would transition back to exploration
+        } else {
+          addToCombatLog("Anda dikalahkan dalam pertempuran!", "error");
+          // In a real implementation, we would handle player defeat
+        }
+      }
+    } else {
+      addToCombatLog(result.message, "error");
     }
   }
+  
+  // Function to add message to combat log
+  function addToCombatLog(message, type = "info") {
+    const logContainer = document.getElementById('combat-log');
+    if (!logContainer) return;
+    
+    const entry = document.createElement('div');
+    entry.className = 'text-sm';
+    
+    switch (type) {
+      case 'player':
+        entry.innerHTML = `<span class="text-green-400">[Pemain]</span> ${message}`;
+        break;
+      case 'enemy':
+        entry.innerHTML = `<span class="text-red-400">[Musuh]</span> ${message}`;
+        break;
+      case 'success':
+        entry.className += ' text-green-400';
+        entry.textContent = message;
+        break;
+      case 'error':
+        entry.className += ' text-red-400';
+        entry.textContent = message;
+        break;
+      case 'info':
+        entry.className += ' text-blue-400';
+        entry.textContent = message;
+        break;
+      default:
+        entry.textContent = message;
+    }
+    
+    logContainer.appendChild(entry);
+    logContainer.scrollTop = logContainer.scrollHeight;
+  }
+  
+  // Function to update combat UI with current combat state
+  function updateCombatUI() {
+    const state = gameStateManager.getState();
+    
+    // Update player stats
+    const playerHealthElement = document.getElementById('player-health');
+    const playerHealthBar = document.getElementById('player-health-bar');
+    const playerEssenceElement = document.getElementById('player-essence');
+    const playerEssenceBar = document.getElementById('player-essence-bar');
+    
+    if (playerHealthElement) {
+      playerHealthElement.textContent = `${state.player.health}/${state.player.maxHealth}`;
+    }
+    
+    if (playerHealthBar) {
+      playerHealthBar.style.width = `${(state.player.health / state.player.maxHealth) * 100}%`;
+    }
+    
+    if (playerEssenceElement) {
+      playerEssenceElement.textContent = state.player.essence;
+    }
+    
+    if (playerEssenceBar) {
+      playerEssenceBar.style.width = `${Math.min(100, state.player.essence)}%`;
+    }
+    
+    // Get current combat
+    const activeCombat = combatSystem.getActiveCombat(state.player.id);
+    if (activeCombat) {
+      currentCombatId = activeCombat.id;
+      
+      // Update enemy info
+      const enemyName = document.getElementById('enemy-name');
+      const enemyLevel = document.getElementById('enemy-level');
+      const enemyHealth = document.getElementById('enemy-health');
+      const enemyHealthBar = document.getElementById('enemy-health-bar');
+      const enemyType = document.getElementById('enemy-type');
+      
+      if (enemyName) enemyName.textContent = activeCombat.enemy.name;
+      if (enemyLevel) enemyLevel.textContent = activeCombat.enemy.level;
+      if (enemyHealth) enemyHealth.textContent = `${activeCombat.enemy.health}/${activeCombat.enemy.maxHealth}`;
+      if (enemyHealthBar) enemyHealthBar.style.width = `${(activeCombat.enemy.health / activeCombat.enemy.maxHealth) * 100}%`;
+      if (enemyType) enemyType.textContent = activeCombat.enemy.type;
+    }
+  }
+  
+  // Set up event listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    // Add event listeners to action buttons
+    document.querySelectorAll('[data-action]').forEach(button => {
+      button.addEventListener('click', () => {
+        const action = button.getAttribute('data-action');
+        performAction(action);
+      });
+    });
+    
+    // Initialize combat UI
+    updateCombatUI();
+  });
   
   // Listen for combat state changes
   gameStateManager.subscribe((state) => {
     // Update combat UI when state changes
-    console.log('Combat state updated');
+    updateCombatUI();
   });
 </script>

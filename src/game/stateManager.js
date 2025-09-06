@@ -5,6 +5,7 @@ import { SKILL_TREE_DATA } from '../data/skills.js';
 import { REGIONS_DATA } from '../data/world.js';
 import { CREATURES_DATA, NPC_LIFESTAGES, NPC_HEALTH_STATES } from '../data/npcs.js';
 import { TRADABLE_ITEMS_DATA } from '../data/items.js';
+import { gameLoop } from './gameLoop.js';
 
 class GameStateManager {
   constructor() {

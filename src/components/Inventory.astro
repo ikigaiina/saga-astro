@@ -4,11 +4,7 @@
 
 import { gameStateManager } from '../game/stateManager.js';
 import { inventorySystem } from '../game/inventorySystem.js';
-
-// Get initial state
-const state = gameStateManager.getState();
-const inventory = state.player.inventory;
-const equipment = state.player.equipment;
+import { TRADABLE_ITEMS_DATA } from '../data/items.js';
 ---
 
 <div id="inventory-container" class="h-full flex flex-col">
@@ -22,117 +18,51 @@ const equipment = state.player.equipment;
         
         <div class="grid grid-cols-2 gap-3">
           <!-- Weapon slot -->
-          <div class="equipment-slot glass-card p-3 text-center">
+          <div class="equipment-slot glass-card p-3 text-center" data-slot="weapon">
             <div class="text-sm text-slate-400 mb-1">Senjata</div>
-            {equipment.weapon ? (
-              <div class="cursor-pointer" 
-                   title={`${equipment.weapon.name} (${equipment.weapon.rarity})`}
-                   onClick={() => unequipItem('weapon')}>
-                <div class="w-12 h-12 mx-auto bg-slate-700 rounded flex items-center justify-center mb-1">
-                  <i data-lucide="sword" class="w-6 h-6"></i>
-                </div>
-                <div class="text-xs truncate">{equipment.weapon.name}</div>
-              </div>
-            ) : (
-              <div class="w-12 h-12 mx-auto bg-slate-800 rounded flex items-center justify-center mb-1 border-2 border-dashed border-slate-600">
-                <i data-lucide="sword" class="w-6 h-6 text-slate-600"></i>
-              </div>
-            )}
+            <div class="slot-content">
+              <!-- Equipment will be populated dynamically -->
+            </div>
           </div>
           
           <!-- Armor slot -->
-          <div class="equipment-slot glass-card p-3 text-center">
+          <div class="equipment-slot glass-card p-3 text-center" data-slot="armor">
             <div class="text-sm text-slate-400 mb-1">Armor</div>
-            {equipment.armor ? (
-              <div class="cursor-pointer"
-                   title={`${equipment.armor.name} (${equipment.armor.rarity})`}
-                   onClick={() => unequipItem('armor')}>
-                <div class="w-12 h-12 mx-auto bg-slate-700 rounded flex items-center justify-center mb-1">
-                  <i data-lucide="shield" class="w-6 h-6"></i>
-                </div>
-                <div class="text-xs truncate">{equipment.armor.name}</div>
-              </div>
-            ) : (
-              <div class="w-12 h-12 mx-auto bg-slate-800 rounded flex items-center justify-center mb-1 border-2 border-dashed border-slate-600">
-                <i data-lucide="shield" class="w-6 h-6 text-slate-600"></i>
-              </div>
-            )}
+            <div class="slot-content">
+              <!-- Equipment will be populated dynamically -->
+            </div>
           </div>
           
           <!-- Helmet slot -->
-          <div class="equipment-slot glass-card p-3 text-center">
+          <div class="equipment-slot glass-card p-3 text-center" data-slot="helmet">
             <div class="text-sm text-slate-400 mb-1">Helm</div>
-            {equipment.helmet ? (
-              <div class="cursor-pointer"
-                   title={`${equipment.helmet.name} (${equipment.helmet.rarity})`}
-                   onClick={() => unequipItem('helmet')}>
-                <div class="w-12 h-12 mx-auto bg-slate-700 rounded flex items-center justify-center mb-1">
-                  <i data-lucide="hard-hat" class="w-6 h-6"></i>
-                </div>
-                <div class="text-xs truncate">{equipment.helmet.name}</div>
-              </div>
-            ) : (
-              <div class="w-12 h-12 mx-auto bg-slate-800 rounded flex items-center justify-center mb-1 border-2 border-dashed border-slate-600">
-                <i data-lucide="hard-hat" class="w-6 h-6 text-slate-600"></i>
-              </div>
-            )}
+            <div class="slot-content">
+              <!-- Equipment will be populated dynamically -->
+            </div>
           </div>
           
           <!-- Boots slot -->
-          <div class="equipment-slot glass-card p-3 text-center">
+          <div class="equipment-slot glass-card p-3 text-center" data-slot="boots">
             <div class="text-sm text-slate-400 mb-1">Sepatu</div>
-            {equipment.boots ? (
-              <div class="cursor-pointer"
-                   title={`${equipment.boots.name} (${equipment.boots.rarity})`}
-                   onClick={() => unequipItem('boots')}>
-                <div class="w-12 h-12 mx-auto bg-slate-700 rounded flex items-center justify-center mb-1">
-                  <i data-lucide="boot" class="w-6 h-6"></i>
-                </div>
-                <div class="text-xs truncate">{equipment.boots.name}</div>
-              </div>
-            ) : (
-              <div class="w-12 h-12 mx-auto bg-slate-800 rounded flex items-center justify-center mb-1 border-2 border-dashed border-slate-600">
-                <i data-lucide="boot" class="w-6 h-6 text-slate-600"></i>
-              </div>
-            )}
+            <div class="slot-content">
+              <!-- Equipment will be populated dynamically -->
+            </div>
           </div>
           
           <!-- Ring 1 slot -->
-          <div class="equipment-slot glass-card p-3 text-center">
+          <div class="equipment-slot glass-card p-3 text-center" data-slot="ring1">
             <div class="text-sm text-slate-400 mb-1">Cincin</div>
-            {equipment.ring1 ? (
-              <div class="cursor-pointer"
-                   title={`${equipment.ring1.name} (${equipment.ring1.rarity})`}
-                   onClick={() => unequipItem('ring1')}>
-                <div class="w-12 h-12 mx-auto bg-slate-700 rounded flex items-center justify-center mb-1">
-                  <i data-lucide="circle" class="w-6 h-6"></i>
-                </div>
-                <div class="text-xs truncate">{equipment.ring1.name}</div>
-              </div>
-            ) : (
-              <div class="w-12 h-12 mx-auto bg-slate-800 rounded flex items-center justify-center mb-1 border-2 border-dashed border-slate-600">
-                <i data-lucide="circle" class="w-6 h-6 text-slate-600"></i>
-              </div>
-            )}
+            <div class="slot-content">
+              <!-- Equipment will be populated dynamically -->
+            </div>
           </div>
           
           <!-- Ring 2 slot -->
-          <div class="equipment-slot glass-card p-3 text-center">
+          <div class="equipment-slot glass-card p-3 text-center" data-slot="ring2">
             <div class="text-sm text-slate-400 mb-1">Cincin</div>
-            {equipment.ring2 ? (
-              <div class="cursor-pointer"
-                   title={`${equipment.ring2.name} (${equipment.ring2.rarity})`}
-                   onClick={() => unequipItem('ring2')}>
-                <div class="w-12 h-12 mx-auto bg-slate-700 rounded flex items-center justify-center mb-1">
-                  <i data-lucide="circle" class="w-6 h-6"></i>
-                </div>
-                <div class="text-xs truncate">{equipment.ring2.name}</div>
-              </div>
-            ) : (
-              <div class="w-12 h-12 mx-auto bg-slate-800 rounded flex items-center justify-center mb-1 border-2 border-dashed border-slate-600">
-                <i data-lucide="circle" class="w-6 h-6 text-slate-600"></i>
-              </div>
-            )}
+            <div class="slot-content">
+              <!-- Equipment will be populated dynamically -->
+            </div>
           </div>
         </div>
       </div>
@@ -140,23 +70,8 @@ const equipment = state.player.equipment;
       <!-- Stats section -->
       <div class="glass-card p-4">
         <h3 class="text-xl font-bold mb-3">Statistik</h3>
-        <div class="space-y-2 text-sm">
-          <div class="flex justify-between">
-            <span class="text-slate-400">Kekuatan:</span>
-            <span>10</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-400">Ketangkasan:</span>
-            <span>10</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-400">Intelektual:</span>
-            <span>10</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-400">Kepribadian:</span>
-            <span>10</span>
-          </div>
+        <div class="space-y-2 text-sm" id="player-stats">
+          <!-- Stats will be populated dynamically -->
         </div>
       </div>
     </div>
@@ -165,51 +80,17 @@ const equipment = state.player.equipment;
     <div class="flex-1 flex flex-col">
       <div class="glass-card p-4 flex-1 overflow-hidden flex flex-col">
         <div class="flex justify-between items-center mb-3">
-          <h3 class="text-xl font-bold">Item ({inventory.length})</h3>
+          <h3 class="text-xl font-bold">Item (<span id="inventory-count">0</span>)</h3>
           <div class="text-sm text-slate-400">
             Halaman 1 dari 1
           </div>
         </div>
         
-        <div class="flex-1 overflow-y-auto">
-          {inventory.length > 0 ? (
-            <div class="grid grid-cols-4 gap-3">
-              {inventory.map((item) => (
-                <div class="inventory-item glass-card p-3 text-center cursor-pointer hover:bg-slate-700/50 transition-colors"
-                     title={`${item.name} (${item.rarity})
-${item.description}`}
-                     onClick={() => handleItemClick(item)}>
-                  <div class="w-12 h-12 mx-auto bg-slate-700 rounded flex items-center justify-center mb-2">
-                    <i data-lucide={getItemIcon(item.type)} class="w-6 h-6"></i>
-                  </div>
-                  <div class="text-xs font-bold truncate">{item.name}</div>
-                  <div class="text-xs text-slate-400">{item.quantity}x</div>
-                  <div class={`text-xs mt-1 ${
-                    item.rarity === 'common' ? 'text-slate-400' :
-                    item.rarity === 'uncommon' ? 'text-green-400' :
-                    item.rarity === 'rare' ? 'text-blue-400' :
-                    item.rarity === 'epic' ? 'text-purple-400' :
-                    item.rarity === 'legendary' ? 'text-yellow-400' :
-                    'text-red-400'
-                  }`}>
-                    {item.rarity === 'common' ? 'Biasa' :
-                     item.rarity === 'uncommon' ? 'Tidak Biasa' :
-                     item.rarity === 'rare' ? 'Langka' :
-                     item.rarity === 'epic' ? 'Epik' :
-                     item.rarity === 'legendary' ? 'Legendaris' :
-                     'Primordial'}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div class="flex items-center justify-center h-full text-slate-500">
-              <div class="text-center">
-                <i data-lucide="backpack" class="w-12 h-12 mx-auto mb-2"></i>
-                <p>Inventaris kosong</p>
-              </div>
-            </div>
-          )}
+        <div class="flex-1 overflow-y-auto" id="inventory-items-container">
+          <div class="text-center text-slate-500 py-8">
+            <i data-lucide="loader" class="w-8 h-8 mx-auto mb-2 animate-spin"></i>
+            <p>Memuat inventaris...</p>
+          </div>
         </div>
       </div>
     </div>
@@ -217,7 +98,223 @@ ${item.description}`}
 </div>
 
 <script>
-  // Function to get appropriate icon for item type
+  // Function to initialize the inventory UI
+  function initializeInventoryUI() {
+    const state = gameStateManager.getState();
+    
+    // Update equipment slots
+    updateEquipmentSlots(state.player.equipment);
+    
+    // Update inventory items
+    updateInventoryItems(state.player.inventory);
+    
+    // Update player stats
+    updatePlayerStats();
+  }
+  
+  // Function to update equipment slots
+  function updateEquipmentSlots(equipment) {
+    const equipmentSlots = document.querySelectorAll('.equipment-slot');
+    
+    equipmentSlots.forEach(slotElement => {
+      const slotType = slotElement.getAttribute('data-slot');
+      const slotContent = slotElement.querySelector('.slot-content');
+      
+      if (equipment[slotType]) {
+        const item = equipment[slotType];
+        slotContent.innerHTML = `
+          <div class="cursor-pointer equipment-item" 
+               title="${item.name} (${item.rarity})
+${item.description}"
+               data-item-id="${item.instanceId}"
+               data-action="unequip"
+               data-slot="${slotType}">
+            <div class="w-12 h-12 mx-auto bg-slate-700 rounded flex items-center justify-center mb-1">
+              <i data-lucide="${getItemIcon(item.type)}" class="w-6 h-6"></i>
+            </div>
+            <div class="text-xs truncate">${item.name}</div>
+          </div>
+        `;
+      } else {
+        // Empty slot
+        slotContent.innerHTML = `
+          <div class="w-12 h-12 mx-auto bg-slate-800 rounded flex items-center justify-center mb-1 border-2 border-dashed border-slate-600">
+            <i data-lucide="${getSlotIcon(slotType)}" class="w-6 h-6 text-slate-600"></i>
+          </div>
+        `;
+      }
+    });
+    
+    // Add event listeners to equipment items
+    document.querySelectorAll('.equipment-item').forEach(itemElement => {
+      itemElement.addEventListener('click', () => {
+        const itemId = itemElement.getAttribute('data-item-id');
+        const slot = itemElement.getAttribute('data-slot');
+        unequipItem(slot);
+      });
+    });
+  }
+  
+  // Function to update inventory items
+  function updateInventoryItems(inventory) {
+    const container = document.getElementById('inventory-items-container');
+    const countElement = document.getElementById('inventory-count');
+    
+    if (countElement) {
+      countElement.textContent = inventory.length;
+    }
+    
+    if (!container) return;
+    
+    if (inventory.length === 0) {
+      container.innerHTML = `
+        <div class="flex items-center justify-center h-full text-slate-500">
+          <div class="text-center">
+            <i data-lucide="backpack" class="w-12 h-12 mx-auto mb-2"></i>
+            <p>Inventaris kosong</p>
+          </div>
+        </div>
+      `;
+      return;
+    }
+    
+    // Group items by ID for stacking
+    const groupedItems = {};
+    inventory.forEach(item => {
+      if (!groupedItems[item.id]) {
+        groupedItems[item.id] = {
+          ...item,
+          quantity: 0,
+          instances: []
+        };
+      }
+      groupedItems[item.id].quantity += item.quantity;
+      groupedItems[item.id].instances.push(item);
+    });
+    
+    const itemsArray = Object.values(groupedItems);
+    
+    container.innerHTML = `
+      <div class="grid grid-cols-4 gap-3">
+        ${itemsArray.map(item => `
+          <div class="inventory-item glass-card p-3 text-center cursor-pointer hover:bg-slate-700/50 transition-colors"
+               title="${item.name} (${item.rarity})
+${item.description}
+Jumlah: ${item.quantity}"
+               data-item-id="${item.instances[0].instanceId}"
+               data-item-type="${item.type}">
+            <div class="w-12 h-12 mx-auto bg-slate-700 rounded flex items-center justify-center mb-2">
+              <i data-lucide="${getItemIcon(item.type)}" class="w-6 h-6"></i>
+            </div>
+            <div class="text-xs font-bold truncate">${item.name}</div>
+            <div class="text-xs text-slate-400">${item.quantity}x</div>
+            <div class="${getItemRarityClass(item.rarity)} text-xs mt-1">
+              ${getItemRarityText(item.rarity)}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    
+    // Add event listeners to inventory items
+    document.querySelectorAll('.inventory-item').forEach(itemElement => {
+      itemElement.addEventListener('click', (event) => {
+        const itemId = itemElement.getAttribute('data-item-id');
+        const itemType = itemElement.getAttribute('data-item-type');
+        
+        // Handle different item types
+        if (['weapon', 'armor', 'helmet', 'boots', 'ring', 'amulet'].includes(itemType)) {
+          equipItem(itemId);
+        } else if (itemType === 'consumable') {
+          useItem(itemId);
+        } else {
+          showItemDetails(itemId);
+        }
+      });
+    });
+  }
+  
+  // Function to update player stats
+  function updatePlayerStats() {
+    const statsElement = document.getElementById('player-stats');
+    if (!statsElement) return;
+    
+    const state = gameStateManager.getState();
+    const baseStats = state.player.attributes;
+    
+    // Get stats with equipment bonuses
+    const equippedStats = inventorySystem.getPlayerStatsWithEquipment();
+    
+    statsElement.innerHTML = `
+      <div class="flex justify-between">
+        <span class="text-slate-400">Kekuatan:</span>
+        <span>${equippedStats.strength || baseStats.strength} ${equippedStats.strength && equippedStats.strength !== baseStats.strength ? `(${baseStats.strength})` : ''}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-slate-400">Ketangkasan:</span>
+        <span>${equippedStats.dexterity || baseStats.dexterity} ${equippedStats.dexterity && equippedStats.dexterity !== baseStats.dexterity ? `(${baseStats.dexterity})` : ''}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-slate-400">Intelektual:</span>
+        <span>${equippedStats.intelligence || baseStats.intelligence} ${equippedStats.intelligence && equippedStats.intelligence !== baseStats.intelligence ? `(${baseStats.intelligence})` : ''}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-slate-400">Kepribadian:</span>
+        <span>${equippedStats.charisma || baseStats.charisma} ${equippedStats.charisma && equippedStats.charisma !== baseStats.charisma ? `(${baseStats.charisma})` : ''}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-slate-400">Pertahanan:</span>
+        <span>${equippedStats.defense || 0}</span>
+      </div>
+    `;
+  }
+  
+  // Function to equip item
+  function equipItem(instanceId) {
+    const result = inventorySystem.equipItem(instanceId);
+    
+    if (result.success) {
+      showNotification(result.message, 'success');
+    } else {
+      showNotification(result.message, 'error');
+    }
+  }
+  
+  // Function to unequip item
+  function unequipItem(slot) {
+    const result = inventorySystem.unequipItem(slot);
+    
+    if (result.success) {
+      showNotification(result.message, 'success');
+    } else {
+      showNotification(result.message, 'error');
+    }
+  }
+  
+  // Function to use consumable item
+  function useItem(instanceId) {
+    const result = inventorySystem.useItem(instanceId);
+    
+    if (result.success) {
+      showNotification(result.message, 'success');
+    } else {
+      showNotification(result.message, 'error');
+    }
+  }
+  
+  // Function to show item details
+  function showItemDetails(instanceId) {
+    const state = gameStateManager.getState();
+    const item = state.player.inventory.find(i => i.instanceId === instanceId);
+    
+    if (item) {
+      showNotification(`${item.name} (${item.rarity})
+${item.description}
+Jumlah: ${item.quantity}`, 'info');
+    }
+  }
+  
+  // Helper function to get appropriate icon for item type
   function getItemIcon(type) {
     const iconMap = {
       'weapon': 'sword',
@@ -236,31 +333,72 @@ ${item.description}`}
     return iconMap[type] || 'package';
   }
   
-  // Function to handle item click
-  function handleItemClick(item) {
-    // Show item details modal or context menu
-    console.log('Item clicked:', item);
+  // Helper function to get appropriate icon for equipment slot
+  function getSlotIcon(slotType) {
+    const iconMap = {
+      'weapon': 'sword',
+      'armor': 'shield',
+      'helmet': 'hard-hat',
+      'boots': 'boot',
+      'ring1': 'circle',
+      'ring2': 'circle'
+    };
     
-    // For now, show alert with item info
-    alert(`${item.name} (${item.rarity})
-${item.description}
-Jumlah: ${item.quantity}`);
+    return iconMap[slotType] || 'package';
   }
   
-  // Function to unequip item
-  function unequipItem(slot) {
-    const result = inventorySystem.unequipItem(slot);
-    if (result.success) {
-      console.log(result.message);
-    } else {
-      console.error(result.message);
-    }
+  // Helper function to get item rarity class
+  function getItemRarityClass(rarity) {
+    return rarity === 'common' ? 'text-slate-400' :
+           rarity === 'uncommon' ? 'text-green-400' :
+           rarity === 'rare' ? 'text-blue-400' :
+           rarity === 'epic' ? 'text-purple-400' :
+           rarity === 'legendary' ? 'text-yellow-400' :
+           'text-red-400';
   }
+  
+  // Helper function to get item rarity text
+  function getItemRarityText(rarity) {
+    return rarity === 'common' ? 'Biasa' :
+           rarity === 'uncommon' ? 'Tidak Biasa' :
+           rarity === 'rare' ? 'Langka' :
+           rarity === 'epic' ? 'Epik' :
+           rarity === 'legendary' ? 'Legendaris' :
+           'Primordial';
+  }
+  
+  // Function to show notification
+  function showNotification(message, type) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 ${
+      type === 'success' ? 'bg-green-500' :
+      type === 'error' ? 'bg-red-500' :
+      type === 'info' ? 'bg-blue-500' :
+      'bg-slate-700'
+    } text-white max-w-md`;
+    notification.textContent = message;
+    
+    // Add to document
+    document.body.appendChild(notification);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 3000);
+  }
+  
+  // Set up event listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize inventory UI
+    initializeInventoryUI();
+  });
   
   // Listen for state changes to update inventory
   gameStateManager.subscribe((state) => {
-    // In a real implementation, we would update the UI here
-    // For now, we'll just log the change
-    console.log('Inventory updated');
+    // Update UI when inventory changes
+    initializeInventoryUI();
   });
 </script>

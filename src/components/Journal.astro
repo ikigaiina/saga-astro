@@ -3,179 +3,285 @@
 // Journal component for The Soulforge Saga
 
 import { gameStateManager } from '../game/stateManager.js';
-
-// Get initial state
-const state = gameStateManager.getState();
-const journalEntries = state.player.journal || [];
 ---
 
 <div id="journal-container" class="h-full flex flex-col">
   <h2 class="text-2xl font-bold mb-4">Jurnal</h2>
   
   <div class="flex gap-4 flex-1 overflow-hidden">
-    <!-- Journal categories -->
-    <div class="w-64 flex flex-col gap-4">
+    <!-- Journal entries list -->
+    <div class="w-1/3 flex flex-col gap-4">
       <div class="glass-card p-4 flex-1">
-        <h3 class="text-xl font-bold mb-3">Kategori</h3>
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-xl font-bold">Entri Jurnal</h3>
+          <div class="text-sm text-slate-400" id="entry-count">
+            0 entri
+          </div>
+        </div>
         
-        <div class="space-y-2">
-          <button class="glass-button secondary-button w-full py-2 text-left active-tab" data-category="all">
-            Semua Entri ({journalEntries.length})
-          </button>
-          <button class="glass-button secondary-button w-full py-2 text-left" data-category="exploration">
-            Eksplorasi ({journalEntries.filter(e => e.category === 'Exploration').length})
-          </button>
-          <button class="glass-button secondary-button w-full py-2 text-left" data-category="quest">
-            Misi ({journalEntries.filter(e => e.category === 'Quest').length})
-          </button>
-          <button class="glass-button secondary-button w-full py-2 text-left" data-category="world">
-            Peristiwa Dunia ({journalEntries.filter(e => e.category === 'World Event').length})
-          </button>
-          <button class="glass-button secondary-button w-full py-2 text-left" data-category="social">
-            Sosial ({journalEntries.filter(e => e.category === 'Social').length})
-          </button>
-          <button class="glass-button secondary-button w-full py-2 text-left" data-category="combat">
-            Pertempuran ({journalEntries.filter(e => e.category === 'Combat').length})
-          </button>
-          <button class="glass-button secondary-button w-full py-2 text-left" data-category="lore">
-            Pengetahuan ({journalEntries.filter(e => e.category === 'Lore').length})
-          </button>
+        <div class="relative mb-3">
+          <input 
+            type="text" 
+            placeholder="Cari entri jurnal..." 
+            class="glass-input w-full p-2 pl-8"
+            id="journal-search"
+          />
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-2 top-2.5"></i>
+        </div>
+        
+        <div class="space-y-2 overflow-y-auto pr-2 flex-1" id="journal-entries-list">
+          <!-- Journal entries will be populated dynamically -->
+          <div class="text-center text-slate-500 py-8">
+            <i data-lucide="loader" class="w-8 h-8 mx-auto mb-2 animate-spin"></i>
+            <p>Memuat entri jurnal...</p>
+          </div>
         </div>
       </div>
       
-      <!-- Journal statistics -->
       <div class="glass-card p-4">
-        <h3 class="text-xl font-bold mb-3">Statistik</h3>
-        <div class="space-y-2 text-sm">
-          <div class="flex justify-between">
-            <span class="text-slate-400">Entri Total:</span>
-            <span>{journalEntries.length}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-400">Hari Pertama:</span>
-            <span>Hari 1</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-400">Wilayah Dikunjungi:</span>
-            <span>5</span>
-          </div>
+        <h3 class="text-xl font-bold mb-3">Kategori</h3>
+        <div class="space-y-2" id="journal-categories">
+          <!-- Categories will be populated dynamically -->
         </div>
       </div>
     </div>
     
-    <!-- Journal entries -->
-    <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Journal entry details -->
+    <div class="flex-1 flex flex-col">
       <div class="glass-card p-4 flex-1 overflow-hidden flex flex-col">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold">Entri Jurnal</h3>
-          <div class="flex gap-2">
-            <button class="glass-button secondary-button px-3 py-1 text-sm">
-              <i data-lucide="sort-desc" class="w-4 h-4 mr-1"></i>
-              Terbaru
-            </button>
-            <button class="glass-button secondary-button px-3 py-1 text-sm">
-              <i data-lucide="search" class="w-4 h-4 mr-1"></i>
-              Cari
-            </button>
+        <div id="journal-entry-container" class="flex items-center justify-center h-full text-slate-500">
+          <div class="text-center">
+            <i data-lucide="book-open" class="w-12 h-12 mx-auto mb-2"></i>
+            <p>Pilih entri jurnal untuk membaca</p>
           </div>
         </div>
-        
-        {journalEntries.length > 0 ? (
-          <div class="flex-1 overflow-y-auto pr-2">
-            <div class="space-y-4">
-              {journalEntries.map((entry) => (
-                <div class="journal-entry glass-card p-4 hover:bg-slate-700/30 transition-colors">
-                  <div class="flex justify-between items-start">
-                    <div class="flex items-start">
-                      <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center mr-3 flex-shrink-0">
-                        <i data-lucide={getIconForCategory(entry.category)} class="w-4 h-4"></i>
-                      </div>
-                      <div>
-                        <h4 class="font-bold text-lg">{entry.title}</h4>
-                        <div class="flex items-center text-xs text-slate-400 mt-1">
-                          <span>{formatDate(entry.timestamp)}</span>
-                          <span class="mx-2">•</span>
-                          <span class="px-2 py-0.5 rounded-full bg-slate-700">
-                            {entry.category}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <button class="glass-button secondary-button p-1.5 text-sm" title="Tandai">
-                      <i data-lucide="bookmark" class="w-4 h-4"></i>
-                    </button>
-                  </div>
-                  
-                  <p class="mt-3 text-slate-300">{entry.content}</p>
-                  
-                  {entry.tags && entry.tags.length > 0 && (
-                    <div class="flex flex-wrap gap-2 mt-3">
-                      {entry.tags.map((tag) => (
-                        <span class="text-xs px-2 py-1 rounded-full bg-indigo-500/20 text-indigo-300">
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div class="flex items-center justify-center h-full text-slate-500">
-            <div class="text-center">
-              <i data-lucide="book-open" class="w-12 h-12 mx-auto mb-2"></i>
-              <p>Jurnal kosong. Petualangan Anda akan dicatat di sini.</p>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  // Function to get icon for category
-  function getIconForCategory(category) {
-    const iconMap = {
-      'Exploration': 'map',
-      'Quest': 'clipboard-list',
-      'World Event': 'globe',
-      'Social': 'users',
-      'Combat': 'sword',
-      'Lore': 'book',
-      'Achievement': 'award',
-      'Reflection': 'feather'
-    };
+  let selectedEntry = null;
+  let allEntries = [];
+  let categories = [];
+  
+  // Function to initialize the journal UI
+  function initializeJournalUI() {
+    const state = gameStateManager.getState();
+    allEntries = [...state.player.journal].reverse(); // Show newest first
     
-    return iconMap[category] || 'book-open';
-  }
-  
-  // Function to format date
-  function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
-  }
-  
-  // Category filtering functionality
-  document.querySelectorAll('[data-category]').forEach(button => {
-    button.addEventListener('click', () => {
-      const category = button.dataset.category;
-      
-      // Update active category button
-      document.querySelectorAll('[data-category]').forEach(btn => {
-        btn.classList.remove('active-tab');
+    // Update entry count
+    const countElement = document.getElementById('entry-count');
+    if (countElement) {
+      countElement.textContent = `${allEntries.length} entri`;
+    }
+    
+    // Extract categories
+    categories = [...new Set(allEntries.map(entry => entry.category || 'Umum'))];
+    
+    // Render journal entries
+    renderJournalEntries(allEntries);
+    
+    // Render categories
+    renderCategories(categories);
+    
+    // Set up search functionality
+    const searchInput = document.getElementById('journal-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        filterEntries(e.target.value);
       });
-      button.classList.add('active-tab');
+    }
+  }
+  
+  // Function to render journal entries
+  function renderJournalEntries(entries) {
+    const entriesListElement = document.getElementById('journal-entries-list');
+    if (!entriesListElement) return;
+    
+    if (entries.length === 0) {
+      entriesListElement.innerHTML = `
+        <div class="text-center text-slate-500 py-8">
+          <i data-lucide="book" class="w-8 h-8 mx-auto mb-2"></i>
+          <p>Belum ada entri jurnal</p>
+        </div>
+      `;
+      return;
+    }
+    
+    entriesListElement.innerHTML = entries.map(entry => {
+      const date = new Date(entry.timestamp);
+      const formattedDate = date.toLocaleDateString('id-ID', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
       
-      // Filter journal entries (in a real implementation)
-      console.log('Filtering journal by category:', category);
+      return `
+        <div 
+          class="journal-entry glass-card p-3 cursor-pointer hover:bg-slate-700/50 transition-colors ${selectedEntry && selectedEntry.id === entry.id ? 'bg-indigo-500/20 border border-indigo-500/50' : ''}"
+          data-entry-id="${entry.id}"
+        >
+          <div class="flex justify-between items-start mb-1">
+            <h4 class="font-bold text-sm truncate">${entry.title}</h4>
+            ${entry.icon ? `<i data-lucide="${entry.icon}" class="w-4 h-4 text-slate-400"></i>` : ''}
+          </div>
+          <div class="text-xs text-slate-400 flex justify-between">
+            <span>${entry.category || 'Umum'}</span>
+            <span>${formattedDate}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    // Add event listeners to journal entries
+    document.querySelectorAll('[data-entry-id]').forEach(element => {
+      element.addEventListener('click', () => {
+        const entryId = element.getAttribute('data-entry-id');
+        selectEntry(entryId);
+      });
     });
+  }
+  
+  // Function to render categories
+  function renderCategories(categories) {
+    const categoriesElement = document.getElementById('journal-categories');
+    if (!categoriesElement) return;
+    
+    categoriesElement.innerHTML = `
+      <button 
+        class="category-filter glass-button secondary-button w-full py-2 text-left text-sm mb-1 active"
+        data-category="all"
+      >
+        Semua Kategori
+      </button>
+      ${categories.map(category => `
+        <button 
+          class="category-filter glass-button secondary-button w-full py-2 text-left text-sm mb-1"
+          data-category="${category}"
+        >
+          ${category}
+        </button>
+      `).join('')}
+    `;
+    
+    // Add event listeners to category filters
+    document.querySelectorAll('.category-filter').forEach(button => {
+      button.addEventListener('click', () => {
+        const category = button.getAttribute('data-category');
+        
+        // Update active state
+        document.querySelectorAll('.category-filter').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        button.classList.add('active');
+        
+        // Filter entries
+        if (category === 'all') {
+          renderJournalEntries(allEntries);
+        } else {
+          const filteredEntries = allEntries.filter(entry => (entry.category || 'Umum') === category);
+          renderJournalEntries(filteredEntries);
+        }
+      });
+    });
+  }
+  
+  // Function to select a journal entry
+  function selectEntry(entryId) {
+    selectedEntry = allEntries.find(entry => entry.id === entryId);
+    if (selectedEntry) {
+      updateEntryDetails(selectedEntry);
+    }
+  }
+  
+  // Function to update entry details display
+  function updateEntryDetails(entry) {
+    const container = document.getElementById('journal-entry-container');
+    if (!container) return;
+    
+    if (!entry) {
+      container.innerHTML = `
+        <div class="flex items-center justify-center h-full text-slate-500">
+          <div class="text-center">
+            <i data-lucide="book-open" class="w-12 h-12 mx-auto mb-2"></i>
+            <p>Pilih entri jurnal untuk membaca</p>
+          </div>
+        </div>
+      `;
+      return;
+    }
+    
+    const date = new Date(entry.timestamp);
+    const formattedDate = date.toLocaleDateString('id-ID', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    const formattedTime = date.toLocaleTimeString('id-ID', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    container.innerHTML = `
+      <div class="flex-1 overflow-hidden flex flex-col">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <h3 class="text-2xl font-bold">${entry.title}</h3>
+            <div class="flex items-center mt-1">
+              <span class="text-sm px-2 py-1 rounded-full bg-blue-500/20 text-blue-300 mr-2">
+                ${entry.category || 'Umum'}
+              </span>
+              <span class="text-sm text-slate-400">
+                ${formattedDate} pada ${formattedTime}
+              </span>
+            </div>
+          </div>
+          ${entry.icon ? `<i data-lucide="${entry.icon}" class="w-8 h-8 text-slate-400"></i>` : ''}
+        </div>
+        
+        <div class="flex-1 overflow-y-auto">
+          <div class="glass-card p-4 prose prose-invert max-w-none">
+            <p class="whitespace-pre-line">${entry.content}</p>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  // Function to filter entries
+  function filterEntries(searchTerm) {
+    if (!searchTerm) {
+      renderJournalEntries(allEntries);
+      return;
+    }
+    
+    const filteredEntries = allEntries.filter(entry => 
+      entry.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      entry.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (entry.category && entry.category.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+    
+    renderJournalEntries(filteredEntries);
+  }
+  
+  // Set up event listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize journal UI
+    initializeJournalUI();
   });
   
-  // Listen for state changes to update journal
+  // Listen for state changes
   gameStateManager.subscribe((state) => {
-    // Update journal entries when state changes
-    console.log('Journal updated with', state.player.journal?.length || 0, 'entries');
+    // Refresh journal UI when state changes
+    initializeJournalUI();
+    if (selectedEntry) {
+      // Try to find the updated version of the selected entry
+      const updatedEntry = state.player.journal.find(e => e.id === selectedEntry.id);
+      if (updatedEntry) {
+        updateEntryDetails(updatedEntry);
+      }
+    }
   });
 </script>

@@ -146,12 +146,26 @@ import GameStateProvider from '../components/GameStateProvider.astro';
     <!-- Main game UI -->
     <GameUI />
     
-    <!-- Initialize icons -->
+    <!-- Game loop script -->
     <script>
-        // Initialize Lucide icons
+        // Initialize game systems when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Lucide icons
             if (typeof lucide !== 'undefined' && lucide.createIcons) {
                 lucide.createIcons();
+            }
+            
+            // Start game loop
+            if (typeof window.gameLoop !== 'undefined') {
+                window.gameLoop.start();
+            } else {
+                console.warn('Game loop not found, using fallback simulation');
+                // Fallback to periodic world simulation if game loop is not available
+                setInterval(() => {
+                    if (typeof window.worldSystem !== 'undefined') {
+                        window.worldSystem.simulateWorldStep();
+                    }
+                }, 10000);
             }
         });
     </script>
