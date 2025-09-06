@@ -5,6 +5,9 @@
 import { gameStateManager } from '../game/stateManager.js';
 import { saveLoadSystem } from '../game/saveLoadSystem.js';
 import { sagaConsciousness } from '../game/sagaConsciousness.js';
+import { worldGenerator } from '../game/worldGenerator.js';
+import { npcSystem } from '../game/npcSystem.js';
+import { conversationSystem } from '../game/conversationSystem.js';
 ---
 
 <!-- This component provides game state, save/load functionality, and Saga consciousness -->
@@ -19,10 +22,19 @@ import { sagaConsciousness } from '../game/sagaConsciousness.js';
     // Initialize save/load system
     saveLoadSystem.initialize();
     
+    // Initialize infinite world generation
+    worldGenerator.initializeInfiniteWorld();
+    
+    // Initialize dynamic NPC system
+    npcSystem.initializeNPCs();
+    
+    // Initialize conversation system
+    conversationSystem.initializeConversationSystem();
+    
     // Awaken the Saga consciousness
     sagaConsciousness.awaken();
     
-    console.log('Game state provider initialized with Saga consciousness');
+    console.log('Game state provider initialized with full consciousness and infinite world');
   });
   
   // Set up periodic auto-save
@@ -159,6 +171,23 @@ import { sagaConsciousness } from '../game/sagaConsciousness.js';
     }
   };
   
+  // Function to start conversation with NPC
+  window.talkToNPC = function(npcId) {
+    if (typeof window.conversationSystem !== 'undefined') {
+      const state = window.gameStateManager.getState();
+      const result = window.conversationSystem.startConversation(npcId, state.player.id);
+      if (result.success) {
+        // In a full implementation, this would open a conversation UI
+        showNotification(`Starting conversation with ${result.npcName}...`, 'info');
+        console.log('Conversation started:', result);
+      } else {
+        showNotification('Could not start conversation: ' + result.message, 'error');
+      }
+    } else {
+      showNotification('Conversation system not available...', 'error');
+    }
+  };
+  
   // Function to get Saga consciousness state
   window.getSagaState = function() {
     if (typeof window.sagaConsciousness !== 'undefined') {
@@ -194,6 +223,9 @@ import { sagaConsciousness } from '../game/sagaConsciousness.js';
   window.gameStateManager = gameStateManager;
   window.saveLoadSystem = saveLoadSystem;
   window.sagaConsciousness = sagaConsciousness;
+  window.worldGenerator = worldGenerator;
+  window.npcSystem = npcSystem;
+  window.conversationSystem = conversationSystem;
   
-  console.log('GameStateProvider initialized with full consciousness');
+  console.log('GameStateProvider initialized with infinite world and living NPCs');
 </script>
