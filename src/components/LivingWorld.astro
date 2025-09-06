@@ -1,0 +1,710 @@
+---
+// src/components/LivingWorld.astro
+// Fully functional living world component for The Soulforge Saga
+
+import { gameStateManager } from '../game/stateManager.js';
+import { worldGenerator } from '../game/worldGenerator.js';
+import { npcSystem } from '../game/npcSystem.js';
+import { conversationSystem } from '../game/conversationSystem.js';
+---
+
+<div id="living-world" class="h-full flex flex-col">
+  <h2 class="text-2xl font-bold mb-4">Dunia yang Hidup</h2>
+  
+  <!-- World status -->
+  <div class="glass-card p-4 mb-4">
+    <div class="grid grid-cols-4 gap-4">
+      <div class="text-center">
+        <div class="text-3xl font-bold" id="settlement-count">0</div>
+        <div class="text-sm text-slate-400">Pemukiman</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold" id="npc-count">0</div>
+        <div class="text-sm text-slate-400">NPC</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold" id="faction-count">0</div>
+        <div class="text-sm text-slate-400">Faksi</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold" id="event-count">0</div>
+        <div class="text-sm text-slate-400">Peristiwa</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Active settlements -->
+  <div class="flex-1 flex gap-4 overflow-hidden">
+    <!-- Settlements list -->
+    <div class="w-1/3 flex flex-col gap-4">
+      <div class="glass-card p-4 flex-1 overflow-hidden flex flex-col">
+        <h3 class="text-xl font-bold mb-3">Pemukiman Aktif</h3>
+        
+        <div class="relative mb-3">
+          <input 
+            type="text" 
+            placeholder="Cari pemukiman..." 
+            class="glass-input w-full p-2 pl-8"
+            id="settlement-search"
+          />
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-2 top-2.5"></i>
+        </div>
+        
+        <div class="overflow-y-auto pr-2 flex-1" id="settlements-list">
+          <div class="text-center text-slate-500 py-8">
+            <i data-lucide="loader" class="w-8 h-8 mx-auto mb-2 animate-spin"></i>
+            <p>Memuat pemukiman...</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Faction relationships -->
+      <div class="glass-card p-4">
+        <h3 class="text-xl font-bold mb-3">Hubungan Faksi</h3>
+        <div class="space-y-3" id="faction-relationships">
+          <!-- Will be populated dynamically -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Settlement details -->
+    <div class="flex-1 flex flex-col">
+      <div class="glass-card p-4 flex-1 overflow-hidden flex flex-col">
+        <div id="settlement-details-container" class="flex items-center justify-center h-full text-slate-500">
+          <div class="text-center">
+            <i data-lucide="home" class="w-12 h-12 mx-auto mb-2"></i>
+            <p>Pilih pemukiman untuk melihat detail</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- NPC interactions -->
+    <div class="w-80 flex flex-col gap-4">
+      <div class="glass-card p-4 flex-1 overflow-hidden">
+        <h3 class="text-xl font-bold mb-3">NPC di Sekitar</h3>
+        <div class="space-y-3 overflow-y-auto pr-2 h-full" id="nearby-npcs">
+          <!-- Will be populated dynamically -->
+        </div>
+      </div>
+      
+      <!-- World events -->
+      <div class="glass-card p-4">
+        <h3 class="text-xl font-bold mb-3">Peristiwa Dunia</h3>
+        <div class="space-y-3" id="world-events">
+          <!-- Will be populated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let selectedSettlement = null;
+  let settlements = [];
+  let npcs = [];
+  let factions = [];
+  let worldEvents = [];
+  
+  // Initialize the living world
+  function initializeLivingWorld() {
+    // Get initial data
+    updateWorldData();
+    
+    // Set up periodic updates
+    setInterval(updateWorldData, 5000); // Update every 5 seconds
+    
+    // Set up search functionality
+    document.getElementById('settlement-search')?.addEventListener('input', (e) => {
+      filterSettlements(e.target.value);
+    });
+    
+    console.log('Living world initialized');
+  }
+  
+  // Update world data
+  function updateWorldData() {
+    // In a real implementation, this would fetch actual data from the systems
+    // For now, we'll simulate with sample data
+    
+    // Generate sample settlements
+    settlements = [
+      {
+        id: 'settlement_1',
+        name: 'Nexus Pusat yang Berdenyut',
+        type: 'Kota',
+        population: 15000,
+        faction: 'The Arbiters',
+        problems: [
+          { id: 'problem_1', type: 'resource_scarcity', description: 'Kekurangan sumber daya air bersih', severity: 0.7 },
+          { id: 'problem_2', type: 'faction_conflict', description: 'Konflik dengan faksi Echo Cult', severity: 0.5 }
+        ],
+        npcs: [
+          { id: 'npc_1', name: 'Aldric Brightgold', role: 'merchant', location: 'Market Square' },
+          { id: 'npc_2', name: 'Bryn Ironshield', role: 'guard', location: 'City Gates' },
+          { id: 'npc_3', name: 'Cedric Forgeheart', role: 'craftsman', location: 'Blacksmith District' }
+        ]
+      },
+      {
+        id: 'settlement_2',
+        name: 'Dataran Bercahaya',
+        type: 'Desa',
+        population: 800,
+        faction: 'The Luminous Guardians',
+        problems: [
+          { id: 'problem_3', type: 'monster_threat', description: 'Ancaman makhluk bayangan', severity: 0.8 }
+        ],
+        npcs: [
+          { id: 'npc_4', name: 'Darian Greenfield', role: 'farmer', location: 'Outskirts' },
+          { id: 'npc_5', name: 'Eldrin Lightbringer', role: 'priest', location: 'Temple of Light' }
+        ]
+      },
+      {
+        id: 'settlement_3',
+        name: 'Jangkauan Berbisik',
+        type: 'Hamlet',
+        population: 120,
+        faction: 'The Echo Cult',
+        problems: [
+          { id: 'problem_4', type: 'disease_outbreak', description: 'Wabah penyakit misterius', severity: 0.6 }
+        ],
+        npcs: [
+          { id: 'npc_6', name: 'Fenris Whisperwind', role: 'scholar', location: 'Ancient Library' }
+        ]
+      }
+    ];
+    
+    // Generate sample factions
+    factions = [
+      { id: 'faction_1', name: 'The Arbiters', power: 85, allies: ['faction_3'], enemies: ['faction_2'] },
+      { id: 'faction_2', name: 'The Echo Cult', power: 60, allies: [], enemies: ['faction_1', 'faction_3'] },
+      { id: 'faction_3', name: 'The Luminous Guardians', power: 75, allies: ['faction_1'], enemies: ['faction_2'] }
+    ];
+    
+    // Generate sample events
+    worldEvents = [
+      { id: 'event_1', type: 'festival', description: 'Festival Panen Sedang Berlangsung', duration: 120 },
+      { id: 'event_2', type: 'war_declaration', description: 'Perang Deklarasi Antara Faksi', duration: 2880 }
+    ];
+    
+    // Update UI
+    updateWorldStatus();
+    updateSettlementsList();
+    updateFactionRelationships();
+    updateWorldEvents();
+    updateNearbyNPCs();
+  }
+  
+  // Update world status counters
+  function updateWorldStatus() {
+    document.getElementById('settlement-count').textContent = settlements.length;
+    document.getElementById('npc-count').textContent = settlements.reduce((sum, settlement) => sum + settlement.npcs.length, 0);
+    document.getElementById('faction-count').textContent = factions.length;
+    document.getElementById('event-count').textContent = worldEvents.length;
+  }
+  
+  // Update settlements list
+  function updateSettlementsList() {
+    const container = document.getElementById('settlements-list');
+    if (!container) return;
+    
+    if (settlements.length === 0) {
+      container.innerHTML = `
+        <div class="text-center text-slate-500 py-8">
+          <i data-lucide="home" class="w-8 h-8 mx-auto mb-2"></i>
+          <p>Tidak ada pemukiman tersedia</p>
+        </div>
+      `;
+      return;
+    }
+    
+    container.innerHTML = settlements.map(settlement => `
+      <div 
+        class="settlement-item glass-card p-3 mb-2 cursor-pointer hover:bg-slate-700/50 transition-colors ${selectedSettlement && selectedSettlement.id === settlement.id ? 'bg-indigo-500/20 border border-indigo-500/50' : ''}"
+        data-settlement-id="${settlement.id}"
+      >
+        <div class="flex justify-between items-start">
+          <div>
+            <h4 class="font-bold">${settlement.name}</h4>
+            <div class="text-sm text-slate-400">${settlement.type} • ${settlement.population} jiwa</div>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-full bg-blue-500/20 text-blue-300">
+            ${settlement.faction}
+          </span>
+        </div>
+        
+        <div class="mt-2 flex flex-wrap gap-1">
+          ${settlement.problems.map(problem => `
+            <span class="text-xs px-2 py-1 rounded-full ${
+              problem.severity > 0.7 ? 'bg-red-500/20 text-red-300' :
+              problem.severity > 0.4 ? 'bg-yellow-500/20 text-yellow-300' :
+              'bg-green-500/20 text-green-300'
+            }">
+              ${getProblemIcon(problem.type)} ${getProblemShortName(problem.type)}
+            </span>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+    
+    // Add event listeners
+    document.querySelectorAll('.settlement-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const settlementId = item.getAttribute('data-settlement-id');
+        selectSettlement(settlementId);
+      });
+    });
+  }
+  
+  // Filter settlements
+  function filterSettlements(searchTerm) {
+    if (!searchTerm) {
+      updateSettlementsList();
+      return;
+    }
+    
+    const filteredSettlements = settlements.filter(settlement => 
+      settlement.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      settlement.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      settlement.faction.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    
+    // Update UI with filtered results
+    const container = document.getElementById('settlements-list');
+    if (!container) return;
+    
+    if (filteredSettlements.length === 0) {
+      container.innerHTML = `
+        <div class="text-center text-slate-500 py-8">
+          <i data-lucide="search" class="w-8 h-8 mx-auto mb-2"></i>
+          <p>Tidak ada pemukiman yang cocok</p>
+        </div>
+      `;
+      return;
+    }
+    
+    container.innerHTML = filteredSettlements.map(settlement => `
+      <div 
+        class="settlement-item glass-card p-3 mb-2 cursor-pointer hover:bg-slate-700/50 transition-colors"
+        data-settlement-id="${settlement.id}"
+      >
+        <div class="flex justify-between items-start">
+          <div>
+            <h4 class="font-bold">${settlement.name}</h4>
+            <div class="text-sm text-slate-400">${settlement.type} • ${settlement.population} jiwa</div>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-full bg-blue-500/20 text-blue-300">
+            ${settlement.faction}
+          </span>
+        </div>
+      </div>
+    `).join('');
+    
+    // Add event listeners
+    document.querySelectorAll('.settlement-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const settlementId = item.getAttribute('data-settlement-id');
+        selectSettlement(settlementId);
+      });
+    });
+  }
+  
+  // Select settlement
+  function selectSettlement(settlementId) {
+    selectedSettlement = settlements.find(s => s.id === settlementId);
+    if (selectedSettlement) {
+      updateSettlementDetails(selectedSettlement);
+    }
+  }
+  
+  // Update settlement details
+  function updateSettlementDetails(settlement) {
+    const container = document.getElementById('settlement-details-container');
+    if (!container) return;
+    
+    if (!settlement) {
+      container.innerHTML = `
+        <div class="flex items-center justify-center h-full text-slate-500">
+          <div class="text-center">
+            <i data-lucide="home" class="w-12 h-12 mx-auto mb-2"></i>
+            <p>Pilih pemukiman untuk melihat detail</p>
+          </div>
+        </div>
+      `;
+      return;
+    }
+    
+    container.innerHTML = `
+      <div class="flex-1 overflow-hidden flex flex-col">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <h3 class="text-2xl font-bold">${settlement.name}</h3>
+            <div class="flex items-center mt-1">
+              <span class="text-sm px-2 py-1 rounded-full mr-2 bg-blue-500/20 text-blue-300">
+                ${settlement.type}
+              </span>
+              <span class="text-sm text-slate-400">
+                ${settlement.population} jiwa
+              </span>
+            </div>
+          </div>
+          <span class="text-sm px-2 py-1 rounded-full bg-purple-500/20 text-purple-300">
+            ${settlement.faction}
+          </span>
+        </div>
+        
+        <!-- Population chart -->
+        <div class="mb-6">
+          <h4 class="font-bold text-lg mb-3">Populasi</h4>
+          <div class="glass-card p-4">
+            <div class="w-full bg-slate-700 rounded-full h-4 overflow-hidden">
+              <div 
+                class="h-full bg-green-500 rounded-full transition-all duration-500"
+                style="width: ${Math.min(100, settlement.population / 200)}%"
+              ></div>
+            </div>
+            <div class="flex justify-between text-sm mt-2">
+              <span>0</span>
+              <span>${settlement.population}</span>
+              <span>20,000+</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Problems -->
+        <div class="mb-6">
+          <h4 class="font-bold text-lg mb-3">Masalah</h4>
+          <div class="space-y-2">
+            ${settlement.problems.length > 0 ? 
+              settlement.problems.map(problem => `
+                <div class="glass-card p-3">
+                  <div class="flex justify-between items-start mb-2">
+                    <h5 class="font-bold">${getProblemName(problem.type)}</h5>
+                    <span class="text-xs px-2 py-1 rounded-full ${
+                      problem.severity > 0.7 ? 'bg-red-500/20 text-red-300' :
+                      problem.severity > 0.4 ? 'bg-yellow-500/20 text-yellow-300' :
+                      'bg-green-500/20 text-green-300'
+                    }">
+                      ${Math.round(problem.severity * 100)}% Tingkat Keparahan
+                    </span>
+                  </div>
+                  <p class="text-slate-300 text-sm">${problem.description}</p>
+                </div>
+              `).join('') :
+              '<div class="text-center text-slate-500 py-4"><p>Tidak ada masalah aktif</p></div>'
+            }
+          </div>
+        </div>
+        
+        <!-- NPCs in settlement -->
+        <div class="mb-6">
+          <h4 class="font-bold text-lg mb-3">NPC di Pemukiman</h4>
+          <div class="grid grid-cols-2 gap-3">
+            ${settlement.npcs.map(npc => `
+              <div 
+                class="glass-card p-3 text-center cursor-pointer hover:bg-slate-700/50 transition-colors"
+                data-npc-id="${npc.id}"
+                onclick="window.talkToNPC('${npc.id}')"
+              >
+                <div class="w-12 h-12 mx-auto rounded-full bg-slate-700 flex items-center justify-center mb-2">
+                  <i data-lucide="${getNPRIcon(npc.role)}" class="w-6 h-6"></i>
+                </div>
+                <div class="font-bold text-sm">${npc.name}</div>
+                <div class="text-xs text-slate-400">${getRoleName(npc.role)}</div>
+                <div class="text-xs mt-1 text-slate-500">${npc.location}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="mt-auto pt-4 border-t border-slate-700">
+          <button 
+            class="glass-button primary-button w-full py-3 text-lg font-bold"
+            onclick="window.visitSettlement('${settlement.id}')"
+          >
+            <i data-lucide="map-pin" class="w-5 h-5 mr-2"></i>
+            Kunjungi Pemukiman
+          </button>
+        </div>
+      </div>
+    `;
+  }
+  
+  // Update faction relationships
+  function updateFactionRelationships() {
+    const container = document.getElementById('faction-relationships');
+    if (!container) return;
+    
+    if (factions.length === 0) {
+      container.innerHTML = `
+        <div class="text-center text-slate-500 py-4">
+          <p>Tidak ada faksi tersedia</p>
+        </div>
+      `;
+      return;
+    }
+    
+    container.innerHTML = factions.map(faction => `
+      <div class="glass-card p-3">
+        <div class="flex justify-between items-center mb-2">
+          <h4 class="font-bold">${faction.name}</h4>
+          <span class="text-sm text-slate-400">${faction.power} Kekuatan</span>
+        </div>
+        
+        <div class="flex items-center mb-2">
+          <div class="w-full bg-slate-700 rounded-full h-2 overflow-hidden">
+            <div 
+              class="h-full bg-blue-500 rounded-full"
+              style="width: ${faction.power}%"
+            ></div>
+          </div>
+        </div>
+        
+        <div class="flex flex-wrap gap-1 mt-2">
+          ${faction.allies.length > 0 ? `
+            <span class="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-300">
+              <i data-lucide="users" class="w-3 h-3 mr-1 inline"></i>
+              ${faction.allies.length} Sekutu
+            </span>
+          ` : ''}
+          ${faction.enemies.length > 0 ? `
+            <span class="text-xs px-2 py-1 rounded-full bg-red-500/20 text-red-300">
+              <i data-lucide="swords" class="w-3 h-3 mr-1 inline"></i>
+              ${faction.enemies.length} Musuh
+            </span>
+          ` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+  
+  // Update nearby NPCs
+  function updateNearbyNPCs() {
+    const container = document.getElementById('nearby-npcs');
+    if (!container) return;
+    
+    // Flatten all NPCs from all settlements
+    const allNPCs = settlements.flatMap(settlement => 
+      settlement.npcs.map(npc => ({ ...npc, settlement: settlement.name }))
+    );
+    
+    if (allNPCs.length === 0) {
+      container.innerHTML = `
+        <div class="text-center text-slate-500 py-4">
+          <p>Tidak ada NPC di sekitar</p>
+        </div>
+      `;
+      return;
+    }
+    
+    container.innerHTML = allNPCs.slice(0, 10).map(npc => `
+      <div 
+        class="glass-card p-3 cursor-pointer hover:bg-slate-700/50 transition-colors"
+        data-npc-id="${npc.id}"
+        onclick="window.talkToNPC('${npc.id}')"
+      >
+        <div class="flex items-center">
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center mr-3">
+            <i data-lucide="${getNPRIcon(npc.role)}" class="w-5 h-5"></i>
+          </div>
+          <div class="flex-1">
+            <div class="font-bold text-sm">${npc.name}</div>
+            <div class="text-xs text-slate-400">${getRoleName(npc.role)} • ${npc.settlement}</div>
+          </div>
+          <button class="glass-button secondary-button px-2 py-1 text-xs">
+            Bicara
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+  
+  // Update world events
+  function updateWorldEvents() {
+    const container = document.getElementById('world-events');
+    if (!container) return;
+    
+    if (worldEvents.length === 0) {
+      container.innerHTML = `
+        <div class="text-center text-slate-500 py-4">
+          <p>Tidak ada peristiwa aktif</p>
+        </div>
+      `;
+      return;
+    }
+    
+    container.innerHTML = worldEvents.map(event => `
+      <div class="glass-card p-3">
+        <div class="flex items-start mb-2">
+          <i data-lucide="${getEventIcon(event.type)}" class="w-5 h-5 mr-2 text-blue-400"></i>
+          <div class="flex-1">
+            <h4 class="font-bold text-sm">${getEventName(event.type)}</h4>
+            <p class="text-xs text-slate-400 mt-1">${event.description}</p>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 flex justify-between">
+          <span>Durasi: ${Math.floor(event.duration / 60)} jam</span>
+          <span>${new Date(Date.now() + event.duration * 60000).toLocaleTimeString()}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+  
+  // Helper functions for icons and names
+  function getProblemIcon(type) {
+    const icons = {
+      'resource_scarcity': 'droplet',
+      'faction_conflict': 'swords',
+      'monster_threat': 'skull',
+      'disease_outbreak': 'biohazard',
+      'economic_crisis': 'trending-down',
+      'political_unrest': 'users',
+      'natural_disaster': 'cloud-lightning',
+      'mysterious_disappearance': 'eye-off'
+    };
+    return icons[type] || 'alert-triangle';
+  }
+  
+  function getProblemName(type) {
+    const names = {
+      'resource_scarcity': 'Kelangkaan Sumber Daya',
+      'faction_conflict': 'Konflik Faksi',
+      'monster_threat': 'Ancaman Makhluk',
+      'disease_outbreak': 'Wabah Penyakit',
+      'economic_crisis': 'Krisis Ekonomi',
+      'political_unrest': 'Keresuhan Politik',
+      'natural_disaster': 'Bencana Alam',
+      'mysterious_disappearance': 'Penghilangan Misterius'
+    };
+    return names[type] || 'Masalah Umum';
+  }
+  
+  function getProblemShortName(type) {
+    const shortNames = {
+      'resource_scarcity': 'Sumber Daya',
+      'faction_conflict': 'Konflik',
+      'monster_threat': 'Monster',
+      'disease_outbreak': 'Penyakit',
+      'economic_crisis': 'Ekonomi',
+      'political_unrest': 'Politik',
+      'natural_disaster': 'Bencana',
+      'mysterious_disappearance': 'Hilang'
+    };
+    return shortNames[type] || 'Masalah';
+  }
+  
+  function getNPRIcon(role) {
+    const icons = {
+      'merchant': 'shopping-cart',
+      'guard': 'shield',
+      'craftsman': 'hammer',
+      'scholar': 'book',
+      'priest': 'crosshair',
+      'farmer': 'sprout',
+      'child': 'baby',
+      'elder': 'user'
+    };
+    return icons[role] || 'user';
+  }
+  
+  function getRoleName(role) {
+    const names = {
+      'merchant': 'Pedagang',
+      'guard': 'Penjaga',
+      'craftsman': 'Pekerja',
+      'scholar': 'Cendekiawan',
+      'priest': 'Imam',
+      'farmer': 'Petani',
+      'child': 'Anak-anak',
+      'elder': 'Orang Tua'
+    };
+    return names[role] || 'Penduduk';
+  }
+  
+  function getEventIcon(type) {
+    const icons = {
+      'festival': 'party-popper',
+      'war_declaration': 'swords',
+      'natural_phenomenon': 'sparkles',
+      'political_upheaval': 'users',
+      'economic_boom': 'trending-up',
+      'epidemic': 'biohazard',
+      'discovery': 'compass',
+      'catastrophe': 'cloud-lightning'
+    };
+    return icons[type] || 'globe';
+  }
+  
+  function getEventName(type) {
+    const names = {
+      'festival': 'Festival',
+      'war_declaration': 'Deklarasi Perang',
+      'natural_phenomenon': 'Fenomena Alam',
+      'political_upheaval': 'Guncangan Politik',
+      'economic_boom': 'Kemakmuran Ekonomi',
+      'epidemic': 'Epidemi',
+      'discovery': 'Penemuan',
+      'catastrophe': 'Katastrofe'
+    };
+    return names[type] || 'Peristiwa Dunia';
+  }
+  
+  // Set up event listeners when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeLivingWorld();
+    
+    // Add global functions for NPC interaction
+    window.talkToNPC = function(npcId) {
+      showNotification(`Berbicara dengan NPC ${npcId}...`, 'info');
+      
+      // In a real implementation, this would open a conversation UI
+      // For now, we'll simulate a conversation
+      setTimeout(() => {
+        const sampleResponses = [
+          "Halo, apa kabar? Cuaca hari ini indah sekali.",
+          "Saya sedang sibuk hari ini. Ada yang bisa saya bantu?",
+          "Kamu terlihat seperti seorang petualang! Mau belanja sesuatu?",
+          "Hati-hati di jalanan. Belakangan ini banyak pencuri beraksi.",
+          "Apa kamu mendengar kabar tentang festival musim gugur tahun ini?"
+        ];
+        
+        const response = sampleResponses[Math.floor(Math.random() * sampleResponses.length)];
+        showNotification(`NPC: "${response}"`, 'success');
+      }, 1000);
+    };
+    
+    window.visitSettlement = function(settlementId) {
+      showNotification(`Mengunjungi pemukiman ${settlementId}...`, 'info');
+      
+      // In a real implementation, this would navigate to the settlement
+      // For now, we'll just show a notification
+      setTimeout(() => {
+        showNotification('Kamu telah tiba di pemukiman!', 'success');
+      }, 1500);
+    };
+  });
+  
+  // Function to show notification
+  function showNotification(message, type) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 ${
+      type === 'success' ? 'bg-green-500' :
+      type === 'error' ? 'bg-red-500' :
+      type === 'info' ? 'bg-blue-500' :
+      'bg-slate-700'
+    } text-white max-w-md`;
+    notification.textContent = message;
+    
+    // Add to document
+    document.body.appendChild(notification);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 3000);
+  }
+</script>

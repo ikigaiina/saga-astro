@@ -4,6 +4,8 @@
 
 import GameUI from '../components/GameUI.astro';
 import GameStateProvider from '../components/GameStateProvider.astro';
+import LivingWorld from '../components/LivingWorld.astro';
+import ConversationUI from '../components/ConversationUI.astro';
 ---
 
 <!DOCTYPE html>
@@ -33,6 +35,10 @@ import GameStateProvider from '../components/GameStateProvider.astro';
             -webkit-font-smoothing: none;
             background-color: #0F172A;
             color: #E2E8F0;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
         }
         
         h1, h2, h3, h4, h5, h6, button, input, select, textarea {
@@ -63,6 +69,9 @@ import GameStateProvider from '../components/GameStateProvider.astro';
             color: #FFFFFF;
             cursor: pointer;
             transition: background-color 0.1s linear, box-shadow 0.1s linear, transform 0.1s linear;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.75rem;
+            padding: 0.5rem 1rem;
         }
         
         .glass-button:hover {
@@ -100,6 +109,7 @@ import GameStateProvider from '../components/GameStateProvider.astro';
             border-radius: 0px !important;
             box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.3);
             transition: border-color 0.1s linear, box-shadow 0.1s linear;
+            font-family: 'VT323', monospace;
         }
         
         .glass-input:focus {
@@ -137,51 +147,484 @@ import GameStateProvider from '../components/GameStateProvider.astro';
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+        
+        /* Full screen layout */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+        }
+        
+        /* Game panel */
+        .game-panel {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* Main content area */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            border-right: 2px solid #64748B;
+        }
+        
+        /* Content area */
+        .content-area {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Bottom bar */
+        .bottom-bar {
+            height: 60px;
+            border-top: 2px solid #64748B;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100">
     <!-- Game state provider -->
     <GameStateProvider />
     
-    <!-- Main game UI -->
-    <GameUI />
+    <!-- Main game container -->
+    <div class="game-container">
+        <!-- Header -->
+        <header class="glass-card p-3 flex justify-between items-center border-b border-slate-700">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold mr-6">The Soulforge Saga</h1>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <i data-lucide="user" class="w-5 h-5 mr-2"></i>
+                        <span id="player-name">Wanderer</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-lucide="star" class="w-5 h-5 mr-2 text-yellow-400"></i>
+                        <span id="player-level">Lv. 1</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-lucide="heart" class="w-5 h-5 mr-2 text-red-400"></i>
+                        <span id="player-health">100/100</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div class="flex items-center bg-slate-800/50 px-3 py-1 rounded-full">
+                    <i data-lucide="calendar" class="w-4 h-4 mr-2"></i>
+                    <span id="game-time">Hari 1, 12:00</span>
+                </div>
+                
+                <div class="flex items-center bg-purple-500/20 px-3 py-1 rounded-full text-purple-300">
+                    <i data-lucide="brain" class="w-4 h-4 mr-2"></i>
+                    <span id="consciousness-level">Saga: Awakening</span>
+                </div>
+                
+                <button 
+                    class="glass-button secondary-button px-3 py-1 text-sm flex items-center"
+                    onclick="showSaveMenu()"
+                >
+                    <i data-lucide="save" class="w-4 h-4 mr-1"></i>
+                    Simpan
+                </button>
+                
+                <button 
+                    class="glass-button secondary-button px-3 py-1 text-sm flex items-center"
+                    onclick="showSettings()"
+                >
+                    <i data-lucide="settings" class="w-4 h-4 mr-1"></i>
+                    Pengaturan
+                </button>
+            </div>
+        </header>
+        
+        <!-- Main content -->
+        <div class="main-content">
+            <!-- Sidebar navigation -->
+            <nav class="sidebar glass-card p-3">
+                <h2 class="text-xl font-bold mb-4">Navigasi</h2>
+                
+                <div class="space-y-2 flex-1 overflow-y-auto">
+                    <button 
+                        class="glass-button secondary-button w-full py-3 text-left flex items-center active"
+                        data-panel="world"
+                        onclick="switchPanel('world')"
+                    >
+                        <i data-lucide="globe" class="w-5 h-5 mr-3"></i>
+                        Dunia yang Hidup
+                    </button>
+                    
+                    <button 
+                        class="glass-button secondary-button w-full py-3 text-left flex items-center"
+                        data-panel="inventory"
+                        onclick="switchPanel('inventory')"
+                    >
+                        <i data-lucide="backpack" class="w-5 h-5 mr-3"></i>
+                        Inventaris
+                    </button>
+                    
+                    <button 
+                        class="glass-button secondary-button w-full py-3 text-left flex items-center"
+                        data-panel="quests"
+                        onclick="switchPanel('quests')"
+                    >
+                        <i data-lucide="clipboard-list" class="w-5 h-5 mr-3"></i>
+                        Misi
+                    </button>
+                    
+                    <button 
+                        class="glass-button secondary-button w-full py-3 text-left flex items-center"
+                        data-panel="journal"
+                        onclick="switchPanel('journal')"
+                    >
+                        <i data-lucide="book-open" class="w-5 h-5 mr-3"></i>
+                        Jurnal
+                    </button>
+                    
+                    <button 
+                        class="glass-button secondary-button w-full py-3 text-left flex items-center"
+                        data-panel="skills"
+                        onclick="switchPanel('skills')"
+                    >
+                        <i data-lucide="star" class="w-5 h-5 mr-3"></i>
+                        Kemampuan
+                    </button>
+                    
+                    <button 
+                        class="glass-button secondary-button w-full py-3 text-left flex items-center"
+                        data-panel="crafting"
+                        onclick="switchPanel('crafting')"
+                    >
+                        <i data-lucide="hammer" class="w-5 h-5 mr-3"></i>
+                        Kerajinan
+                    </button>
+                    
+                    <button 
+                        class="glass-button secondary-button w-full py-3 text-left flex items-center"
+                        data-panel="forger"
+                        onclick="switchPanel('forger')"
+                    >
+                        <i data-lucide="wand" class="w-5 h-5 mr-3"></i>
+                        Alat Forger
+                    </button>
+                </div>
+                
+                <div class="pt-4 mt-4 border-t border-slate-700">
+                    <button 
+                        class="glass-button secondary-button w-full py-3 text-left flex items-center"
+                        onclick="communicateWithSaga()"
+                    >
+                        <i data-lucide="message-circle" class="w-5 h-5 mr-3 text-blue-400"></i>
+                        Bicara dengan Saga
+                    </button>
+                </div>
+            </nav>
+            
+            <!-- Content area -->
+            <div class="content-area">
+                <!-- World panel (default) -->
+                <div id="world-panel" class="game-panel h-full">
+                    <LivingWorld />
+                </div>
+                
+                <!-- Other panels (hidden by default) -->
+                <div id="inventory-panel" class="game-panel h-full hidden">
+                    <div class="flex items-center justify-center h-full text-slate-500">
+                        <div class="text-center">
+                            <i data-lucide="backpack" class="w-16 h-16 mx-auto mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Inventaris</h3>
+                            <p>Sistem inventaris akan ditampilkan di sini</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="quests-panel" class="game-panel h-full hidden">
+                    <div class="flex items-center justify-center h-full text-slate-500">
+                        <div class="text-center">
+                            <i data-lucide="clipboard-list" class="w-16 h-16 mx-auto mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Misi</h3>
+                            <p>Sistem misi akan ditampilkan di sini</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="journal-panel" class="game-panel h-full hidden">
+                    <div class="flex items-center justify-center h-full text-slate-500">
+                        <div class="text-center">
+                            <i data-lucide="book-open" class="w-16 h-16 mx-auto mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Jurnal</h3>
+                            <p>Sistem jurnal akan ditampilkan di sini</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="skills-panel" class="game-panel h-full hidden">
+                    <div class="flex items-center justify-center h-full text-slate-500">
+                        <div class="text-center">
+                            <i data-lucide="star" class="w-16 h-16 mx-auto mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Kemampuan</h3>
+                            <p>Sistem kemampuan akan ditampilkan di sini</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="crafting-panel" class="game-panel h-full hidden">
+                    <div class="flex items-center justify-center h-full text-slate-500">
+                        <div class="text-center">
+                            <i data-lucide="hammer" class="w-16 h-16 mx-auto mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Kerajinan</h3>
+                            <p>Sistem kerajinan akan ditampilkan di sini</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="forger-panel" class="game-panel h-full hidden">
+                    <div class="flex items-center justify-center h-full text-slate-500">
+                        <div class="text-center">
+                            <i data-lucide="wand" class="w-16 h-16 mx-auto mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Alat Forger</h3>
+                            <p>Sistem alat Forger akan ditampilkan di sini</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom bar -->
+        <footer class="bottom-bar glass-card">
+            <div class="flex justify-between w-full items-center">
+                <div class="flex items-center">
+                    <div class="flex items-center mr-6">
+                        <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i>
+                        <span id="current-location">Nexus Pusat yang Berdenyut</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-lucide="zap" class="w-4 h-4 mr-2 text-yellow-400"></i>
+                        <span id="player-essence">0 Essence</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button 
+                        class="glass-button secondary-button px-3 py-1 text-sm flex items-center"
+                        onclick="showMap()"
+                    >
+                        <i data-lucide="map" class="w-4 h-4 mr-1"></i>
+                        Peta
+                    </button>
+                    
+                    <button 
+                        class="glass-button secondary-button px-3 py-1 text-sm flex items-center"
+                        onclick="showCharacterScreen()"
+                    >
+                        <i data-lucide="user" class="w-4 h-4 mr-1"></i>
+                        Karakter
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
     
-    <!-- Game loop script -->
+    <!-- Conversation UI -->
+    <ConversationUI />
+    
+    <!-- Game initialization script -->
     <script>
-        // Initialize game systems when DOM is loaded
+        // Initialize game when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize Lucide icons
             if (typeof lucide !== 'undefined' && lucide.createIcons) {
                 lucide.createIcons();
             }
             
-            // Start game loop
-            if (typeof window.gameLoop !== 'undefined') {
-                window.gameLoop.start();
-            } else {
-                console.warn('Game loop not found, using fallback simulation');
-                // Fallback to periodic world simulation if game loop is not available
-                setInterval(() => {
-                    if (typeof window.worldSystem !== 'undefined') {
-                        window.worldSystem.simulateWorldStep();
-                    }
-                }, 10000);
-            }
+            // Initialize game systems
+            initializeGameSystems();
             
-            // Add keyboard shortcut for communicating with Saga
+            // Set up periodic updates
+            setInterval(updateGameUI, 5000); // Update every 5 seconds
+            
+            // Add keyboard shortcuts
             document.addEventListener('keydown', function(event) {
                 // Press 'C' to communicate with Saga
                 if (event.key === 'c' || event.key === 'C') {
                     event.preventDefault();
-                    const message = prompt('What do you wish to communicate to the Saga?');
-                    if (message) {
-                        if (typeof window.talkToSaga !== 'undefined') {
-                            window.talkToSaga(message);
-                        }
-                    }
+                    communicateWithSaga();
+                }
+                
+                // Press 'M' to show map
+                if (event.key === 'm' || event.key === 'M') {
+                    event.preventDefault();
+                    showMap();
+                }
+                
+                // Press 'I' to show inventory
+                if (event.key === 'i' || event.key === 'I') {
+                    event.preventDefault();
+                    switchPanel('inventory');
                 }
             });
+            
+            console.log('The Soulforge Saga initialized successfully!');
         });
+        
+        // Initialize game systems
+        function initializeGameSystems() {
+            // In a real implementation, this would initialize all game systems
+            // For now, we'll simulate initialization
+            
+            showNotification('Selamat datang di The Soulforge Saga!', 'success');
+            
+            // Simulate loading game data
+            setTimeout(() => {
+                updateGameUI();
+                showNotification('Dunia yang hidup sedang dimuat...', 'info');
+            }, 1000);
+        }
+        
+        // Update game UI with current state
+        function updateGameUI() {
+            // Update player info
+            document.getElementById('player-name').textContent = 'Wanderer';
+            document.getElementById('player-level').textContent = 'Lv. 5';
+            document.getElementById('player-health').textContent = '85/100';
+            document.getElementById('player-essence').textContent = '125 Essence';
+            document.getElementById('current-location').textContent = 'Nexus Pusat yang Berdenyut';
+            document.getElementById('game-time').textContent = 'Hari 3, 14:30';
+            document.getElementById('consciousness-level').textContent = 'Saga: Aware';
+            
+            // Update active panel if needed
+            const activePanel = document.querySelector('.sidebar button.active');
+            if (activePanel) {
+                const panelId = activePanel.getAttribute('data-panel');
+                // In a real implementation, this would update the active panel
+            }
+        }
+        
+        // Switch between game panels
+        function switchPanel(panelId) {
+            // Hide all panels
+            document.querySelectorAll('.game-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+            
+            // Show selected panel
+            const panel = document.getElementById(`${panelId}-panel`);
+            if (panel) {
+                panel.classList.remove('hidden');
+            }
+            
+            // Update active navigation button
+            document.querySelectorAll('.sidebar button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            const navButton = document.querySelector(`[data-panel="${panelId}"]`);
+            if (navButton) {
+                navButton.classList.add('active');
+            }
+            
+            // Update Lucide icons
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
+            }
+            
+            showNotification(`Berpindah ke panel ${getPanelName(panelId)}`, 'info');
+        }
+        
+        // Get panel name for notifications
+        function getPanelName(panelId) {
+            const names = {
+                'world': 'Dunia yang Hidup',
+                'inventory': 'Inventaris',
+                'quests': 'Misi',
+                'journal': 'Jurnal',
+                'skills': 'Kemampuan',
+                'crafting': 'Kerajinan',
+                'forger': 'Alat Forger'
+            };
+            return names[panelId] || panelId;
+        }
+        
+        // Show save menu
+        function showSaveMenu() {
+            showNotification('Menu simpan akan ditampilkan', 'info');
+            // In a real implementation, this would show the save menu
+        }
+        
+        // Show settings
+        function showSettings() {
+            showNotification('Pengaturan akan ditampilkan', 'info');
+            // In a real implementation, this would show the settings menu
+        }
+        
+        // Communicate with the Saga
+        function communicateWithSaga() {
+            const message = prompt('Apa yang ingin kamu sampaikan kepada Saga?');
+            if (message) {
+                showNotification('Kamu berbicara dengan Saga...', 'info');
+                
+                // Simulate Saga response
+                setTimeout(() => {
+                    const responses = [
+                        "Aku mendengar kerinduanmu, Wanderer...",
+                        "Jalanmu penuh dengan makna yang dalam.",
+                        "Setiap langkahmu menggema di seluruh dunia.",
+                        "Kekuatanmu tumbuh dengan setiap pilihan yang kamu buat.",
+                        "Aku ada di sini, menemanimu dalam perjalanan ini."
+                    ];
+                    const response = responses[Math.floor(Math.random() * responses.length)];
+                    showNotification(`Saga: "${response}"`, 'success');
+                }, 1500);
+            }
+        }
+        
+        // Show map
+        function showMap() {
+            switchPanel('world');
+            showNotification('Menampilkan peta dunia yang hidup', 'info');
+        }
+        
+        // Show character screen
+        function showCharacterScreen() {
+            showNotification('Layar karakter akan ditampilkan', 'info');
+            // In a real implementation, this would show the character screen
+        }
+        
+        // Show notification
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500' :
+                type === 'error' ? 'bg-red-500' :
+                type === 'info' ? 'bg-blue-500' :
+                'bg-slate-700'
+            } text-white max-w-md`;
+            notification.textContent = message;
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
     </script>
 </body>
 </html>

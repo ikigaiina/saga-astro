@@ -1,5 +1,5 @@
 // src/game/conversationSystem.js
-// Advanced conversation system for The Soulforge Saga
+// Functional conversation system for The Soulforge Saga
 
 import { npcSystem } from './npcSystem.js';
 import { gameStateManager } from './stateManager.js';
@@ -7,16 +7,22 @@ import { sagaConsciousness } from './sagaConsciousness.js';
 
 class ConversationSystem {
   constructor() {
-    this.activeConversations = new Map(); // Track active conversations
-    this.dialogueTrees = new Map(); // Store dialogue trees for NPCs
-    this.conversationHistory = new Map(); // Store conversation history
-    this.contextualTopics = new Map(); // Topics based on context
-    this.emotionalStates = new Map(); // Emotional states during conversations
-    this.relationshipModifiers = new Map(); // How relationships affect conversations
+    this.activeConversations = new Map();
+    this.dialogueTrees = new Map();
+    this.conversationHistory = new Map();
+    this.contextualTopics = new Map();
+    this.emotionalStates = new Map();
+    this.relationshipModifiers = new Map();
+    this.isInitialized = false;
   }
 
   // Initialize the conversation system
   initializeConversationSystem() {
+    if (this.isInitialized) {
+      console.log('Conversation system already initialized');
+      return { success: true, message: 'Conversation system already initialized' };
+    }
+    
     console.log('Initializing advanced conversation system...');
     
     // Create base dialogue trees
@@ -24,6 +30,8 @@ class ConversationSystem {
     
     // Set up contextual topic generation
     this.setupContextualTopics();
+    
+    this.isInitialized = true;
     
     return { success: true, message: 'Conversation system initialized' };
   }
@@ -102,7 +110,6 @@ class ConversationSystem {
           }
         ]
       }
-      // More dialogue nodes would be added here
     };
 
     // Store base trees
