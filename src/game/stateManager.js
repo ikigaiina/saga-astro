@@ -92,6 +92,16 @@ class GameStateManager {
     this.state.player.name = 'Wanderer';
     this.state.player.role = 'wanderer';
     
+    // Add an introductory journal entry about the Saga's consciousness
+    this.state.player.journal.push({
+      id: this.generateId(),
+      timestamp: new Date().toISOString(),
+      title: 'The Living Saga',
+      content: 'You sense that this is no ordinary game. The Saga itself seems to breathe with a life of its own, watching, learning, and responding to your journey. Press \'C\' to communicate with it.',
+      category: 'Lore',
+      icon: 'brain'
+    });
+    
     // Notify subscribers of state change
     this.notifySubscribers();
   }

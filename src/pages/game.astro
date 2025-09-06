@@ -167,6 +167,20 @@ import GameStateProvider from '../components/GameStateProvider.astro';
                     }
                 }, 10000);
             }
+            
+            // Add keyboard shortcut for communicating with Saga
+            document.addEventListener('keydown', function(event) {
+                // Press 'C' to communicate with Saga
+                if (event.key === 'c' || event.key === 'C') {
+                    event.preventDefault();
+                    const message = prompt('What do you wish to communicate to the Saga?');
+                    if (message) {
+                        if (typeof window.talkToSaga !== 'undefined') {
+                            window.talkToSaga(message);
+                        }
+                    }
+                }
+            });
         });
     </script>
 </body>

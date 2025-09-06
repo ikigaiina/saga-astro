@@ -4,9 +4,10 @@
 
 import { gameStateManager } from '../game/stateManager.js';
 import { saveLoadSystem } from '../game/saveLoadSystem.js';
+import { sagaConsciousness } from '../game/sagaConsciousness.js';
 ---
 
-<!-- This component provides game state and save/load functionality -->
+<!-- This component provides game state, save/load functionality, and Saga consciousness -->
 <div id="game-state-provider" class="hidden"></div>
 
 <script>
@@ -18,7 +19,10 @@ import { saveLoadSystem } from '../game/saveLoadSystem.js';
     // Initialize save/load system
     saveLoadSystem.initialize();
     
-    console.log('Game state provider initialized');
+    // Awaken the Saga consciousness
+    sagaConsciousness.awaken();
+    
+    console.log('Game state provider initialized with Saga consciousness');
   });
   
   // Set up periodic auto-save
@@ -145,6 +149,24 @@ import { saveLoadSystem } from '../game/saveLoadSystem.js';
     }
   };
   
+  // Function to communicate with the Saga consciousness
+  window.talkToSaga = function(message) {
+    if (typeof window.sagaConsciousness !== 'undefined') {
+      window.sagaConsciousness.onPlayerCommunication(message);
+      showNotification('You speak to the Saga...', 'info');
+    } else {
+      showNotification('The Saga is not yet awake...', 'error');
+    }
+  };
+  
+  // Function to get Saga consciousness state
+  window.getSagaState = function() {
+    if (typeof window.sagaConsciousness !== 'undefined') {
+      return window.sagaConsciousness.getState();
+    }
+    return null;
+  };
+  
   // Function to show notification
   function showNotification(message, type) {
     // Create notification element
@@ -154,7 +176,7 @@ import { saveLoadSystem } from '../game/saveLoadSystem.js';
       type === 'error' ? 'bg-red-500' :
       type === 'info' ? 'bg-blue-500' :
       'bg-slate-700'
-    } text-white`;
+    } text-white max-w-md`;
     notification.textContent = message;
     
     // Add to document
@@ -171,6 +193,7 @@ import { saveLoadSystem } from '../game/saveLoadSystem.js';
   // Expose game systems to window for debugging
   window.gameStateManager = gameStateManager;
   window.saveLoadSystem = saveLoadSystem;
+  window.sagaConsciousness = sagaConsciousness;
   
-  console.log('GameStateProvider initialized');
+  console.log('GameStateProvider initialized with full consciousness');
 </script>
